@@ -39,7 +39,7 @@ import org.apache.tiles.request.render.Renderer;
 import org.apache.tiles.request.Request;
 import org.junit.Test;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

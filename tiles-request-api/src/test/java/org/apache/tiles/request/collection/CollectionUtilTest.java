@@ -20,8 +20,7 @@
  */
 package org.apache.tiles.request.collection;
 
-import org.apache.tiles.request.collection.CollectionUtil;
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
 import java.util.Enumeration;

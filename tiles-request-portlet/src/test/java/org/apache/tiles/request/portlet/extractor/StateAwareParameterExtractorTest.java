@@ -20,7 +20,7 @@
  */
 package org.apache.tiles.request.portlet.extractor;
 
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.StateAwareResponse;

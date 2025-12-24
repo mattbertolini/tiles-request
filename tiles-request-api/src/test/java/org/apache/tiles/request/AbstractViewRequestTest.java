@@ -21,7 +21,7 @@
 package org.apache.tiles.request;
 
 import static org.junit.Assert.*;
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
 
 import java.io.IOException;
 import java.util.HashMap;
