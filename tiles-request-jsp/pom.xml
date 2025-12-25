@@ -69,11 +69,6 @@ under the License.
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.shale</groupId>
-			<artifactId>shale-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-autotag-core-runtime</artifactId>
 			<optional>true</optional>

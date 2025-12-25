@@ -192,12 +192,6 @@ under the License.
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                    <groupId>org.apache.shale</groupId>
-                    <artifactId>shale-test</artifactId>
-                    <version>1.0.5</version>
-                    <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
                 <version>1.7.6</version>
