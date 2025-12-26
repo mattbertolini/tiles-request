@@ -21,22 +21,23 @@
 
 package org.apache.tiles.request.render;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link NoSuchRendererException}.
  *
  * @version $Rev$ $Date$
  */
-public class NoSuchRendererExceptionTest {
+class NoSuchRendererExceptionTest {
 
     /**
      * Test method for {@link NoSuchRendererException#NoSuchRendererException()}.
      */
     @Test
-    public void testNoSuchRendererException() {
+    void testNoSuchRendererException() {
         NoSuchRendererException exception = new NoSuchRendererException();
         assertNull(exception.getMessage());
         assertNull(exception.getCause());
@@ -46,7 +47,7 @@ public class NoSuchRendererExceptionTest {
      * Test method for {@link NoSuchRendererException#NoSuchRendererException(java.lang.String)}.
      */
     @Test
-    public void testNoSuchRendererExceptionString() {
+    void testNoSuchRendererExceptionString() {
         NoSuchRendererException exception = new NoSuchRendererException("my message");
         assertEquals("my message", exception.getMessage());
         assertNull(exception.getCause());
@@ -56,7 +57,7 @@ public class NoSuchRendererExceptionTest {
      * Test method for {@link NoSuchRendererException#NoSuchRendererException(java.lang.Throwable)}.
      */
     @Test
-    public void testNoSuchRendererExceptionThrowable() {
+    void testNoSuchRendererExceptionThrowable() {
         Throwable cause = new Throwable();
         NoSuchRendererException exception = new NoSuchRendererException(cause);
         assertEquals(cause.toString(), exception.getMessage());
@@ -67,7 +68,7 @@ public class NoSuchRendererExceptionTest {
      * Test method for {@link NoSuchRendererException#NoSuchRendererException(java.lang.String, java.lang.Throwable)}.
      */
     @Test
-    public void testNoSuchRendererExceptionStringThrowable() {
+    void testNoSuchRendererExceptionStringThrowable() {
         Throwable cause = new Throwable();
         NoSuchRendererException exception = new NoSuchRendererException("my message", cause);
         assertEquals("my message", exception.getMessage());

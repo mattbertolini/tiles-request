@@ -20,22 +20,24 @@
  */
 package org.apache.tiles.request.collection;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link MapEntryArrayValues}.
  *
  * @version $Rev$ $Date$
  */
-public class MapEntryArrayValuesTest {
+class MapEntryArrayValuesTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.MapEntryArrayValues#hashCode()}.
      */
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         MapEntryArrayValues<String, String> entry = new MapEntryArrayValues<String, String>(
                 "key", new String[] { "value1", "value2" }, false);
         assertEquals("key".hashCode() ^ ("value1".hashCode() + "value2".hashCode()), entry.hashCode());
@@ -54,7 +56,7 @@ public class MapEntryArrayValuesTest {
      * Test method for {@link org.apache.tiles.request.collection.MapEntryArrayValues#equals(java.lang.Object)}.
      */
     @Test
-    public void testEqualsObject() {
+    void testEqualsObject() {
         MapEntryArrayValues<String, String> entry = new MapEntryArrayValues<String, String>(
                 "key", new String[] { "value1", "value2" }, false);
         assertFalse(entry.equals(null));

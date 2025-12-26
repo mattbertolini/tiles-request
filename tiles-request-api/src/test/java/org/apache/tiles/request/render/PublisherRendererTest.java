@@ -20,23 +20,26 @@
  */
 package org.apache.tiles.request.render;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.Request;
+import org.apache.tiles.request.render.PublisherRenderer.RendererListener;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.apache.tiles.request.Request;
-import org.apache.tiles.request.render.PublisherRenderer.RendererListener;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link PublisherRenderer}.
  *
  * @version $Rev$ $Date$
  */
-public class PublisherRendererTest {
+class PublisherRendererTest {
 
     /**
      * The renderer.
@@ -44,8 +47,8 @@ public class PublisherRendererTest {
     private PublisherRenderer renderer;
     private StringRenderer internalRenderer;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         internalRenderer = new StringRenderer();
         renderer = new PublisherRenderer(internalRenderer);
     }
@@ -57,7 +60,7 @@ public class PublisherRendererTest {
      * @throws IOException If something goes wrong during rendition.
      */
     @Test
-    public void testWrite() throws IOException {
+    void testWrite() throws IOException {
         StringWriter writer = new StringWriter();
         Request requestContext = createMock(Request.class);
         RendererListener listener = createMock(RendererListener.class);
@@ -79,7 +82,7 @@ public class PublisherRendererTest {
      * {@link PublisherRenderer#isRenderable(String, Request)}.
      */
     @Test
-    public void testIsRenderable() {
+    void testIsRenderable() {
         Request requestContext = createMock(Request.class);
         RendererListener listener = createMock(RendererListener.class);
         replay(requestContext);
