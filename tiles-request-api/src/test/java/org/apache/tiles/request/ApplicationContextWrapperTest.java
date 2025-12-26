@@ -21,27 +21,27 @@
 package org.apache.tiles.request;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link ApplicationContextWrapper}.
  *
  * @version $Rev: 1066446 $ $Date: 2011-02-02 13:38:04 +0100 (Wed, 02 Feb 2011) $
  */
-public class ApplicationContextWrapperTest {
+class ApplicationContextWrapperTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.ApplicationContextWrapper#getWrappedApplicationContext()}.
      */
     @Test
-    public void testGetWrappedApplicationContext() {
+    void testGetWrappedApplicationContext() {
         ApplicationContext wrappedContext = createMock(ApplicationContext.class);
 
         replay(wrappedContext);
@@ -55,7 +55,7 @@ public class ApplicationContextWrapperTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetApplicationScope() {
+    void testGetApplicationScope() {
         ApplicationContext wrappedContext = createMock(ApplicationContext.class);
         Map<String, Object> applicationScope = createMock(Map.class);
 
@@ -71,7 +71,7 @@ public class ApplicationContextWrapperTest {
      * Test method for {@link org.apache.tiles.request.ApplicationContextWrapper#getContext()}.
      */
     @Test
-    public void testGetContext() {
+    void testGetContext() {
         ApplicationContext wrappedContext = createMock(ApplicationContext.class);
         Object obj = createMock(Object.class);
 
@@ -88,7 +88,7 @@ public class ApplicationContextWrapperTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetInitParams() {
+    void testGetInitParams() {
         ApplicationContext wrappedContext = createMock(ApplicationContext.class);
         Map<String, String> obj = createMock(Map.class);
 
@@ -105,7 +105,7 @@ public class ApplicationContextWrapperTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testGetResource() throws IOException {
+    void testGetResource() throws IOException {
         ApplicationContext wrappedContext = createMock(ApplicationContext.class);
         ApplicationResource obj = createMock(ApplicationResource.class);
         ApplicationResource objFr = createMock(ApplicationResource.class);
@@ -126,7 +126,7 @@ public class ApplicationContextWrapperTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetResources() throws IOException {
+    void testGetResources() throws IOException {
         ApplicationContext wrappedContext = createMock(ApplicationContext.class);
         Collection<ApplicationResource> obj = createMock(Collection.class);
 

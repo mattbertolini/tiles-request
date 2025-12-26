@@ -21,22 +21,23 @@
 
 package org.apache.tiles.request.reflect;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link CannotInstantiateObjectException}.
  *
  * @version $Rev$ $Date$
  */
-public class CannotInstantiateObjectExceptionTest {
+class CannotInstantiateObjectExceptionTest {
 
     /**
      * Test method for {@link org.apache.tiles.CannotInstantiateObjectException#CannotInstantiateObjectException()}.
      */
     @Test
-    public void testCannotInstantiateObjectException() {
+    void testCannotInstantiateObjectException() {
         CannotInstantiateObjectException exception = new CannotInstantiateObjectException();
         assertNull(exception.getMessage());
         assertNull(exception.getCause());
@@ -46,7 +47,7 @@ public class CannotInstantiateObjectExceptionTest {
      * Test method for {@link CannotInstantiateObjectException#CannotInstantiateObjectException(String)}.
      */
     @Test
-    public void testCannotInstantiateObjectExceptionString() {
+    void testCannotInstantiateObjectExceptionString() {
         CannotInstantiateObjectException exception = new CannotInstantiateObjectException("my message");
         assertEquals("my message", exception.getMessage());
         assertNull(exception.getCause());
@@ -56,7 +57,7 @@ public class CannotInstantiateObjectExceptionTest {
      * Test method for {@link CannotInstantiateObjectException#CannotInstantiateObjectException(Throwable)}.
      */
     @Test
-    public void testCannotInstantiateObjectExceptionThrowable() {
+    void testCannotInstantiateObjectExceptionThrowable() {
         Throwable cause = new Throwable();
         CannotInstantiateObjectException exception = new CannotInstantiateObjectException(cause);
         assertEquals(cause.toString(), exception.getMessage());
@@ -67,7 +68,7 @@ public class CannotInstantiateObjectExceptionTest {
      * Test method for {@link CannotInstantiateObjectException#CannotInstantiateObjectException(String, Throwable)}.
      */
     @Test
-    public void testCannotInstantiateObjectExceptionStringThrowable() {
+    void testCannotInstantiateObjectExceptionStringThrowable() {
         Throwable cause = new Throwable();
         CannotInstantiateObjectException exception = new CannotInstantiateObjectException("my message", cause);
         assertEquals("my message", exception.getMessage());

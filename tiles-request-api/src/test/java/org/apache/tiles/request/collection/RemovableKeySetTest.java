@@ -21,22 +21,23 @@
 package org.apache.tiles.request.collection;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
 import org.apache.tiles.request.attribute.HasRemovableKeys;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link RemovableKeySet}.
  *
  * @version $Rev$ $Date$
  */
-public class RemovableKeySetTest {
+class RemovableKeySetTest {
 
     /**
      * The extractor to use.
@@ -52,8 +53,8 @@ public class RemovableKeySetTest {
      * Sets up the test.
      */
     @SuppressWarnings("unchecked")
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         extractor = createMock(HasRemovableKeys.class);
         entrySet = new RemovableKeySet(extractor);
     }
@@ -62,7 +63,7 @@ public class RemovableKeySetTest {
      * Test method for {@link org.apache.tiles.request.collection.RemovableKeySet#remove(java.lang.Object)}.
      */
     @Test
-    public void testRemove() {
+    void testRemove() {
         expect(extractor.getValue("one")).andReturn(1);
         extractor.removeValue("one");
 
@@ -75,7 +76,7 @@ public class RemovableKeySetTest {
      * Test method for {@link org.apache.tiles.request.collection.RemovableKeySet#remove(java.lang.Object)}.
      */
     @Test
-    public void testRemoveNoEffect() {
+    void testRemoveNoEffect() {
         expect(extractor.getValue("one")).andReturn(null);
 
         replay(extractor);
@@ -87,7 +88,7 @@ public class RemovableKeySetTest {
      * Test method for {@link org.apache.tiles.request.collection.RemovableKeySet#removeAll(java.util.Collection)}.
      */
     @Test
-    public void testRemoveAll() {
+    void testRemoveAll() {
         expect(extractor.getValue("one")).andReturn(1);
         expect(extractor.getValue("two")).andReturn(2);
         extractor.removeValue("one");
@@ -106,7 +107,7 @@ public class RemovableKeySetTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testRetainAll() {
+    void testRetainAll() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);

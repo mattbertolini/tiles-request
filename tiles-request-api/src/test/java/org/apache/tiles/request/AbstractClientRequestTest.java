@@ -20,23 +20,29 @@
  */
 package org.apache.tiles.request;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createMockBuilder;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link AbstractClientRequest}.
  *
  * @version $Rev$ $Date$
  */
-public class AbstractClientRequestTest {
+class AbstractClientRequestTest {
 
     /**
      * The request to test.
@@ -56,8 +62,8 @@ public class AbstractClientRequestTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         applicationContext = createMock(ApplicationContext.class);
         applicationScope = new HashMap<String, Object>();
         request = createMockBuilder(AbstractClientRequest.class)
@@ -71,7 +77,7 @@ public class AbstractClientRequestTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testDispatch() throws IOException {
+    void testDispatch() throws IOException {
         Map<String, Object> requestScope = new HashMap<String, Object>();
 
         expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(requestScope).anyTimes();
@@ -89,7 +95,7 @@ public class AbstractClientRequestTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testInclude() throws IOException {
+    void testInclude() throws IOException {
         Map<String, Object> requestScope = new HashMap<String, Object>();
 
         expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(requestScope).anyTimes();
@@ -105,7 +111,7 @@ public class AbstractClientRequestTest {
      * Test method for {@link org.apache.tiles.request.AbstractClientRequest#getApplicationContext()}.
      */
     @Test
-    public void testGetApplicationContext() {
+    void testGetApplicationContext() {
         replay(request, applicationContext);
         assertEquals(applicationContext, request.getApplicationContext());
         verify(request, applicationContext);
@@ -116,7 +122,7 @@ public class AbstractClientRequestTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetContext() {
+    void testGetContext() {
         Map<String, Object> scope = createMock(Map.class);
 
         expect(request.getContext("myScope")).andReturn(scope);
@@ -130,7 +136,7 @@ public class AbstractClientRequestTest {
      * Test method for {@link org.apache.tiles.request.AbstractClientRequest#getAvailableScopes()}.
      */
     @Test
-    public void testGetAvailableScopes() {
+    void testGetAvailableScopes() {
         String[] scopes = new String[] {"one", "two", "three"};
 
         expect(request.getAvailableScopes()).andReturn(Arrays.asList(scopes));
@@ -144,7 +150,7 @@ public class AbstractClientRequestTest {
      * Test method for {@link org.apache.tiles.request.AbstractClientRequest#getApplicationScope()}.
      */
     @Test
-    public void testGetApplicationScope() {
+    void testGetApplicationScope() {
         replay(request, applicationContext);
         assertEquals(applicationScope, request.getApplicationScope());
         verify(request, applicationContext);

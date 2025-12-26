@@ -22,7 +22,8 @@ package org.apache.tiles.request.collection;
 
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -31,15 +32,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.tiles.request.attribute.AttributeExtractor;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link ScopeMap#entrySet()}.
  *
  * @version $Rev$ $Date$
  */
-public class ScopeMapEntrySetTest {
+class ScopeMapEntrySetTest {
 
     /**
      * The map to test.
@@ -59,8 +60,8 @@ public class ScopeMapEntrySetTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         extractor = createMock(AttributeExtractor.class);
         map = new ScopeMap(extractor);
         entrySet = map.entrySet();
@@ -71,7 +72,7 @@ public class ScopeMapEntrySetTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testAdd() {
+    void testAdd() {
         Map.Entry<String, Object> entry = createMock(Map.Entry.class);
 
         expect(entry.getKey()).andReturn("one");
@@ -90,7 +91,7 @@ public class ScopeMapEntrySetTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testAddNoEffect() {
+    void testAddNoEffect() {
         Map.Entry<String, Object> entry = createMock(Map.Entry.class);
 
         expect(entry.getKey()).andReturn("one");
@@ -107,7 +108,7 @@ public class ScopeMapEntrySetTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testAddAll() {
+    void testAddAll() {
         Map.Entry<String, Object> entry1 = createMock(Map.Entry.class);
         Map.Entry<String, Object> entry2 = createMock(Map.Entry.class);
 
@@ -134,7 +135,7 @@ public class ScopeMapEntrySetTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testClear() {
+    void testClear() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -157,7 +158,7 @@ public class ScopeMapEntrySetTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testRemove() {
+    void testRemove() {
         Map.Entry<String, Object> entry = createMock(Map.Entry.class);
 
         expect(entry.getKey()).andReturn("one");
@@ -175,7 +176,7 @@ public class ScopeMapEntrySetTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testRemoveNoEffect() {
+    void testRemoveNoEffect() {
         Map.Entry<String, Object> entry = createMock(Map.Entry.class);
 
         expect(entry.getKey()).andReturn("one");
@@ -191,7 +192,7 @@ public class ScopeMapEntrySetTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testRemoveAll() {
+    void testRemoveAll() {
         Map.Entry<String, Object> entry1 = createMock(Map.Entry.class);
         Map.Entry<String, Object> entry2 = createMock(Map.Entry.class);
 
@@ -217,7 +218,7 @@ public class ScopeMapEntrySetTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testRetainAll() {
+    void testRetainAll() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);

@@ -20,26 +20,30 @@
  */
 package org.apache.tiles.request;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import static org.easymock.EasyMock.createMockBuilder;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link AbstractRequest}.
  *
  * @version $Rev$ $Date$
  */
-public class AbstractRequestTest {
+class AbstractRequestTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.AbstractRequest#setForceInclude(boolean)}.
      */
     @Test
-    public void testSetForceInclude() {
+    void testSetForceInclude() {
         AbstractRequest request = createMockBuilder(AbstractRequest.class).createMock();
         Map<String, Object> scope = new HashMap<String, Object>();
 

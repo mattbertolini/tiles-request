@@ -20,20 +20,20 @@
  */
 package org.apache.tiles.request;
 
+import org.junit.jupiter.api.Test;
+
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.io.IOException;
 
-import org.junit.Test;
-
 /**
  * Tests {@link DispatchRequestWrapper}.
  *
  * @version $Rev$ $Date$
  */
-public class DispatchRequestWrapperTest extends DefaultRequestWrapperTest {
+class DispatchRequestWrapperTest extends DefaultRequestWrapperTest {
 
     @Override
     protected DispatchRequest createMockRequest() {
@@ -52,7 +52,7 @@ public class DispatchRequestWrapperTest extends DefaultRequestWrapperTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testDispatch() throws IOException {
+    void testDispatch() throws IOException {
         DispatchRequest wrappedRequest = createMockRequest();
 
         wrappedRequest.dispatch("/my/path.html");
@@ -68,7 +68,7 @@ public class DispatchRequestWrapperTest extends DefaultRequestWrapperTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testInclude() throws IOException {
+    void testInclude() throws IOException {
         DispatchRequest wrappedRequest = createMockRequest();
 
         wrappedRequest.include("/my/path.html");
@@ -83,7 +83,7 @@ public class DispatchRequestWrapperTest extends DefaultRequestWrapperTest {
      * Test method for {@link org.apache.tiles.request.DispatchRequestWrapper#setContentType(java.lang.String)}.
      */
     @Test
-    public void testSetContentType() {
+    void testSetContentType() {
         DispatchRequest wrappedRequest = createMockRequest();
 
         wrappedRequest.setContentType("text/html");

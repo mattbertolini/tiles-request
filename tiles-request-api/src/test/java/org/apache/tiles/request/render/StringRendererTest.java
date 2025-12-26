@@ -20,22 +20,26 @@
  */
 package org.apache.tiles.request.render;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.Request;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.apache.tiles.request.Request;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link StringRenderer}.
  *
  * @version $Rev$ $Date$
  */
-public class StringRendererTest {
+class StringRendererTest {
 
     /**
      * The renderer.
@@ -43,7 +47,7 @@ public class StringRendererTest {
     private StringRenderer renderer;
 
     /** {@inheritDoc} */
-    @Before
+    @BeforeEach
     public void setUp() {
         renderer = new StringRenderer();
     }
@@ -55,14 +59,14 @@ public class StringRendererTest {
      * @throws IOException If something goes wrong during rendition.
      */
     @Test
-    public void testWrite() throws IOException {
+    void testWrite() throws IOException {
         StringWriter writer = new StringWriter();
         Request requestContext = createMock(Request.class);
         expect(requestContext.getWriter()).andReturn(writer);
         replay(requestContext);
         renderer.render("Result", requestContext);
         writer.close();
-        assertEquals("Not written 'Result'", "Result", writer.toString());
+        assertEquals("Result", writer.toString(), "Not written 'Result'");
         verify(requestContext);
     }
 
@@ -71,10 +75,10 @@ public class StringRendererTest {
      * {@link StringRenderer#isRenderable(String, Request)}.
      */
     @Test
-    public void testIsRenderable() {
+    void testIsRenderable() {
         Request requestContext = createMock(Request.class);
         replay(requestContext);
-        assertTrue(renderer.isRenderable("Result", requestContext));
+        Assertions.assertTrue(renderer.isRenderable("Result", requestContext));
         verify(requestContext);
     }
 }

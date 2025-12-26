@@ -20,23 +20,28 @@
  */
 package org.apache.tiles.request.collection;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.attribute.AttributeExtractor;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.tiles.request.attribute.AttributeExtractor;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link ScopeMap}.
  *
  * @version $Rev$ $Date$
  */
-public class ScopeMapTest {
+class ScopeMapTest {
 
     /**
      * The map tot est.
@@ -51,7 +56,7 @@ public class ScopeMapTest {
     /**
      * Sets up the test.
      */
-    @Before
+    @BeforeEach
     public void setUp() {
         extractor = createMock(AttributeExtractor.class);
         map = new ScopeMap(extractor);
@@ -62,7 +67,7 @@ public class ScopeMapTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testClear() {
+    void testClear() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -84,9 +89,9 @@ public class ScopeMapTest {
      * Test method for {@link org.apache.tiles.request.collection.ScopeMap#keySet()}.
      */
     @Test
-    public void testKeySet() {
+    void testKeySet() {
         replay(extractor);
-        assertTrue(map.keySet() instanceof RemovableKeySet);
+        assertInstanceOf(RemovableKeySet.class, map.keySet());
         verify(extractor);
     }
 
@@ -94,7 +99,7 @@ public class ScopeMapTest {
      * Test method for {@link org.apache.tiles.request.collection.ScopeMap#put(java.lang.String, java.lang.Object)}.
      */
     @Test
-    public void testPutStringObject() {
+    void testPutStringObject() {
         expect(extractor.getValue("one")).andReturn(null);
         extractor.setValue("one", 1);
 
@@ -107,7 +112,7 @@ public class ScopeMapTest {
      * Test method for {@link org.apache.tiles.request.collection.ScopeMap#putAll(java.util.Map)}.
      */
     @Test
-    public void testPutAllMapOfQextendsStringQextendsObject() {
+    void testPutAllMapOfQextendsStringQextendsObject() {
         Map<String, Object> items = new LinkedHashMap<String, Object>();
         items.put("one", 1);
         items.put("two", 2);
@@ -124,7 +129,7 @@ public class ScopeMapTest {
      * Test method for {@link org.apache.tiles.request.collection.ScopeMap#remove(java.lang.Object)}.
      */
     @Test
-    public void testRemoveObject() {
+    void testRemoveObject() {
         expect(extractor.getValue("one")).andReturn(1);
         extractor.removeValue("one");
 

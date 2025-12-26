@@ -21,22 +21,23 @@
 
 package org.apache.tiles.request;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link NotAvailableFeatureException}.
  *
  * @version $Rev$ $Date$
  */
-public class NotAvailableFeatureExceptionTest {
+class NotAvailableFeatureExceptionTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.NotAvailableFeatureException#NotAvailableFeatureException()}.
      */
     @Test
-    public void testNotAvailableFeatureException() {
+    void testNotAvailableFeatureException() {
         NotAvailableFeatureException exception = new NotAvailableFeatureException();
         assertNull(exception.getMessage());
         assertNull(exception.getCause());
@@ -46,7 +47,7 @@ public class NotAvailableFeatureExceptionTest {
      * Test method for {@link NotAvailableFeatureException#NotAvailableFeatureException(String)}.
      */
     @Test
-    public void testNotAvailableFeatureExceptionString() {
+    void testNotAvailableFeatureExceptionString() {
         NotAvailableFeatureException exception = new NotAvailableFeatureException("my message");
         assertEquals("my message", exception.getMessage());
         assertNull(exception.getCause());
@@ -56,7 +57,7 @@ public class NotAvailableFeatureExceptionTest {
      * Test method for {@link NotAvailableFeatureException#NotAvailableFeatureException(Throwable)}.
      */
     @Test
-    public void testNotAvailableFeatureExceptionThrowable() {
+    void testNotAvailableFeatureExceptionThrowable() {
         Throwable cause = new Throwable();
         NotAvailableFeatureException exception = new NotAvailableFeatureException(cause);
         assertEquals(cause.toString(), exception.getMessage());
@@ -67,7 +68,7 @@ public class NotAvailableFeatureExceptionTest {
      * Test method for {@link NotAvailableFeatureException#NotAvailableFeatureException(String, Throwable)}.
      */
     @Test
-    public void testNotAvailableFeatureExceptionStringThrowable() {
+    void testNotAvailableFeatureExceptionStringThrowable() {
         Throwable cause = new Throwable();
         NotAvailableFeatureException exception = new NotAvailableFeatureException("my message", cause);
         assertEquals("my message", exception.getMessage());

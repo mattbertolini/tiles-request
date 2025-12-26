@@ -21,7 +21,6 @@
 package org.apache.tiles.request.collection;
 
 import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,15 +29,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.tiles.request.attribute.HasAddableKeys;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link AddableParameterMap}.
  *
  * @version $Rev$ $Date$
  */
-public class AddableParameterMapTest {
+class AddableParameterMapTest {
 
     /**
      * The object to test.
@@ -53,9 +53,8 @@ public class AddableParameterMapTest {
     /**
      * Sets up the test.
      */
-    @SuppressWarnings("unchecked")
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         extractor = createMock(HasAddableKeys.class);
         map = new AddableParameterMap(extractor);
     }
@@ -64,7 +63,7 @@ public class AddableParameterMapTest {
      * Test method for {@link org.apache.tiles.request.collection.AddableParameterMap#entrySet()}.
      */
     @Test
-    public void testEntrySet() {
+    void testEntrySet() {
         Set<Map.Entry<String, String>> entrySet = map.entrySet();
         MapEntry<String, String> entry1 = new MapEntry<String, String>("one", "value1", false);
         MapEntry<String, String> entry2 = new MapEntry<String, String>("two", "value2", false);
@@ -85,12 +84,12 @@ public class AddableParameterMapTest {
      * Test method for {@link AddableParameterMap#put(String, String)}.
      */
     @Test
-    public void testPut() {
+    void testPut() {
         expect(extractor.getValue("one")).andReturn(null);
         extractor.setValue("one", "value1");
 
         replay(extractor);
-        assertNull(map.put("one", "value1"));
+        Assertions.assertNull(map.put("one", "value1"));
         verify(extractor);
     }
 
@@ -98,7 +97,7 @@ public class AddableParameterMapTest {
      * Test method for {@link org.apache.tiles.request.collection.AddableParameterMap#putAll(java.util.Map)}.
      */
     @Test
-    public void testPutAll() {
+    void testPutAll() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("one", "value1");
         map.put("two", "value2");
