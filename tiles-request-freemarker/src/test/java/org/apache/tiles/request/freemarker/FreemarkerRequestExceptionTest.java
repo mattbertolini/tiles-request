@@ -21,22 +21,23 @@
 
 package org.apache.tiles.request.freemarker;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link FreemarkerRequestException}.
  *
  * @version $Rev$ $Date$
  */
-public class FreemarkerRequestExceptionTest {
+class FreemarkerRequestExceptionTest {
 
     /**
      * Test method for {@link FreemarkerRequestException#FreemarkerRequestException()}.
      */
     @Test
-    public void testFreemarkerRequestException() {
+    void testFreemarkerRequestException() {
         FreemarkerRequestException exception = new FreemarkerRequestException();
         assertNull(exception.getMessage());
         assertNull(exception.getCause());
@@ -46,7 +47,7 @@ public class FreemarkerRequestExceptionTest {
      * Test method for {@link FreemarkerRequestException#FreemarkerRequestException(java.lang.String)}.
      */
     @Test
-    public void testFreemarkerRequestExceptionString() {
+    void testFreemarkerRequestExceptionString() {
         FreemarkerRequestException exception = new FreemarkerRequestException("my message");
         assertEquals("my message", exception.getMessage());
         assertNull(exception.getCause());
@@ -56,7 +57,7 @@ public class FreemarkerRequestExceptionTest {
      * Test method for {@link FreemarkerRequestException#FreemarkerRequestException(java.lang.Throwable)}.
      */
     @Test
-    public void testFreemarkerRequestExceptionThrowable() {
+    void testFreemarkerRequestExceptionThrowable() {
         Throwable cause = new Throwable();
         FreemarkerRequestException exception = new FreemarkerRequestException(cause);
         assertEquals(cause.toString(), exception.getMessage());
@@ -67,7 +68,7 @@ public class FreemarkerRequestExceptionTest {
      * Test method for {@link FreemarkerRequestException#FreemarkerRequestException(String, Throwable)}.
      */
     @Test
-    public void testFreemarkerRequestExceptionStringThrowable() {
+    void testFreemarkerRequestExceptionStringThrowable() {
         Throwable cause = new Throwable();
         FreemarkerRequestException exception = new FreemarkerRequestException("my message", cause);
         assertEquals("my message", exception.getMessage());

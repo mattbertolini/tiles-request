@@ -21,9 +21,21 @@
 
 package org.apache.tiles.request.freemarker;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import freemarker.core.Environment;
+import freemarker.ext.servlet.HttpRequestHashModel;
+import freemarker.template.ObjectWrapper;
+import freemarker.template.Template;
+import freemarker.template.TemplateHashModel;
+import freemarker.template.TemplateModelException;
+import org.apache.tiles.request.ApplicationContext;
+import org.apache.tiles.request.DispatchRequest;
+import org.apache.tiles.request.Request;
+import org.apache.tiles.request.servlet.ServletRequest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -32,29 +44,22 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.tiles.request.ApplicationContext;
-import org.apache.tiles.request.Request;
-import org.apache.tiles.request.DispatchRequest;
-import org.apache.tiles.request.servlet.ServletRequest;
-import org.junit.Before;
-import org.junit.Test;
-
-import freemarker.core.Environment;
-import freemarker.ext.servlet.HttpRequestHashModel;
-import freemarker.template.ObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateHashModel;
-import freemarker.template.TemplateModelException;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * Tests {@link FreemarkerRequest}.
  *
  * @version $Rev$ $Date$
  */
-public class FreemarkerRequestTest {
+class FreemarkerRequestTest {
 
     /**
      * The reuqest context to test.
@@ -79,8 +84,8 @@ public class FreemarkerRequestTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         Template template = createMock(Template.class);
         TemplateHashModel model = createMock(TemplateHashModel.class);
         writer = new StringWriter();
@@ -96,7 +101,7 @@ public class FreemarkerRequestTest {
      * @throws TemplateModelException If something goes wrong.
      */
     @Test
-    public void testCreateServletFreemarkerRequest() throws TemplateModelException {
+    void testCreateServletFreemarkerRequest() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModel model = createMock(TemplateHashModel.class);
         PrintWriter writer = new PrintWriter(new StringWriter());
@@ -129,7 +134,7 @@ public class FreemarkerRequestTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testDispatch() throws IOException {
+    void testDispatch() throws IOException {
         String path = "this way";
         DispatchRequest enclosedRequest = createMock(DispatchRequest.class);
         ApplicationContext applicationContext = createMock(ApplicationContext.class);
@@ -148,12 +153,12 @@ public class FreemarkerRequestTest {
      * Tests {@link FreemarkerRequest#getPageScope()}.
      */
     @Test
-    public void testGetPageScope() {
+    void testGetPageScope() {
         DispatchRequest enclosedRequest = createMock(DispatchRequest.class);
         expect(enclosedRequest.getAvailableScopes()).andReturn(Collections.singletonList("parent"));
         replay(enclosedRequest);
         context = new FreemarkerRequest(enclosedRequest, env);
-        assertTrue(context.getPageScope() instanceof EnvironmentScopeMap);
+        assertInstanceOf(EnvironmentScopeMap.class, context.getPageScope());
         verify(enclosedRequest);
     }
 
@@ -161,13 +166,12 @@ public class FreemarkerRequestTest {
      * Tests {@link FreemarkerRequest#getNativeScopes()}.
      */
     @Test
-    public void testGetAvailableScopes() {
+    void testGetAvailableScopes() {
         DispatchRequest enclosedRequest = createMock(DispatchRequest.class);
         expect(enclosedRequest.getAvailableScopes()).andReturn(Collections.singletonList("parent"));
         replay(enclosedRequest);
         context = new FreemarkerRequest(enclosedRequest, env);
-        assertArrayEquals(new String[] { "parent", "page" }, //
-                context.getAvailableScopes().toArray());
+        assertArrayEquals(new String[] { "parent", "page" }, context.getAvailableScopes().toArray());
         verify(enclosedRequest);
     }
 
@@ -175,7 +179,7 @@ public class FreemarkerRequestTest {
      * Tests {@link FreemarkerRequest#getRequestLocale()}.
      */
     @Test
-    public void testGetRequestLocale() {
+    void testGetRequestLocale() {
         DispatchRequest enclosedRequest = createMock(DispatchRequest.class);
         expect(enclosedRequest.getAvailableScopes()).andReturn(Collections.singletonList("parent"));
         replay(enclosedRequest);
@@ -188,7 +192,7 @@ public class FreemarkerRequestTest {
      * Tests {@link FreemarkerRequest#getRequest()}.
      */
     @Test
-    public void testGetRequest() {
+    void testGetRequest() {
         DispatchRequest enclosedRequest = createMock(DispatchRequest.class);
         expect(enclosedRequest.getAvailableScopes()).andReturn(Collections.singletonList("parent"));
         replay(enclosedRequest);
@@ -201,7 +205,7 @@ public class FreemarkerRequestTest {
      * Tests {@link FreemarkerRequest#getResponse()}.
      */
     @Test
-    public void testGetResponse() {
+    void testGetResponse() {
         DispatchRequest enclosedRequest = createMock(DispatchRequest.class);
         expect(enclosedRequest.getAvailableScopes()).andReturn(Collections.singletonList("parent"));
         replay(enclosedRequest);
@@ -214,7 +218,7 @@ public class FreemarkerRequestTest {
      * Tests {@link FreemarkerRequest#getPrintWriter()}.
      */
     @Test
-    public void testGetPrintWriter() {
+    void testGetPrintWriter() {
         DispatchRequest enclosedRequest = createMock(DispatchRequest.class);
         expect(enclosedRequest.getAvailableScopes()).andReturn(Collections.singletonList("parent"));
         replay(enclosedRequest);
@@ -228,7 +232,7 @@ public class FreemarkerRequestTest {
      * Tests {@link FreemarkerRequest#getPrintWriter()}.
      */
     @Test
-    public void testGetPrintWriterPrintWriter() {
+    void testGetPrintWriterPrintWriter() {
         Template template = createMock(Template.class);
         TemplateHashModel model = createMock(TemplateHashModel.class);
         PrintWriter writer = new PrintWriter(new StringWriter());
@@ -250,7 +254,7 @@ public class FreemarkerRequestTest {
      * Tests {@link FreemarkerRequest#getWriter()}.
      */
     @Test
-    public void testGetWriter() {
+    void testGetWriter() {
         DispatchRequest enclosedRequest = createMock(DispatchRequest.class);
         expect(enclosedRequest.getAvailableScopes()).andReturn(Collections.singletonList("parent"));
         replay(enclosedRequest);

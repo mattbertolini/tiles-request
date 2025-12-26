@@ -20,26 +20,30 @@
  */
 package org.apache.tiles.request.velocity.render;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.servlet.ServletApplicationContext;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import javax.servlet.ServletContext;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-
-import org.apache.tiles.request.servlet.ServletApplicationContext;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link ApplicationContextJeeConfig}.
  *
  * @version $Rev$ $Date$
  */
-public class ApplicationContextJeeConfigTest {
+class ApplicationContextJeeConfigTest {
 
     /**
      * The configuration to test.
@@ -64,8 +68,8 @@ public class ApplicationContextJeeConfigTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         servletContext = createMock(ServletContext.class);
         applicationContext = new ServletApplicationContext(servletContext);
     }
@@ -73,8 +77,8 @@ public class ApplicationContextJeeConfigTest {
     /**
      * Tears down the test.
      */
-    @After
-    public void tearDown() {
+    @AfterEach
+    void tearDown() {
         verify(servletContext);
     }
 
@@ -82,7 +86,7 @@ public class ApplicationContextJeeConfigTest {
      * Tests {@link ApplicationContextJeeConfig#getInitParameter(String)}.
      */
     @Test
-    public void testGetInitParameter() {
+    void testGetInitParameter() {
         params = new HashMap<String, String>();
         params.put("one", "value1");
         config = new ApplicationContextJeeConfig(applicationContext, params);
@@ -94,7 +98,7 @@ public class ApplicationContextJeeConfigTest {
      * Tests {@link ApplicationContextJeeConfig#findInitParameter(String)}.
      */
     @Test
-    public void testFindInitParameter() {
+    void testFindInitParameter() {
         params = new HashMap<String, String>();
         params.put("one", "value1");
         config = new ApplicationContextJeeConfig(applicationContext, params);
@@ -106,12 +110,11 @@ public class ApplicationContextJeeConfigTest {
      * Tests {@link ApplicationContextJeeConfig#getInitParameterNames()}.
      */
     @Test
-    public void testGetInitParameterNames() {
+    void testGetInitParameterNames() {
         params = new HashMap<String, String>();
         params.put("one", "value1");
         config = new ApplicationContextJeeConfig(applicationContext, params);
         replay(servletContext);
-        @SuppressWarnings("unchecked")
         Enumeration<String> names = config.getInitParameterNames();
         assertTrue(names.hasMoreElements());
         assertEquals("one", names.nextElement());
@@ -122,7 +125,7 @@ public class ApplicationContextJeeConfigTest {
      * Tests {@link ApplicationContextJeeConfig#getName()}.
      */
     @Test
-    public void testGetName() {
+    void testGetName() {
         params = new HashMap<String, String>();
         params.put("one", "value1");
         config = new ApplicationContextJeeConfig(applicationContext, params);
@@ -134,7 +137,7 @@ public class ApplicationContextJeeConfigTest {
      * Tests {@link ApplicationContextJeeConfig#getServletContext()}.
      */
     @Test
-    public void testGetServletContext() {
+    void testGetServletContext() {
         params = new HashMap<String, String>();
         params.put("one", "value1");
         config = new ApplicationContextJeeConfig(applicationContext, params);

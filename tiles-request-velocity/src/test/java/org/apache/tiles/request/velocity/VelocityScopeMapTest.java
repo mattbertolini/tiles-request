@@ -20,21 +20,26 @@
  */
 package org.apache.tiles.request.velocity;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.velocity.context.Context;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-import org.apache.velocity.context.Context;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link VelocityScopeMap}.
  *
  * @version $Rev$ $Date$
  */
-public class VelocityScopeMapTest {
+class VelocityScopeMapTest {
 
     /**
      * The Velocity context.
@@ -49,8 +54,8 @@ public class VelocityScopeMapTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         request = createMock(Context.class);
         map = new VelocityScopeMap(request);
     }
@@ -59,7 +64,7 @@ public class VelocityScopeMapTest {
      * Test method for {@link org.apache.tiles.request.velocity.VelocityScopeMap#containsKey(java.lang.Object)}.
      */
     @Test
-    public void testContainsKey() {
+    void testContainsKey() {
         expect(request.containsKey("key")).andReturn(true);
 
         replay(request);
@@ -71,7 +76,7 @@ public class VelocityScopeMapTest {
      * Test method for {@link org.apache.tiles.request.velocity.VelocityScopeMap#isEmpty()}.
      */
     @Test
-    public void testIsEmpty() {
+    void testIsEmpty() {
         expect(request.getKeys()).andReturn(new Object[0]);
 
         replay(request);
@@ -83,7 +88,7 @@ public class VelocityScopeMapTest {
      * Test method for {@link org.apache.tiles.request.velocity.VelocityScopeMap#isEmpty()}.
      */
     @Test
-    public void testIsEmptyFalse() {
+    void testIsEmptyFalse() {
         expect(request.getKeys()).andReturn(new Object[] {"one", "two"});
 
         replay(request);
@@ -95,7 +100,7 @@ public class VelocityScopeMapTest {
      * Test method for {@link org.apache.tiles.request.velocity.VelocityScopeMap#keySet()}.
      */
     @Test
-    public void testKeySet() {
+    void testKeySet() {
         expect(request.getKeys()).andReturn(new Object[] {"one", "two"});
 
         replay(request);
@@ -110,7 +115,7 @@ public class VelocityScopeMapTest {
      * Test method for {@link org.apache.tiles.request.velocity.VelocityScopeMap#size()}.
      */
     @Test
-    public void testSize() {
+    void testSize() {
         expect(request.getKeys()).andReturn(new Object[] {"one", "two"});
 
         replay(request);
@@ -122,7 +127,7 @@ public class VelocityScopeMapTest {
      * Test method for {@link VelocityScopeMap#put(String, Object)}.
      */
     @Test
-    public void testPutStringObject() {
+    void testPutStringObject() {
         expect(request.put("key", "value")).andReturn("oldValue");
 
         replay(request);
@@ -134,7 +139,7 @@ public class VelocityScopeMapTest {
      * Test method for {@link org.apache.tiles.request.velocity.VelocityScopeMap#remove(java.lang.Object)}.
      */
     @Test
-    public void testRemoveObject() {
+    void testRemoveObject() {
         expect(request.remove("key")).andReturn("value");
 
         replay(request);

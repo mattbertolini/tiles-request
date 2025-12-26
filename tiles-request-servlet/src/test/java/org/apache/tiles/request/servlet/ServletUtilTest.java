@@ -20,30 +20,32 @@
  */
 package org.apache.tiles.request.servlet;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.io.IOException;
+import org.apache.tiles.request.ApplicationAccess;
+import org.apache.tiles.request.ApplicationContext;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import java.io.IOException;
 
-import org.apache.tiles.request.ApplicationAccess;
-import org.apache.tiles.request.ApplicationContext;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link ServletUtil}.
  *
  * @version $Rev$ $Date$
  */
-public class ServletUtilTest {
+class ServletUtilTest {
 
     /**
      * Test method for {@link ServletUtil#wrapServletException(ServletException, String)}.
      */
     @Test
-    public void testWrapServletException() {
+    void testWrapServletException() {
         ServletException servletException = new ServletException();
         IOException exception = ServletUtil.wrapServletException(servletException, "my message");
         assertEquals(servletException, exception.getCause());
@@ -53,7 +55,7 @@ public class ServletUtilTest {
     /**
      */
     @Test
-    public void testWrapServletExceptionWithCause() {
+    void testWrapServletExceptionWithCause() {
         Throwable cause = createMock(Throwable.class);
 
         replay(cause);
@@ -68,7 +70,7 @@ public class ServletUtilTest {
      * Test method for {@link ServletUtil#getApplicationContext(ServletContext)}.
      */
     @Test
-    public void testGetApplicationContext() {
+    void testGetApplicationContext() {
         ServletContext servletContext = createMock(ServletContext.class);
         ApplicationContext applicationContext = createMock(ApplicationContext.class);
 

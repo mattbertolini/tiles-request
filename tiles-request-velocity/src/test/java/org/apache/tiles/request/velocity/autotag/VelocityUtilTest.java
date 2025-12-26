@@ -20,33 +20,36 @@
  */
 package org.apache.tiles.request.velocity.autotag;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.util.Map;
-
-import org.apache.tiles.request.velocity.autotag.VelocityUtil;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.runtime.parser.node.ASTMap;
 import org.apache.velocity.runtime.parser.node.Node;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.util.Map;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * Tests {@link VelocityUtil}.
  *
  * @version $Rev$ $Date$
  */
-public class VelocityUtilTest {
+class VelocityUtilTest {
 
     /**
      * Test method for {@link VelocityUtil#getParameters(InternalContextAdapter, Node)}.
      */
     @Test
-    public void testGetParameters() {
+    void testGetParameters() {
         InternalContextAdapter context = createMock(InternalContextAdapter.class);
         Node node = createMock(Node.class);
         ASTMap astMap = createMock(ASTMap.class);
-        @SuppressWarnings("unchecked")
         Map<String, Object> params = createMock(Map.class);
 
         expect(node.jjtGetChild(0)).andReturn(astMap);
@@ -61,7 +64,7 @@ public class VelocityUtilTest {
      * Test method for {@link VelocityUtil#getObject(Object, Object)}.
      */
     @Test
-    public void testGetObject() {
+    void testGetObject() {
         assertEquals(new Integer(1), VelocityUtil.getObject(new Integer(1), new Integer(2)));
         assertEquals(new Integer(1), VelocityUtil.getObject(new Integer(1), null));
         assertEquals(new Integer(2), VelocityUtil.getObject(null, new Integer(2)));

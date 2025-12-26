@@ -20,28 +20,31 @@
  */
 package org.apache.tiles.request.jsp;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.ApplicationAccess;
+import org.apache.tiles.request.ApplicationContext;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.jsp.JspContext;
 import javax.servlet.jsp.PageContext;
 
-import org.apache.tiles.request.ApplicationAccess;
-import org.apache.tiles.request.ApplicationContext;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link JspUtil}.
  *
  * @version $Rev$ $Date$
  */
-public class JspUtilTest {
+class JspUtilTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.jsp.JspUtil#getApplicationContext(javax.servlet.jsp.JspContext)}.
      */
     @Test
-    public void testGetApplicationContext() {
+    void testGetApplicationContext() {
         ApplicationContext applicationContext = createMock(ApplicationContext.class);
         JspContext jspContext = createMock(JspContext.class);
 

@@ -21,23 +21,23 @@
 
 package org.apache.tiles.request.freemarker.autotag;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import org.apache.tiles.request.freemarker.autotag.FreemarkerAutotagException;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link FreemarkerAutotagException}.
  *
  * @version $Rev$ $Date$
  */
-public class FreemarkerAutotagExceptionTest {
+class FreemarkerAutotagExceptionTest {
 
     /**
      * Test method for {@link FreemarkerAutotagException#FreemarkerAutotagException()}.
      */
     @Test
-    public void testFreemarkerAutotagException() {
+    void testFreemarkerAutotagException() {
         FreemarkerAutotagException exception = new FreemarkerAutotagException();
         assertNull(exception.getMessage());
         assertNull(exception.getCause());
@@ -47,7 +47,7 @@ public class FreemarkerAutotagExceptionTest {
      * Test method for {@link FreemarkerAutotagException#FreemarkerAutotagException(java.lang.String)}.
      */
     @Test
-    public void testFreemarkerAutotagExceptionString() {
+    void testFreemarkerAutotagExceptionString() {
         FreemarkerAutotagException exception = new FreemarkerAutotagException("my message");
         assertEquals("my message", exception.getMessage());
         assertNull(exception.getCause());
@@ -57,7 +57,7 @@ public class FreemarkerAutotagExceptionTest {
      * Test method for {@link FreemarkerAutotagException#FreemarkerAutotagException(java.lang.Throwable)}.
      */
     @Test
-    public void testFreemarkerAutotagExceptionThrowable() {
+    void testFreemarkerAutotagExceptionThrowable() {
         Throwable cause = new Throwable();
         FreemarkerAutotagException exception = new FreemarkerAutotagException(cause);
         assertEquals(cause.toString(), exception.getMessage());
@@ -68,7 +68,7 @@ public class FreemarkerAutotagExceptionTest {
      * Test method for {@link FreemarkerAutotagException#FreemarkerAutotagException(String, Throwable)}.
      */
     @Test
-    public void testFreemarkerAutotagExceptionStringThrowable() {
+    void testFreemarkerAutotagExceptionStringThrowable() {
         Throwable cause = new Throwable();
         FreemarkerAutotagException exception = new FreemarkerAutotagException("my message", cause);
         assertEquals("my message", exception.getMessage());

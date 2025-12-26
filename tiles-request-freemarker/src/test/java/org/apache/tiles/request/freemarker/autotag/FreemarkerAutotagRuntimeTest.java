@@ -20,26 +20,6 @@
  */
 package org.apache.tiles.request.freemarker.autotag;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.tiles.autotag.core.runtime.ModelBody;
-import org.apache.tiles.request.ApplicationAccess;
-import org.apache.tiles.request.ApplicationContext;
-import org.apache.tiles.request.Request;
-import org.apache.tiles.request.freemarker.FreemarkerRequest;
-import org.apache.tiles.request.freemarker.autotag.FreemarkerAutotagRuntime;
-import org.apache.tiles.request.freemarker.autotag.FreemarkerModelBody;
-import org.junit.Test;
 import freemarker.core.Environment;
 import freemarker.core.Macro;
 import freemarker.ext.servlet.FreemarkerServlet;
@@ -52,17 +32,39 @@ import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateNumberModel;
+import org.apache.tiles.autotag.core.runtime.ModelBody;
+import org.apache.tiles.request.ApplicationAccess;
+import org.apache.tiles.request.ApplicationContext;
+import org.apache.tiles.request.Request;
+import org.apache.tiles.request.freemarker.FreemarkerRequest;
+import org.junit.jupiter.api.Test;
+
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link FreemarkerAutotagRuntime}.
  *
  * @version $Rev$ $Date$
  */
-public class FreemarkerAutotagRuntimeTest {
+class FreemarkerAutotagRuntimeTest {
 
     @Test
-    public void testCreateRequest() throws IOException, TemplateModelException{
-        @SuppressWarnings("unchecked")
+    void testCreateRequest() throws TemplateModelException {
         Map<String, TemplateModel> params = createMock(Map.class);
         Template template = createMock(Template.class);
         TemplateHashModel rootDataModel = createMock(TemplateHashModel.class);
@@ -103,7 +105,7 @@ public class FreemarkerAutotagRuntimeTest {
 
         runtime.execute(env, params, new TemplateModel[0], body);
         Request request = runtime.createRequest();
-        assertTrue(request instanceof FreemarkerRequest);
+        assertInstanceOf(FreemarkerRequest.class, request);
         verify(servlet, wrapper, servletContext, applicationContext,
                 httpServletRequest, httpServletResponse,
                 template, rootDataModel, out,
@@ -111,26 +113,25 @@ public class FreemarkerAutotagRuntimeTest {
     }
 
     @Test
-    public void testCreateModelBody() {
+    void testCreateModelBody() {
         Template template = createMock(Template.class);
         TemplateHashModel rootDataModel = createMock(TemplateHashModel.class);
         Writer out = createMock(Writer.class);
         expect(template.getMacros()).andReturn(new HashMap<String, Macro>());
         replay(template, rootDataModel, out);
         Environment env = new Environment(template, rootDataModel, out);
-        @SuppressWarnings("unchecked")
         Map<String, TemplateModel> params = createMock(Map.class);
         TemplateDirectiveBody body = createMock(TemplateDirectiveBody.class);
         replay(params, body);
         FreemarkerAutotagRuntime runtime = new FreemarkerAutotagRuntime();
         runtime.execute(env, params, new TemplateModel[0], body);
         ModelBody modelBody = runtime.createModelBody();
-        assertTrue(modelBody instanceof FreemarkerModelBody);
+        assertInstanceOf(FreemarkerModelBody.class, modelBody);
         verify(template, rootDataModel, out, params, body);
     }
 
     @Test
-    public void testGetParameter() throws TemplateModelException {
+    void testGetParameter() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModel rootDataModel = createMock(TemplateHashModel.class);
         Writer out = createMock(Writer.class);
@@ -139,7 +140,6 @@ public class FreemarkerAutotagRuntimeTest {
         Environment env = new Environment(template, rootDataModel, out);
         TemplateNumberModel model = createMock(TemplateNumberModel.class);
         expect(model.getAsNumber()).andReturn(new Integer(42)).anyTimes();
-        @SuppressWarnings("unchecked")
         Map<String, TemplateModel> params = createMock(Map.class);
         TemplateDirectiveBody body = createMock(TemplateDirectiveBody.class);
         expect(params.get(eq("notnullParam"))).andReturn(model).anyTimes();
@@ -152,7 +152,7 @@ public class FreemarkerAutotagRuntimeTest {
         int notnullParamDefault = runtime.getParameter("notnullParam", Integer.class, new Integer(24));
         int nullParamDefault = runtime.getParameter("nullParam", Integer.class, new Integer(24));
         assertEquals(42, notnullParam);
-        assertEquals(null, nullParam);
+        assertNull(nullParam);
         assertEquals(42, notnullParamDefault);
         assertEquals(24, nullParamDefault);
         verify(template, rootDataModel, out, model, params, body);

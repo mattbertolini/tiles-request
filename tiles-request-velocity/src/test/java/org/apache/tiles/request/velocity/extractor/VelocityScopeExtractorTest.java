@@ -20,21 +20,26 @@
  */
 package org.apache.tiles.request.velocity.extractor;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.velocity.context.Context;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Enumeration;
 
-import org.apache.velocity.context.Context;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link VelocityScopeExtractor}.
  *
  * @version $Rev$ $Date$
  */
-public class VelocityScopeExtractorTest {
+class VelocityScopeExtractorTest {
 
     /**
      * The Velocity context.
@@ -49,8 +54,8 @@ public class VelocityScopeExtractorTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         request = createMock(Context.class);
         extractor = new VelocityScopeExtractor(request);
     }
@@ -59,7 +64,7 @@ public class VelocityScopeExtractorTest {
      * Test method for {@link VelocityScopeExtractor#removeValue(java.lang.String)}.
      */
     @Test
-    public void testRemoveValue() {
+    void testRemoveValue() {
         expect(request.remove("key")).andReturn("value");
 
         replay(request);
@@ -71,7 +76,7 @@ public class VelocityScopeExtractorTest {
      * Test method for {@link VelocityScopeExtractor#getKeys()}.
      */
     @Test
-    public void testGetKeys() {
+    void testGetKeys() {
         expect(request.getKeys()).andReturn(new Object[] {"one", "two"});
 
         replay(request);
@@ -88,7 +93,7 @@ public class VelocityScopeExtractorTest {
      * Test method for {@link VelocityScopeExtractor#getValue(java.lang.String)}.
      */
     @Test
-    public void testGetValue() {
+    void testGetValue() {
         expect(request.get("key")).andReturn("value");
 
         replay(request);
@@ -100,7 +105,7 @@ public class VelocityScopeExtractorTest {
      * Test method for {@link VelocityScopeExtractor#setValue(java.lang.String, java.lang.Object)}.
      */
     @Test
-    public void testSetValue() {
+    void testSetValue() {
         expect(request.put("key", "value")).andReturn(null);
 
         replay(request);
