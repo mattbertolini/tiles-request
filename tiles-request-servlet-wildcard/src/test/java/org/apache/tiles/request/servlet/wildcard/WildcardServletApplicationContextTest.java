@@ -23,7 +23,6 @@ package org.apache.tiles.request.servlet.wildcard;
 import org.apache.tiles.request.locale.URLApplicationResource;
 import org.easymock.EasyMock;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
