@@ -20,8 +20,9 @@
  */
 package org.apache.tiles.request.collection;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.attribute.HasKeys;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,16 +30,22 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.tiles.request.attribute.HasKeys;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link ReadOnlyEnumerationMap#values()}.
  *
  * @version $Rev$ $Date$
  */
-public class ReadOnlyEnumerationMapValuesCollectionTest {
+class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * The extractor to use.
      */
@@ -57,9 +64,8 @@ public class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * Sets up the test.
      */
-    @SuppressWarnings("unchecked")
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         extractor = createMock(HasKeys.class);
         map = new ReadOnlyEnumerationMap<Integer>(extractor);
         coll = map.values();
@@ -68,33 +74,32 @@ public class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * Tests {@link Collection#add(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testAdd() {
-        coll.add(null);
+    @Test
+    void testAdd() {
+        assertThrows(UnsupportedOperationException.class, () -> coll.add(null));
     }
 
     /**
      * Tests {@link Collection#addAll(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testAddAll() {
-        coll.addAll(null);
+    @Test
+    void testAddAll() {
+        assertThrows(UnsupportedOperationException.class, () -> coll.addAll(null));
     }
 
     /**
      * Tests {@link Collection#clear(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testClear() {
-        coll.clear();
+    @Test
+    void testClear() {
+        assertThrows(UnsupportedOperationException.class, () -> coll.clear());
     }
 
     /**
      * Tests {@link Collection#contains(Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContainsValue() {
+    void testContainsValue() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -114,9 +119,8 @@ public class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * Tests {@link Collection#contains(Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContainsValueFalse() {
+    void testContainsValueFalse() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -137,9 +141,8 @@ public class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * Tests {@link Collection#containsAll(Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContainsAll() {
+    void testContainsAll() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -162,9 +165,8 @@ public class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * Tests {@link Collection#containsAll(Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContainsAllFalse() {
+    void testContainsAllFalse() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -187,9 +189,8 @@ public class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * Test method for {@link Collection#isEmpty()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testIsEmpty() {
+    void testIsEmpty() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -203,9 +204,8 @@ public class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * Test method for {@link Collection#iterator()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testIterator() {
+    void testIterator() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -224,16 +224,15 @@ public class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * Test method for {@link Collection#iterator()}.
      */
-    @SuppressWarnings("unchecked")
-    @Test(expected = UnsupportedOperationException.class)
-    public void testIteratorRemove() {
+    @Test
+    void testIteratorRemove() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
 
         try {
             replay(extractor, keys);
-            coll.iterator().remove();
+            assertThrows(UnsupportedOperationException.class, () -> coll.iterator().remove());
         } finally {
             verify(extractor, keys);
         }
@@ -242,33 +241,32 @@ public class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * Tests {@link Collection#remove(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testRemove() {
-        coll.remove(null);
+    @Test
+    void testRemove() {
+        assertThrows(UnsupportedOperationException.class, () -> coll.remove(null));
     }
 
     /**
      * Tests {@link Collection#removeAll(java.util.Collection)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testRemoveAll() {
-        coll.removeAll(null);
+    @Test
+    void testRemoveAll() {
+        assertThrows(UnsupportedOperationException.class, () -> coll.removeAll(null));
     }
 
     /**
      * Tests {@link Collection#retainAll(java.util.Collection)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testRetainAll() {
-        coll.retainAll(null);
+    @Test
+    void testRetainAll() {
+        assertThrows(UnsupportedOperationException.class, () -> coll.retainAll(null));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#size()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testSize() {
+    void testSize() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -286,9 +284,8 @@ public class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * Test method for {@link Collection#toArray()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testToArray() {
+    void testToArray() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -311,9 +308,8 @@ public class ReadOnlyEnumerationMapValuesCollectionTest {
     /**
      * Test method for {@link Collection#toArray(Object[])}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testToArrayTArray() {
+    void testToArrayTArray() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);

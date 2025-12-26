@@ -20,22 +20,26 @@
  */
 package org.apache.tiles.request.render;
 
-import static org.easymock.EasyMock.*;
+import org.apache.tiles.request.Request;
+import org.easymock.EasyMock;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
 
-import org.apache.tiles.request.Request;
-import org.easymock.EasyMock;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link ChainedDelegateRenderer}.
  *
  * @version $Rev$ $Date$
  */
-public class ChainedDelegateRendererTest {
+class ChainedDelegateRendererTest {
 
     /**
      * The renderer.
@@ -60,7 +64,7 @@ public class ChainedDelegateRendererTest {
     /**
      * Sets up the test.
      */
-    @Before
+    @BeforeEach
     public void setUp() {
         stringRenderer = createMock(Renderer.class);
         templateRenderer = createMock(Renderer.class);
@@ -79,7 +83,7 @@ public class ChainedDelegateRendererTest {
      * @throws IOException If something goes wrong during rendition.
      */
     @Test
-    public void testWriteDefinition() throws IOException {
+    void testWriteDefinition() throws IOException {
         Request requestContext = EasyMock
                 .createMock(Request.class);
 
@@ -102,8 +106,8 @@ public class ChainedDelegateRendererTest {
      *
      * @throws IOException If something goes wrong during rendition.
      */
-    @Test(expected = NullPointerException.class)
-    public void testWriteNull() throws IOException {
+    @Test
+    void testWriteNull() throws IOException {
         StringWriter writer = new StringWriter();
         Request requestContext = EasyMock
                 .createMock(Request.class);
@@ -111,7 +115,7 @@ public class ChainedDelegateRendererTest {
         replay(requestContext, stringRenderer, templateRenderer,
                 definitionRenderer);
         try {
-            renderer.render(null, requestContext);
+            assertThrows(NullPointerException.class, () -> renderer.render(null, requestContext));
         } finally {
             writer.close();
             verify(requestContext, stringRenderer, templateRenderer,
@@ -126,8 +130,8 @@ public class ChainedDelegateRendererTest {
      *
      * @throws IOException If something goes wrong during rendition.
      */
-    @Test(expected = CannotRenderException.class)
-    public void testWriteNotRenderable() throws IOException {
+    @Test
+    void testWriteNotRenderable() throws IOException {
         StringWriter writer = new StringWriter();
         Request requestContext = EasyMock
                 .createMock(Request.class);
@@ -144,7 +148,7 @@ public class ChainedDelegateRendererTest {
         replay(requestContext, stringRenderer, templateRenderer,
                 definitionRenderer);
         try {
-            renderer.render("Result", requestContext);
+            assertThrows(CannotRenderException.class, () -> renderer.render("Result", requestContext));
         } finally {
             writer.close();
             verify(requestContext, stringRenderer, templateRenderer,
@@ -160,7 +164,7 @@ public class ChainedDelegateRendererTest {
      * @throws IOException If something goes wrong during rendition.
      */
     @Test
-    public void testWriteString() throws IOException {
+    void testWriteString() throws IOException {
         Request requestContext = EasyMock
                 .createMock(Request.class);
         expect(
@@ -189,7 +193,7 @@ public class ChainedDelegateRendererTest {
      * @throws IOException If something goes wrong during rendition.
      */
     @Test
-    public void testWriteTemplate() throws IOException {
+    void testWriteTemplate() throws IOException {
         StringWriter writer = new StringWriter();
         Request requestContext = EasyMock
                 .createMock(Request.class);

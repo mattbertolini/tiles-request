@@ -21,31 +21,35 @@
 
 package org.apache.tiles.request.locale;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Locale;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link LocaleUtil}.
  *
  * @version $Rev$ $Date$
  */
-public class LocaleUtilTest extends TestCase {
+class LocaleUtilTest {
 
     /**
      * Test method for {@link LocaleUtil#getParentLocale(Locale)}.
      */
+    @Test
     public void testGetParentLocale() {
-        assertNull("The parent locale of NULL_LOCALE is not correct",
-                LocaleUtil.getParentLocale(Locale.ROOT));
-        assertEquals("The parent locale of 'en' is not correct",
+        assertNull(
+                LocaleUtil.getParentLocale(Locale.ROOT), "The parent locale of NULL_LOCALE is not correct");
+        assertEquals(
                 Locale.ROOT, LocaleUtil
-                        .getParentLocale(Locale.ENGLISH));
-        assertEquals("The parent locale of 'en_US' is not correct",
-                Locale.ENGLISH, LocaleUtil.getParentLocale(Locale.US));
+                        .getParentLocale(Locale.ENGLISH), "The parent locale of 'en' is not correct");
+        assertEquals(
+                Locale.ENGLISH, LocaleUtil.getParentLocale(Locale.US), "The parent locale of 'en_US' is not correct");
         Locale locale = new Locale("es", "ES", "Traditional_WIN");
         Locale parentLocale = new Locale("es", "ES");
-        assertEquals("The parent locale of 'es_ES_Traditional_WIN' is not correct",
-                parentLocale, LocaleUtil.getParentLocale(locale));
+        assertEquals(
+                parentLocale, LocaleUtil.getParentLocale(locale), "The parent locale of 'es_ES_Traditional_WIN' is not correct");
     }
 }

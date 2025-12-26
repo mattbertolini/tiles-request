@@ -20,22 +20,26 @@
  */
 package org.apache.tiles.request.collection;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link MapEntry}.
  *
  * @version $Rev$ $Date$
  */
-public class MapEntryTest {
+class MapEntryTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.MapEntry#hashCode()}.
      */
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         MapEntry<String, String> entry = new MapEntry<String, String>("key", "value", false);
         assertEquals("key".hashCode() ^ "value".hashCode(), entry.hashCode());
         entry = new MapEntry<String, String>(null, "value", false);
@@ -50,7 +54,7 @@ public class MapEntryTest {
      * Test method for {@link org.apache.tiles.request.collection.MapEntry#getKey()}.
      */
     @Test
-    public void testGetKey() {
+    void testGetKey() {
         MapEntry<String, String> entry = new MapEntry<String, String>("key", "value", false);
         assertEquals("key", entry.getKey());
     }
@@ -59,7 +63,7 @@ public class MapEntryTest {
      * Test method for {@link org.apache.tiles.request.collection.MapEntry#getValue()}.
      */
     @Test
-    public void testGetValue() {
+    void testGetValue() {
         MapEntry<String, String> entry = new MapEntry<String, String>("key", "value", false);
         assertEquals("value", entry.getValue());
     }
@@ -68,7 +72,7 @@ public class MapEntryTest {
      * Test method for {@link org.apache.tiles.request.collection.MapEntry#setValue(java.lang.Object)}.
      */
     @Test
-    public void testSetValue() {
+    void testSetValue() {
         MapEntry<String, String> entry = new MapEntry<String, String>("key", "value", true);
         assertEquals("value", entry.getValue());
         entry.setValue("value2");
@@ -78,20 +82,20 @@ public class MapEntryTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.MapEntry#setValue(java.lang.Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testSetValueException() {
         MapEntry<String, String> entry = new MapEntry<String, String>("key", "value", false);
         assertEquals("value", entry.getValue());
-        entry.setValue("value2");
+        assertThrows(UnsupportedOperationException.class, () -> entry.setValue("value2"));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.MapEntry#equals(java.lang.Object)}.
      */
     @Test
-    public void testEqualsObject() {
+    void testEqualsObject() {
         MapEntry<String, String> entry = new MapEntry<String, String>("key", "value", false);
-        assertFalse(entry.equals(null));
+        assertNotEquals(null, entry);
         assertFalse(entry.equals("whatever"));
         MapEntry<String, String> entry2 = new MapEntry<String, String>("key", "value", false);
         assertTrue(entry.equals(entry2));

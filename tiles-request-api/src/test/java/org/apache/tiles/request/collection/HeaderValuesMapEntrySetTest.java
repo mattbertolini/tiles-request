@@ -20,8 +20,9 @@
  */
 package org.apache.tiles.request.collection;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.attribute.EnumeratedValuesExtractor;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -30,15 +31,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.tiles.request.attribute.EnumeratedValuesExtractor;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link HeaderValuesMap entry set}.
  *
  */
-public class HeaderValuesMapEntrySetTest {
+class HeaderValuesMapEntrySetTest {
 
 
     /**
@@ -59,8 +66,8 @@ public class HeaderValuesMapEntrySetTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         extractor = createMock(EnumeratedValuesExtractor.class);
         map = new HeaderValuesMap(extractor);
         entrySet = map.entrySet();
@@ -69,33 +76,32 @@ public class HeaderValuesMapEntrySetTest {
     /**
      * Tests {@link Set#add(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testAdd() {
-        entrySet.add(null);
+    @Test
+    void testAdd() {
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.add(null));
     }
 
     /**
      * Tests {@link Set#addAll(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testAddAll() {
-        entrySet.addAll(null);
+    @Test
+    void testAddAll() {
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.addAll(null));
     }
 
     /**
      * Tests {@link Set#clear(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testClear() {
-        entrySet.clear();
+    @Test
+    void testClear() {
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.clear());
     }
 
     /**
      * Tests {@link Set#contains(Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContains() {
+    void testContains() {
         Map.Entry<String, String[]> entry = createMock(Map.Entry.class);
         Enumeration<String> values2 = createMock(Enumeration.class);
 
@@ -117,9 +123,8 @@ public class HeaderValuesMapEntrySetTest {
     /**
      * Tests {@link Set#containsAll(Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContainsAll() {
+    void testContainsAll() {
         Enumeration<String> values1 = createMock(Enumeration.class);
         Enumeration<String> values2 = createMock(Enumeration.class);
         Map.Entry<String, String[]> entry1 = createMock(Map.Entry.class);
@@ -153,9 +158,8 @@ public class HeaderValuesMapEntrySetTest {
     /**
      * Tests {@link Set#containsAll(Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContainsAllFalse() {
+    void testContainsAllFalse() {
         Enumeration<String> values1 = createMock(Enumeration.class);
         Map.Entry<String, String[]> entry1 = createMock(Map.Entry.class);
 
@@ -176,9 +180,8 @@ public class HeaderValuesMapEntrySetTest {
     /**
      * Test method for {@link Set#isEmpty()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testIsEmpty() {
+    void testIsEmpty() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -192,9 +195,8 @@ public class HeaderValuesMapEntrySetTest {
     /**
      * Test method for {@link Set#iterator()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testIterator() {
+    void testIterator() {
         Enumeration<String> keys = createMock(Enumeration.class);
         Enumeration<String> values2 = createMock(Enumeration.class);
 
@@ -221,16 +223,15 @@ public class HeaderValuesMapEntrySetTest {
     /**
      * Test method for {@link Set#iterator()}.
      */
-    @SuppressWarnings("unchecked")
-    @Test(expected = UnsupportedOperationException.class)
-    public void testIteratorRemove() {
+    @Test
+    void testIteratorRemove() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
 
         try {
             replay(extractor, keys);
-            entrySet.iterator().remove();
+            assertThrows(UnsupportedOperationException.class, () -> entrySet.iterator().remove());
         } finally {
             verify(extractor, keys);
         }
@@ -239,33 +240,32 @@ public class HeaderValuesMapEntrySetTest {
     /**
      * Tests {@link Set#remove(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testRemove() {
-        entrySet.remove(null);
+    @Test
+    void testRemove() {
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.remove(null));
     }
 
     /**
      * Tests {@link Set#removeAll(java.util.Collection)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testRemoveAll() {
-        entrySet.removeAll(null);
+    @Test
+    void testRemoveAll() {
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.removeAll(null));
     }
 
     /**
      * Tests {@link Set#retainAll(java.util.Collection)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testRetainAll() {
-        entrySet.retainAll(null);
+    @Test
+    void testRetainAll() {
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.retainAll(null));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#size()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testSize() {
+    void testSize() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -285,7 +285,7 @@ public class HeaderValuesMapEntrySetTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testToArray() {
+    void testToArray() {
         Enumeration<String> keys = createMock(Enumeration.class);
         Enumeration<String> values1 = createMock(Enumeration.class);
         Enumeration<String> values2 = createMock(Enumeration.class);
@@ -323,7 +323,7 @@ public class HeaderValuesMapEntrySetTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testToArrayTArray() {
+    void testToArrayTArray() {
         Enumeration<String> keys = createMock(Enumeration.class);
         Enumeration<String> values1 = createMock(Enumeration.class);
         Enumeration<String> values2 = createMock(Enumeration.class);

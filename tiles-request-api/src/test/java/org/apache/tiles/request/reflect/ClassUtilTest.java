@@ -21,20 +21,23 @@
 
 package org.apache.tiles.request.reflect;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
 import java.beans.PropertyDescriptor;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link ClassUtil}.
  *
  * @version $Rev$ $Date$
  */
-public class ClassUtilTest {
+class ClassUtilTest {
 
     /**
      * The size of descriptor map.
@@ -45,7 +48,7 @@ public class ClassUtilTest {
      * Test method for {@link ClassUtil#collectBeanInfo(Class, Map)}.
      */
     @Test
-    public void testCollectBeanInfo() {
+    void testCollectBeanInfo() {
         Map<String, PropertyDescriptor> name2descriptor = new HashMap<String, PropertyDescriptor>();
         ClassUtil.collectBeanInfo(TestInterface.class, name2descriptor);
         assertEquals(MAP_SIZE, name2descriptor.size());
@@ -71,25 +74,24 @@ public class ClassUtilTest {
      * @throws ClassNotFoundException If something goes wrong.
      */
     @Test
-    public void testGetClass() throws ClassNotFoundException {
+    void testGetClass() throws ClassNotFoundException {
         assertEquals(TestInterface.class, ClassUtil.getClass(
                 TestInterface.class.getName(), Object.class));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.reflect.ClassUtil#getClass(String, Class)}.
-     * @throws ClassNotFoundException If something goes wrong.
      */
-    @Test(expected = ClassNotFoundException.class)
-    public void testGetClassException() throws ClassNotFoundException {
-        ClassUtil.getClass("this.class.does.not.Exist", Object.class);
+    @Test
+    public void testGetClassException() {
+        assertThrows(ClassNotFoundException.class, () -> ClassUtil.getClass("this.class.does.not.Exist", Object.class));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.reflect.ClassUtil#instantiate(String, boolean)}.
      */
     @Test
-    public void testInstantiate() {
+    void testInstantiate() {
         assertNotNull(ClassUtil.instantiate(TestClass.class.getName(), true));
         assertNull(ClassUtil.instantiate("this.class.does.not.Exist", true));
     }
@@ -98,32 +100,32 @@ public class ClassUtilTest {
      * Test method for {@link org.apache.tiles.request.reflect.ClassUtil#instantiate(String, boolean)}.
      */
     @Test
-    public void testInstantiateOneParameter() {
+    void testInstantiateOneParameter() {
         assertNotNull(ClassUtil.instantiate(TestClass.class.getName()));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.reflect.ClassUtil#instantiate(String)}.
      */
-    @Test(expected = CannotInstantiateObjectException.class)
+    @Test
     public void testInstantiateOneParameterException() {
-        assertNotNull(ClassUtil.instantiate("this.class.does.not.Exist"));
+        assertThrows(CannotInstantiateObjectException.class, () -> ClassUtil.instantiate("this.class.does.not.Exist"));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.reflect.ClassUtil#instantiate(String)}.
      */
-    @Test(expected = CannotInstantiateObjectException.class)
+    @Test
     public void testInstantiateInstantiationException() {
-        ClassUtil.instantiate(TestInterface.class.getName());
+        assertThrows(CannotInstantiateObjectException.class, () -> ClassUtil.instantiate(TestInterface.class.getName()));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.reflect.ClassUtil#instantiate(String)}.
      */
-    @Test(expected = CannotInstantiateObjectException.class)
+    @Test
     public void testInstantiateIllegalAccessException() {
-        ClassUtil.instantiate(TestPrivateClass.class.getName());
+        assertThrows(CannotInstantiateObjectException.class, () -> ClassUtil.instantiate(TestPrivateClass.class.getName()));
     }
 
     /**

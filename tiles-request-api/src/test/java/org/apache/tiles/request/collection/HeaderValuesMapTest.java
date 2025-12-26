@@ -20,22 +20,29 @@
  */
 package org.apache.tiles.request.collection;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.attribute.EnumeratedValuesExtractor;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Enumeration;
 import java.util.HashMap;
 
-import org.apache.tiles.request.attribute.EnumeratedValuesExtractor;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link HeaderValuesMap}.
  *
  * @version $Rev$ $Date$
  */
-public class HeaderValuesMapTest {
+class HeaderValuesMapTest {
 
     /**
      * The extractor to use.
@@ -50,8 +57,8 @@ public class HeaderValuesMapTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         extractor = createMock(EnumeratedValuesExtractor.class);
         map = new HeaderValuesMap(extractor);
     }
@@ -59,7 +66,6 @@ public class HeaderValuesMapTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#hashCode()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testHashCode() {
         Enumeration<String> keys = createMock(Enumeration.class);
@@ -97,16 +103,16 @@ public class HeaderValuesMapTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#clear()}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testClear() {
-        map.clear();
+    @Test
+    void testClear() {
+        assertThrows(UnsupportedOperationException.class, () -> map.clear());
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#containsKey(java.lang.Object)}.
      */
     @Test
-    public void testContainsKey() {
+    void testContainsKey() {
         expect(extractor.getValue("one")).andReturn("value1");
         expect(extractor.getValue("two")).andReturn(null);
 
@@ -119,9 +125,8 @@ public class HeaderValuesMapTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#containsValue(java.lang.Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContainsValue() {
+    void testContainsValue() {
         assertFalse(map.containsValue(1));
 
         Enumeration<String> keys = createMock(Enumeration.class);
@@ -154,9 +159,8 @@ public class HeaderValuesMapTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#containsValue(java.lang.Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContainsValueFalse() {
+    void testContainsValueFalse() {
         Enumeration<String> keys = createMock(Enumeration.class);
         Enumeration<String> values1 = createMock(Enumeration.class);
         Enumeration<String> values2 = createMock(Enumeration.class);
@@ -188,9 +192,8 @@ public class HeaderValuesMapTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#equals(java.lang.Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testEqualsObject() {
+    void testEqualsObject() {
         Enumeration<String> keys = createMock(Enumeration.class);
         Enumeration<String> values1 = createMock(Enumeration.class);
         Enumeration<String> values2 = createMock(Enumeration.class);
@@ -238,9 +241,8 @@ public class HeaderValuesMapTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#get(java.lang.Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testGet() {
+    void testGet() {
         Enumeration<String> values2 = createMock(Enumeration.class);
 
         expect(extractor.getValues("two")).andReturn(values2);
@@ -258,9 +260,8 @@ public class HeaderValuesMapTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#isEmpty()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testIsEmpty() {
+    void testIsEmpty() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -274,9 +275,8 @@ public class HeaderValuesMapTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#isEmpty()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testIsEmptyTrue() {
+    void testIsEmptyTrue() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -291,7 +291,7 @@ public class HeaderValuesMapTest {
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#keySet()}.
      */
     @Test
-    public void testKeySet() {
+    void testKeySet() {
         replay(extractor);
         assertTrue(map.keySet() instanceof KeySet);
         verify(extractor);
@@ -300,33 +300,32 @@ public class HeaderValuesMapTest {
     /**
      * Test method for {@link HeaderValuesMap#put(String, String[])}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testPut() {
-        map.put("one", new String[] {"value1", "value2"});
+    @Test
+    void testPut() {
+        assertThrows(UnsupportedOperationException.class, () -> map.put("one", new String[] {"value1", "value2"}));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#putAll(java.util.Map)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testPutAll() {
-        map.putAll(new HashMap<String, String[]>());
+    @Test
+    void testPutAll() {
+        assertThrows(UnsupportedOperationException.class, () -> map.putAll(new HashMap<String, String[]>()));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#remove(java.lang.Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testRemove() {
-        map.remove("one");
+    @Test
+    void testRemove() {
+        assertThrows(UnsupportedOperationException.class, () -> map.remove("one"));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#size()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testSize() {
+    void testSize() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);

@@ -20,24 +20,32 @@
  */
 package org.apache.tiles.request.collection;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.attribute.HasKeys;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.tiles.request.attribute.HasKeys;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link KeySet}.
  *
  */
-public class KeySetTest {
+class KeySetTest {
 
 
     /**
@@ -53,9 +61,8 @@ public class KeySetTest {
     /**
      * Sets up the test.
      */
-    @SuppressWarnings("unchecked")
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         extractor = createMock(HasKeys.class);
         entrySet = new KeySet(extractor);
     }
@@ -63,32 +70,32 @@ public class KeySetTest {
     /**
      * Tests {@link Set#add(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testAdd() {
-        entrySet.add(null);
+    @Test
+    void testAdd() {
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.add(null));
     }
 
     /**
      * Tests {@link Set#addAll(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testAddAll() {
-        entrySet.addAll(null);
+    @Test
+    void testAddAll() {
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.addAll(null));
     }
 
     /**
      * Tests {@link Set#clear(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testClear() {
-        entrySet.clear();
+    @Test
+    void testClear() {
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.clear());
     }
 
     /**
      * Tests {@link Set#contains(Object)}.
      */
     @Test
-    public void testContains() {
+    void testContains() {
         expect(extractor.getValue("one")).andReturn(1);
 
         replay(extractor);
@@ -100,7 +107,7 @@ public class KeySetTest {
      * Tests {@link Set#contains(Object)}.
      */
     @Test
-    public void testContainsFalse() {
+    void testContainsFalse() {
         expect(extractor.getValue("one")).andReturn(null);
 
         replay(extractor);
@@ -109,10 +116,10 @@ public class KeySetTest {
     }
 
     /**
-     * Tests {@link Set#containsAll(Object)}.
+     * Tests {@link KeySet#containsAll(Collection)}.
      */
     @Test
-    public void testContainsAll() {
+    void testContainsAll() {
         expect(extractor.getValue("one")).andReturn(1);
         expect(extractor.getValue("two")).andReturn(1);
 
@@ -128,7 +135,7 @@ public class KeySetTest {
      * Tests {@link Set#containsAll(Object)}.
      */
     @Test
-    public void testContainsAllFalse() {
+    void testContainsAllFalse() {
         expect(extractor.getValue("one")).andReturn(1);
         expect(extractor.getValue("two")).andReturn(null);
 
@@ -143,9 +150,8 @@ public class KeySetTest {
     /**
      * Test method for {@link Set#isEmpty()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testIsEmpty() {
+    void testIsEmpty() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -159,9 +165,8 @@ public class KeySetTest {
     /**
      * Test method for {@link Set#isEmpty()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testIsEmptyTrue() {
+    void testIsEmptyTrue() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -175,9 +180,8 @@ public class KeySetTest {
     /**
      * Test method for {@link Set#iterator()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testIterator() {
+    void testIterator() {
         Enumeration<String> keys = createMock(Enumeration.class);
         Enumeration<String> values2 = createMock(Enumeration.class);
 
@@ -195,16 +199,15 @@ public class KeySetTest {
     /**
      * Test method for {@link Set#iterator()}.
      */
-    @SuppressWarnings("unchecked")
-    @Test(expected = UnsupportedOperationException.class)
-    public void testIteratorRemove() {
+    @Test
+    void testIteratorRemove() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
 
         try {
             replay(extractor, keys);
-            entrySet.iterator().remove();
+            assertThrows(UnsupportedOperationException.class, () -> entrySet.iterator().remove());
         } finally {
             verify(extractor, keys);
         }
@@ -213,33 +216,32 @@ public class KeySetTest {
     /**
      * Tests {@link Set#remove(Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testRemove() {
-        entrySet.remove(null);
+    @Test
+    void testRemove() {
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.remove(null));
     }
 
     /**
      * Tests {@link Set#removeAll(java.util.Collection)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testRemoveAll() {
-        entrySet.removeAll(null);
+    @Test
+    void testRemoveAll() {
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.removeAll(null));
     }
 
     /**
      * Tests {@link Set#retainAll(java.util.Collection)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void testRetainAll() {
-        entrySet.retainAll(null);
+        assertThrows(UnsupportedOperationException.class, () -> entrySet.retainAll(null));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.HeaderValuesMap#size()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testSize() {
+    void testSize() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -257,9 +259,8 @@ public class KeySetTest {
     /**
      * Test method for {@link Set#toArray()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testToArray() {
+    void testToArray() {
         Enumeration<String> keys = createMock(Enumeration.class);
         Enumeration<String> values1 = createMock(Enumeration.class);
         Enumeration<String> values2 = createMock(Enumeration.class);
@@ -278,9 +279,8 @@ public class KeySetTest {
     /**
      * Test method for {@link Set#toArray(Object[])}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testToArrayTArray() {
+    void testToArrayTArray() {
         Enumeration<String> keys = createMock(Enumeration.class);
         Enumeration<String> values1 = createMock(Enumeration.class);
         Enumeration<String> values2 = createMock(Enumeration.class);

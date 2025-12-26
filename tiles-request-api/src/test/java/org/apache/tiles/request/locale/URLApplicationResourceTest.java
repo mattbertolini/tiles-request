@@ -21,6 +21,11 @@
 
 package org.apache.tiles.request.locale;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,26 +39,22 @@ import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 import java.util.Locale;
 
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import static java.lang.System.setProperty;
 import static java.lang.reflect.Modifier.FINAL;
 import static org.apache.tiles.request.locale.URLApplicationResource.REMOTE_PROTOCOLS_PROPERTY;
 import static org.apache.tiles.request.locale.URLApplicationResource.initRemoteProtocols;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests URLApplicationResource.
  *
  * @version $Rev$ $Date$
  */
-public class URLApplicationResourceTest {
+class URLApplicationResourceTest {
 
     private static final String EXPECTED_MESSAGE = "aMessage";
 
@@ -76,12 +77,12 @@ public class URLApplicationResourceTest {
         }
     }
 
-    @BeforeClass
+    @BeforeAll
     public static void setURLStreamHandlerFactory() {
         URL.setURLStreamHandlerFactory(new TestURLStreamHandlerFactory());
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         setProperty(REMOTE_PROTOCOLS_PROPERTY, "");
     }
@@ -91,7 +92,7 @@ public class URLApplicationResourceTest {
      * @throws URISyntaxException
      */
     @Test
-    public void testGetLocalePath() throws MalformedURLException, URISyntaxException {
+    void testGetLocalePath() throws MalformedURLException, URISyntaxException {
         URLApplicationResource resource = new URLApplicationResource("/my test/path_fr.html", new URL("file:///"));
         assertEquals("/my test/path.html", resource.getLocalePath(null));
         assertEquals("/my test/path.html", resource.getLocalePath(Locale.ROOT));
@@ -103,7 +104,7 @@ public class URLApplicationResourceTest {
     }
 
     @Test
-    public void testBuildFromString() throws MalformedURLException, URISyntaxException {
+    void testBuildFromString() throws MalformedURLException, URISyntaxException {
         URLApplicationResource resource = new URLApplicationResource("/my test/path_en_GB_scotland.html", new URL("file:///"));
         assertEquals("/my test/path_en_GB_scotland.html", resource.getLocalePath());
         assertEquals("/my test/path.html", resource.getPath());
@@ -167,7 +168,7 @@ public class URLApplicationResourceTest {
     }
 
     @Test
-    public void testBuildFromStringAndLocale() throws MalformedURLException, URISyntaxException {
+    void testBuildFromStringAndLocale() throws MalformedURLException, URISyntaxException {
         URLApplicationResource resource = new URLApplicationResource("/my test/path.html", new Locale("en", "GB", "scotland"), new URL("file:///"));
         assertEquals("/my test/path_en_GB_scotland.html", resource.getLocalePath());
         assertEquals("/my test/path.html", resource.getPath());
@@ -195,21 +196,21 @@ public class URLApplicationResourceTest {
     }
 
     @Test
-    public void testGetLastModified() throws IOException {
+    void testGetLastModified() throws IOException {
     	URL url = getClass().getClassLoader().getResource("org/apache/tiles/request/test/locale/resource.txt");
     	URLApplicationResource resource = new URLApplicationResource("org/apache/tiles/request/test/locale/resource.txt", url);
     	assertTrue(resource.getLastModified() > 0);
     }
 
     @Test
-    public void testGetLastModifiedWithSpace() throws IOException {
+    void testGetLastModifiedWithSpace() throws IOException {
     	URL url = getClass().getClassLoader().getResource("org/apache/tiles/request/test/locale/resource with space.txt");
     	URLApplicationResource resource = new URLApplicationResource("org/apache/tiles/request/test/locale/resource with space.txt", url);
     	assertTrue(resource.getLastModified() > 0);
     }
 
     @Test
-    public void testGetInputStream() throws IOException {
+    void testGetInputStream() throws IOException {
     	URL url = getClass().getClassLoader().getResource("org/apache/tiles/request/test/locale/resource.txt");
     	URLApplicationResource resource = new URLApplicationResource("org/apache/tiles/request/test/locale/resource.txt", url);
     	InputStream is = resource.getInputStream();
@@ -218,7 +219,7 @@ public class URLApplicationResourceTest {
     }
 
     @Test
-    public void testGetInputStreamWithSpace() throws IOException {
+    void testGetInputStreamWithSpace() throws IOException {
     	URL url = getClass().getClassLoader().getResource("org/apache/tiles/request/test/locale/resource with space.txt");
     	URLApplicationResource resource = new URLApplicationResource("org/apache/tiles/request/test/locale/resource with space.txt", url);
     	InputStream is = resource.getInputStream();
@@ -226,17 +227,19 @@ public class URLApplicationResourceTest {
     	is.close();
     }
 
-    @Test(expected = FileNotFoundException.class)
-    public void testLocalProtocol() throws IOException {
-        URL url = new URL("test1://foo/bar.txt");
-        URLApplicationResource resource = new URLApplicationResource("org/apache/tiles/request/test/locale/resource.txt", url);
-        resource.getInputStream();
+    @Test
+    public void testLocalProtocol() {
+        assertThrows(FileNotFoundException.class, () -> {
+            URL url = new URL("test1://foo/bar.txt");
+            URLApplicationResource resource = new URLApplicationResource("org/apache/tiles/request/test/locale/resource.txt", url);
+            resource.getInputStream();
+        });
     }
 
     @Test
     // TODO (mrb): Update the class to init the protocols via constructor so better testing can be done. Remove the static parts
-    @Ignore("This test is not working on JDK > 11")
-    public void testAdditionalRemoteProtocolViaSystemProperties() throws Exception {
+    @Disabled("This test is not working on JDK > 11")
+    void testAdditionalRemoteProtocolViaSystemProperties() throws Exception {
         setProperty(REMOTE_PROTOCOLS_PROPERTY, "test1;test2");
         Field f = URLApplicationResource.class.getDeclaredField("REMOTE_PROTOCOLS");
         Field m = Field.class.getDeclaredField("modifiers");
