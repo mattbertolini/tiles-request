@@ -23,7 +23,7 @@ package org.apache.tiles.request.servlet.extractor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import java.util.Enumeration;
 
 import static org.easymock.EasyMock.createMock;

@@ -60,6 +60,7 @@ class EnvironmentScopeMapTest {
 
         expect(template.getMacros()).andReturn(new HashMap<>());
         expect(template.getConfiguration()).andReturn(configuration);
+        expect(configuration.getIncompatibleImprovements()).andReturn(Configuration.VERSION_2_3_30).anyTimes();
         expect(configuration.getSharedVariableNames()).andReturn(names);
 
         replay(template, model, configuration, names);
@@ -83,8 +84,9 @@ class EnvironmentScopeMapTest {
         Writer writer = new StringWriter();
 
         expect(template.getMacros()).andReturn(new HashMap<>());
-        expect(model.keys()).andThrow(new TemplateModelException());
         expect(template.getConfiguration()).andReturn(configuration);
+        expect(configuration.getIncompatibleImprovements()).andReturn(Configuration.VERSION_2_3_30).anyTimes();
+        expect(model.keys()).andThrow(new TemplateModelException());
         expect(configuration.getSharedVariableNames()).andReturn(names);
 
         try {

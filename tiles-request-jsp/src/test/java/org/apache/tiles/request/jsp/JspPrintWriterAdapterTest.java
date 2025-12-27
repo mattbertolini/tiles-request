@@ -22,7 +22,7 @@ package org.apache.tiles.request.jsp;
 
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.jsp.JspWriter;
+import jakarta.servlet.jsp.JspWriter;
 import java.io.IOException;
 
 import static org.easymock.EasyMock.aryEq;

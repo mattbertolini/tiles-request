@@ -22,9 +22,10 @@ package org.apache.tiles.request.freemarker.autotag;
 
 import freemarker.core.Environment;
 import freemarker.core.Macro;
-import freemarker.ext.servlet.FreemarkerServlet;
-import freemarker.ext.servlet.HttpRequestHashModel;
-import freemarker.ext.servlet.ServletContextHashModel;
+import freemarker.ext.jakarta.servlet.FreemarkerServlet;
+import freemarker.ext.jakarta.servlet.HttpRequestHashModel;
+import freemarker.ext.jakarta.servlet.ServletContextHashModel;
+import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateDirectiveBody;
@@ -32,6 +33,10 @@ import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateNumberModel;
+import jakarta.servlet.GenericServlet;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tiles.autotag.core.runtime.ModelBody;
 import org.apache.tiles.request.ApplicationAccess;
 import org.apache.tiles.request.ApplicationContext;
@@ -39,10 +44,6 @@ import org.apache.tiles.request.Request;
 import org.apache.tiles.request.freemarker.FreemarkerRequest;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
@@ -76,8 +77,12 @@ class FreemarkerAutotagRuntimeTest {
         ApplicationContext applicationContext = createMock(ApplicationContext.class);
         HttpServletRequest httpServletRequest = createMock(HttpServletRequest.class);
         HttpServletResponse httpServletResponse = createMock(HttpServletResponse.class);
+        Configuration configuration = createMock(Configuration.class);
 
-        expect(template.getMacros()).andReturn(new HashMap<String, Macro>());
+        expect(template.getMacros()).andReturn(new HashMap<String, Macro>()).anyTimes();
+        expect(template.getConfiguration()).andReturn(configuration).anyTimes();
+        expect(template.getLocale()).andReturn(null).anyTimes();
+        expect(configuration.getIncompatibleImprovements()).andReturn(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS).anyTimes();
         expect(servlet.getServletContext()).andReturn(servletContext)
                 .anyTimes();
         expect(
@@ -86,7 +91,7 @@ class FreemarkerAutotagRuntimeTest {
                 .andReturn(applicationContext);
 
         replay(servlet, wrapper, servletContext, applicationContext,
-                httpServletRequest, httpServletResponse);
+                httpServletRequest, httpServletResponse, configuration);
         ServletContextHashModel servletContextHashModel = new ServletContextHashModel(
                 servlet, wrapper);
         HttpRequestHashModel httpRequestHashModel = new HttpRequestHashModel(
@@ -116,9 +121,13 @@ class FreemarkerAutotagRuntimeTest {
     void testCreateModelBody() {
         Template template = createMock(Template.class);
         TemplateHashModel rootDataModel = createMock(TemplateHashModel.class);
+        Configuration configuration = createMock(Configuration.class);
         Writer out = createMock(Writer.class);
-        expect(template.getMacros()).andReturn(new HashMap<String, Macro>());
-        replay(template, rootDataModel, out);
+        expect(template.getMacros()).andReturn(new HashMap<String, Macro>()).anyTimes();
+        expect(template.getConfiguration()).andReturn(configuration).anyTimes();
+        expect(template.getLocale()).andReturn(null).anyTimes();
+        expect(configuration.getIncompatibleImprovements()).andReturn(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS).anyTimes();
+        replay(template, rootDataModel, out, configuration);
         Environment env = new Environment(template, rootDataModel, out);
         Map<String, TemplateModel> params = createMock(Map.class);
         TemplateDirectiveBody body = createMock(TemplateDirectiveBody.class);
@@ -127,19 +136,23 @@ class FreemarkerAutotagRuntimeTest {
         runtime.execute(env, params, new TemplateModel[0], body);
         ModelBody modelBody = runtime.createModelBody();
         assertInstanceOf(FreemarkerModelBody.class, modelBody);
-        verify(template, rootDataModel, out, params, body);
+        verify(template, rootDataModel, out, params, body, configuration);
     }
 
     @Test
     void testGetParameter() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModel rootDataModel = createMock(TemplateHashModel.class);
+        Configuration configuration = createMock(Configuration.class);
         Writer out = createMock(Writer.class);
-        expect(template.getMacros()).andReturn(new HashMap<String, Macro>());
-        replay(template, rootDataModel, out);
+        expect(template.getMacros()).andReturn(new HashMap<String, Macro>()).anyTimes();
+        expect(template.getConfiguration()).andReturn(configuration).anyTimes();
+        expect(template.getLocale()).andReturn(null).anyTimes();
+        expect(configuration.getIncompatibleImprovements()).andReturn(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS).anyTimes();
+        replay(template, rootDataModel, out, configuration);
         Environment env = new Environment(template, rootDataModel, out);
         TemplateNumberModel model = createMock(TemplateNumberModel.class);
-        expect(model.getAsNumber()).andReturn(new Integer(42)).anyTimes();
+        expect(model.getAsNumber()).andReturn(Integer.valueOf(42)).anyTimes();
         Map<String, TemplateModel> params = createMock(Map.class);
         TemplateDirectiveBody body = createMock(TemplateDirectiveBody.class);
         expect(params.get(eq("notnullParam"))).andReturn(model).anyTimes();
@@ -149,12 +162,12 @@ class FreemarkerAutotagRuntimeTest {
         runtime.execute(env, params, new TemplateModel[0], body);
         Object notnullParam = runtime.getParameter("notnullParam", Object.class, null);
         Object nullParam = runtime.getParameter("nullParam", Object.class, null);
-        int notnullParamDefault = runtime.getParameter("notnullParam", Integer.class, new Integer(24));
-        int nullParamDefault = runtime.getParameter("nullParam", Integer.class, new Integer(24));
+        int notnullParamDefault = runtime.getParameter("notnullParam", Integer.class, Integer.valueOf(24));
+        int nullParamDefault = runtime.getParameter("nullParam", Integer.class, Integer.valueOf(24));
         assertEquals(42, notnullParam);
         assertNull(nullParam);
         assertEquals(42, notnullParamDefault);
         assertEquals(24, nullParamDefault);
-        verify(template, rootDataModel, out, model, params, body);
+        verify(template, rootDataModel, out, model, params, body, configuration);
     }
 }

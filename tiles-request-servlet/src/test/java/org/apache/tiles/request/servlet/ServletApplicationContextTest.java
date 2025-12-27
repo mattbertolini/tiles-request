@@ -26,7 +26,7 @@ import org.apache.tiles.request.collection.ScopeMap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;

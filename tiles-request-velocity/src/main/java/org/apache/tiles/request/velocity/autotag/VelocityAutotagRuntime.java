@@ -20,13 +20,11 @@
  */
 package org.apache.tiles.request.velocity.autotag;
 
-import java.io.Writer;
-import java.util.Map;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.tiles.autotag.core.runtime.ModelBody;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tiles.autotag.core.runtime.AutotagRuntime;
+import org.apache.tiles.autotag.core.runtime.ModelBody;
 import org.apache.tiles.request.Request;
 import org.apache.tiles.request.servlet.ServletUtil;
 import org.apache.tiles.request.velocity.VelocityRequest;
@@ -36,6 +34,9 @@ import org.apache.velocity.runtime.parser.node.ASTBlock;
 import org.apache.velocity.runtime.parser.node.ASTMap;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.apache.velocity.tools.view.ViewContext;
+
+import java.io.Writer;
+import java.util.Map;
 
 /**
  * A Runtime for implementing Velocity Directives.

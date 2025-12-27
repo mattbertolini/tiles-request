@@ -21,20 +21,21 @@
 package org.apache.tiles.request.freemarker;
 
 import freemarker.core.Environment;
-import freemarker.ext.servlet.HttpRequestHashModel;
-import freemarker.ext.servlet.ServletContextHashModel;
+import freemarker.ext.jakarta.servlet.HttpRequestHashModel;
+import freemarker.ext.jakarta.servlet.ServletContextHashModel;
+import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModelException;
+import jakarta.servlet.GenericServlet;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.tiles.request.ApplicationAccess;
 import org.apache.tiles.request.ApplicationContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Locale;
@@ -84,8 +85,13 @@ class FreemarkerRequestUtilTest {
     void setUp() {
         template = createMock(Template.class);
         model = createMock(TemplateHashModel.class);
+        Configuration configuration = createMock(Configuration.class);
         writer = new StringWriter();
-        expect(template.getMacros()).andReturn(new HashMap<>());
+        expect(template.getMacros()).andReturn(new HashMap<>()).anyTimes();
+        expect(template.getConfiguration()).andReturn(configuration).anyTimes();
+        expect(template.getLocale()).andReturn(Locale.ITALY).anyTimes();
+        expect(configuration.getIncompatibleImprovements()).andReturn(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS).anyTimes();
+        replay(configuration);
     }
 
     /**

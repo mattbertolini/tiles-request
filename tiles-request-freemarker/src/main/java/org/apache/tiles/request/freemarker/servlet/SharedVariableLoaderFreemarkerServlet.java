@@ -21,19 +21,18 @@
 
 package org.apache.tiles.request.freemarker.servlet;
 
+import freemarker.cache.TemplateLoader;
+import freemarker.ext.jakarta.servlet.FreemarkerServlet;
+import freemarker.template.Configuration;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import org.apache.tiles.request.reflect.ClassUtil;
+
+import java.io.Serial;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
-import org.apache.tiles.request.reflect.ClassUtil;
-
-import freemarker.cache.TemplateLoader;
-import freemarker.ext.servlet.FreemarkerServlet;
-import freemarker.template.Configuration;
 
 /**
  * Extends FreemarkerServlet to load Tiles directives as a shared variable.
@@ -45,6 +44,7 @@ public class SharedVariableLoaderFreemarkerServlet extends FreemarkerServlet {
     /**
      * The serial UID.
      */
+    @Serial
     private static final long serialVersionUID = 4301098067909854507L;
 
     /**

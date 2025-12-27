@@ -23,8 +23,8 @@ package org.apache.tiles.request.jsp.extractor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.jsp.PageContext;
 import java.util.Enumeration;
 
 import static org.easymock.EasyMock.createMock;

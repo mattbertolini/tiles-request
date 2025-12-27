@@ -23,7 +23,7 @@ package org.apache.tiles.request.servlet;
 
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
