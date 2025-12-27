@@ -43,7 +43,6 @@ import static org.ops4j.pax.exam.CoreOptions.junitBundles;
  * @version $Rev$ $Date$
  */
 @RunWith(PaxExam.class)
-// TODO (mrb): Decide if I want to keep OSGi support (probably not)
 public class URLBundleApplicationResourceTest {
 
     @Configuration

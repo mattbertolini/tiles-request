@@ -20,36 +20,37 @@
  */
 package org.apache.tiles.request.freemarker.autotag;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.io.Writer;
-import java.util.HashMap;
-
-import org.apache.tiles.request.freemarker.autotag.FreemarkerAutotagException;
-import org.apache.tiles.request.freemarker.autotag.FreemarkerUtil;
-import org.junit.Test;
-
 import freemarker.core.Environment;
 import freemarker.core.Macro;
 import freemarker.template.Template;
 import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateNumberModel;
+import org.junit.jupiter.api.Test;
+
+import java.io.Writer;
+import java.util.HashMap;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link FreemarkerUtil}.
  *
  * @version $Rev$ $Date$
  */
-public class FreemarkerUtilTest {
+class FreemarkerUtilTest {
 
     /**
      * Test method for {@link FreemarkerUtil#getAsObject(TemplateModel, Object)}.
      * @throws TemplateModelException If something goes wrong.
      */
     @Test
-    public void testGetAsObject() throws TemplateModelException {
+    void testGetAsObject() throws TemplateModelException {
         TemplateNumberModel model = createMock(TemplateNumberModel.class);
         Template template = createMock(Template.class);
         TemplateHashModel rootDataModel = createMock(TemplateHashModel.class);
@@ -71,7 +72,7 @@ public class FreemarkerUtilTest {
      * @throws TemplateModelException If something goes wrong.
      */
     @Test
-    public void testGetAsObjectDefault() throws TemplateModelException {
+    void testGetAsObjectDefault() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModel rootDataModel = createMock(TemplateHashModel.class);
         Writer out = createMock(Writer.class);
@@ -89,8 +90,8 @@ public class FreemarkerUtilTest {
      * Test method for {@link FreemarkerUtil#getAsObject(TemplateModel, Object)}.
      * @throws TemplateModelException If something goes wrong.
      */
-    @Test(expected = FreemarkerAutotagException.class)
-    public void testGetAsObjectException() throws TemplateModelException {
+    @Test
+    void testGetAsObjectException() throws TemplateModelException {
         TemplateNumberModel model = createMock(TemplateNumberModel.class);
         Template template = createMock(Template.class);
         TemplateHashModel rootDataModel = createMock(TemplateHashModel.class);
@@ -104,7 +105,8 @@ public class FreemarkerUtilTest {
 
         replay(model);
         try {
-            assertEquals(new Integer(42), FreemarkerUtil.getAsObject(model, Integer.class, new Integer(1)));
+            assertThrows(FreemarkerAutotagException.class, () ->
+                    assertEquals(new Integer(42), FreemarkerUtil.getAsObject(model, Integer.class, new Integer(1))));
         } finally {
             verify(template, rootDataModel, out, model);
         }

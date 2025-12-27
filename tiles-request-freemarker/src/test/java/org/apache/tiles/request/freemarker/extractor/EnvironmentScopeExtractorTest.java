@@ -20,20 +20,6 @@
  */
 package org.apache.tiles.request.freemarker.extractor;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
-import org.apache.tiles.request.freemarker.FreemarkerRequestException;
-import org.junit.Test;
-
 import freemarker.core.Environment;
 import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
@@ -43,27 +29,46 @@ import freemarker.template.TemplateHashModelEx;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateScalarModel;
+import org.apache.tiles.request.freemarker.FreemarkerRequestException;
+import org.junit.jupiter.api.Test;
+
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link EnvironmentScopeExtractor}.
  *
  * @version $Rev$ $Date$
  */
-public class EnvironmentScopeExtractorTest {
+class EnvironmentScopeExtractorTest {
 
     /**
      * Test method for {@link EnvironmentScopeExtractor#removeValue(java.lang.String)}.
      * @throws TemplateModelException If something goes wrong.
      */
     @Test
-    public void testRemoveValue() throws TemplateModelException {
+    void testRemoveValue() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModel model = createMock(TemplateHashModel.class);
         TemplateModel valueModel = createMock(TemplateModel.class);
         Configuration configuration = createMock(Configuration.class);
         Writer writer = new StringWriter();
 
-        expect(template.getMacros()).andReturn(new HashMap<Object, Object>());
+        expect(template.getMacros()).andReturn(new HashMap<>());
         expect(model.get("key")).andReturn(null);
         expect(template.getConfiguration()).andReturn(configuration);
         expect(configuration.getSharedVariable("key")).andReturn(null);
@@ -81,17 +86,17 @@ public class EnvironmentScopeExtractorTest {
      * Test method for {@link EnvironmentScopeExtractor#getKeys()}.
      */
     @Test
-    public void testGetKeys() {
+    void testGetKeys() {
         Template template = createMock(Template.class);
         TemplateHashModel model = createMock(TemplateHashModel.class);
         TemplateModel valueModel = createMock(TemplateModel.class);
         Configuration configuration = createMock(Configuration.class);
-        Set<String> names = new HashSet<String>();
+        Set<String> names = new HashSet<>();
         names.add("testGetKeys");
 
         Writer writer = new StringWriter();
 
-        expect(template.getMacros()).andReturn(new HashMap<Object, Object>());
+        expect(template.getMacros()).andReturn(new HashMap<>());
         expect(template.getConfiguration()).andReturn(configuration);
         expect(configuration.getSharedVariableNames()).andReturn(names);
 
@@ -108,9 +113,8 @@ public class EnvironmentScopeExtractorTest {
      * Test method for {@link EnvironmentScopeExtractor#getKeys()}.
      * @throws TemplateModelException If something goes wrong.
      */
-    @SuppressWarnings("unchecked")
-    @Test(expected = FreemarkerRequestException.class)
-    public void testGetKeysException() throws TemplateModelException {
+    @Test
+    void testGetKeysException() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModelEx model = createMock(TemplateHashModelEx.class);
         TemplateModel valueModel = createMock(TemplateModel.class);
@@ -119,7 +123,7 @@ public class EnvironmentScopeExtractorTest {
         Iterator<String> namesIt = createMock(Iterator.class);
         Writer writer = new StringWriter();
 
-        expect(template.getMacros()).andReturn(new HashMap<Object, Object>());
+        expect(template.getMacros()).andReturn(new HashMap<>());
         expect(model.keys()).andThrow(new TemplateModelException());
         expect(template.getConfiguration()).andReturn(configuration);
         expect(configuration.getSharedVariableNames()).andReturn(names);
@@ -128,7 +132,7 @@ public class EnvironmentScopeExtractorTest {
         try {
             Environment env = new Environment(template, model, writer);
             EnvironmentScopeExtractor extractor = new EnvironmentScopeExtractor(env);
-            extractor.getKeys();
+            assertThrows(FreemarkerRequestException.class, extractor::getKeys);
         } finally {
             verify(template, model, valueModel, configuration, names, namesIt);
         }
@@ -139,7 +143,7 @@ public class EnvironmentScopeExtractorTest {
      * @throws TemplateModelException If something goes wrong.
      */
     @Test
-    public void testGetValue() throws TemplateModelException {
+    void testGetValue() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModel model = createMock(TemplateHashModel.class);
         TemplateScalarModel valueModel = createMock(TemplateScalarModel.class);
@@ -147,7 +151,7 @@ public class EnvironmentScopeExtractorTest {
         ObjectWrapper objectWrapper = createMock(ObjectWrapper.class);
         Writer writer = new StringWriter();
 
-        expect(template.getMacros()).andReturn(new HashMap<Object, Object>());
+        expect(template.getMacros()).andReturn(new HashMap<>());
         expect(valueModel.getAsString()).andReturn("value");
 
         replay(template, model, valueModel, configuration, objectWrapper);
@@ -163,7 +167,7 @@ public class EnvironmentScopeExtractorTest {
      * @throws TemplateModelException If something goes wrong.
      */
     @Test
-    public void testGetValueNull() throws TemplateModelException {
+    void testGetValueNull() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModel model = createMock(TemplateHashModel.class);
         TemplateScalarModel valueModel = createMock(TemplateScalarModel.class);
@@ -171,7 +175,7 @@ public class EnvironmentScopeExtractorTest {
         ObjectWrapper objectWrapper = createMock(ObjectWrapper.class);
         Writer writer = new StringWriter();
 
-        expect(template.getMacros()).andReturn(new HashMap<Object, Object>());
+        expect(template.getMacros()).andReturn(new HashMap<>());
         expect(model.get("key")).andReturn(null);
         expect(template.getConfiguration()).andReturn(configuration);
         expect(configuration.getSharedVariable("key")).andReturn(null);
@@ -187,8 +191,8 @@ public class EnvironmentScopeExtractorTest {
      * Test method for {@link EnvironmentScopeExtractor#getValue(java.lang.String)}.
      * @throws TemplateModelException If something goes wrong.
      */
-    @Test(expected = FreemarkerRequestException.class)
-    public void testGetValueException() throws TemplateModelException {
+    @Test
+    void testGetValueException() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModel model = createMock(TemplateHashModel.class);
         TemplateScalarModel valueModel = createMock(TemplateScalarModel.class);
@@ -196,14 +200,14 @@ public class EnvironmentScopeExtractorTest {
         ObjectWrapper objectWrapper = createMock(ObjectWrapper.class);
         Writer writer = new StringWriter();
 
-        expect(template.getMacros()).andReturn(new HashMap<Object, Object>());
+        expect(template.getMacros()).andReturn(new HashMap<>());
         expect(model.get("key")).andThrow(new TemplateModelException());
 
         replay(template, model, valueModel, configuration, objectWrapper);
         try {
             Environment env = new Environment(template, model, writer);
             EnvironmentScopeExtractor extractor = new EnvironmentScopeExtractor(env);
-            extractor.getValue("key");
+            assertThrows(FreemarkerRequestException.class, () -> extractor.getValue("key"));
         } finally {
             verify(template, model, valueModel, configuration, objectWrapper);
         }
@@ -214,7 +218,7 @@ public class EnvironmentScopeExtractorTest {
      * @throws TemplateModelException If something goes wrong.
      */
     @Test
-    public void testSetValue() throws TemplateModelException {
+    void testSetValue() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModel model = createMock(TemplateHashModel.class);
         TemplateModel valueModel = createMock(TemplateModel.class);
@@ -222,7 +226,7 @@ public class EnvironmentScopeExtractorTest {
         ObjectWrapper objectWrapper = createMock(ObjectWrapper.class);
         Writer writer = new StringWriter();
 
-        expect(template.getMacros()).andReturn(new HashMap<Object, Object>());
+        expect(template.getMacros()).andReturn(new HashMap<>());
         expect(template.getObjectWrapper()).andReturn(objectWrapper);
         expect(objectWrapper.wrap("value")).andReturn(valueModel);
 
@@ -238,8 +242,8 @@ public class EnvironmentScopeExtractorTest {
      * Test method for {@link EnvironmentScopeExtractor#setValue(java.lang.String, java.lang.Object)}.
      * @throws TemplateModelException If something goes wrong.
      */
-    @Test(expected = FreemarkerRequestException.class)
-    public void testSetValueException() throws TemplateModelException {
+    @Test
+    void testSetValueException() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModel model = createMock(TemplateHashModel.class);
         TemplateModel valueModel = createMock(TemplateModel.class);
@@ -247,16 +251,18 @@ public class EnvironmentScopeExtractorTest {
         ObjectWrapper objectWrapper = createMock(ObjectWrapper.class);
         Writer writer = new StringWriter();
 
-        expect(template.getMacros()).andReturn(new HashMap<Object, Object>());
+        expect(template.getMacros()).andReturn(new HashMap<>());
         expect(template.getObjectWrapper()).andReturn(objectWrapper);
         expect(objectWrapper.wrap("value")).andThrow(new TemplateModelException());
 
         replay(template, model, valueModel, configuration, objectWrapper);
         try {
-            Environment env = new Environment(template, model, writer);
-            EnvironmentScopeExtractor extractor = new EnvironmentScopeExtractor(env);
-            extractor.setValue("key", "value");
-            assertEquals(valueModel, env.getVariable("key"));
+            assertThrows(FreemarkerRequestException.class, () -> {
+                Environment env = new Environment(template, model, writer);
+                EnvironmentScopeExtractor extractor = new EnvironmentScopeExtractor(env);
+                extractor.setValue("key", "value");
+                assertEquals(valueModel, env.getVariable("key"));
+            });
         } finally {
             verify(template, model, valueModel, configuration, objectWrapper);
         }

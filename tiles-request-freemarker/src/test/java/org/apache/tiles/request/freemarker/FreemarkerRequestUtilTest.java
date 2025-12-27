@@ -20,22 +20,6 @@
  */
 package org.apache.tiles.request.freemarker;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.Locale;
-
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.tiles.request.ApplicationAccess;
-import org.apache.tiles.request.ApplicationContext;
-import org.junit.Before;
-import org.junit.Test;
-
 import freemarker.core.Environment;
 import freemarker.ext.servlet.HttpRequestHashModel;
 import freemarker.ext.servlet.ServletContextHashModel;
@@ -43,12 +27,30 @@ import freemarker.template.ObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModelException;
+import org.apache.tiles.request.ApplicationAccess;
+import org.apache.tiles.request.ApplicationContext;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Locale;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link FreemarkerRequestUtil}.
  *
  */
-public class FreemarkerRequestUtilTest {
+class FreemarkerRequestUtilTest {
 
     /**
      * A string writer.
@@ -78,12 +80,12 @@ public class FreemarkerRequestUtilTest {
     /**
      * Sets up the model.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         template = createMock(Template.class);
         model = createMock(TemplateHashModel.class);
         writer = new StringWriter();
-        expect(template.getMacros()).andReturn(new HashMap<Object, Object>());
+        expect(template.getMacros()).andReturn(new HashMap<>());
     }
 
     /**
@@ -91,7 +93,7 @@ public class FreemarkerRequestUtilTest {
      * @throws TemplateModelException If something goes wrong.
      */
     @Test
-    public void testGetRequestHashModel() throws TemplateModelException {
+    void testGetRequestHashModel() throws TemplateModelException {
         HttpServletRequest request = createMock(HttpServletRequest.class);
         ObjectWrapper objectWrapper = createMock(ObjectWrapper.class);
         HttpRequestHashModel requestModel = new HttpRequestHashModel(request, objectWrapper);
@@ -110,8 +112,8 @@ public class FreemarkerRequestUtilTest {
      * Test method for {@link FreemarkerRequestUtil#getRequestHashModel(freemarker.core.Environment)}.
      * @throws TemplateModelException If something goes wrong.
      */
-    @Test(expected = NotAvailableFreemarkerServletException.class)
-    public void testGetRequestHashModelException() throws TemplateModelException {
+    @Test
+    void testGetRequestHashModelException() throws TemplateModelException {
         HttpServletRequest request = createMock(HttpServletRequest.class);
         ObjectWrapper objectWrapper = createMock(ObjectWrapper.class);
 
@@ -122,7 +124,7 @@ public class FreemarkerRequestUtilTest {
             env = new Environment(template, model, writer);
             locale = Locale.ITALY;
             env.setLocale(locale);
-            FreemarkerRequestUtil.getRequestHashModel(env);
+            assertThrows(NotAvailableFreemarkerServletException.class, () -> FreemarkerRequestUtil.getRequestHashModel(env));
         } finally {
             verify(template, model, request, objectWrapper);
         }
@@ -135,7 +137,7 @@ public class FreemarkerRequestUtilTest {
      * @throws TemplateModelException If something goes wrong.
      */
     @Test
-    public void testGetServletContextHashModel() throws TemplateModelException {
+    void testGetServletContextHashModel() throws TemplateModelException {
         GenericServlet servlet = createMock(GenericServlet.class);
         ServletContext servletContext = createMock(ServletContext.class);
         ObjectWrapper objectWrapper = createMock(ObjectWrapper.class);
@@ -158,8 +160,8 @@ public class FreemarkerRequestUtilTest {
      * #getServletContextHashModel(freemarker.core.Environment)}.
      * @throws TemplateModelException If something goes wrong.
      */
-    @Test(expected = NotAvailableFreemarkerServletException.class)
-    public void testGetServletContextHashModelException() throws TemplateModelException {
+    @Test
+    void testGetServletContextHashModelException() throws TemplateModelException {
         GenericServlet servlet = createMock(GenericServlet.class);
         ObjectWrapper objectWrapper = createMock(ObjectWrapper.class);
         replay(servlet, objectWrapper);
@@ -171,7 +173,7 @@ public class FreemarkerRequestUtilTest {
             env = new Environment(template, model, writer);
             locale = Locale.ITALY;
             env.setLocale(locale);
-            FreemarkerRequestUtil.getServletContextHashModel(env);
+            assertThrows(NotAvailableFreemarkerServletException.class, () -> FreemarkerRequestUtil.getServletContextHashModel(env));
         } finally {
             verify(template, model, servlet, objectWrapper);
         }
@@ -183,7 +185,7 @@ public class FreemarkerRequestUtilTest {
      * @throws TemplateModelException If something goes wrong.
      */
     @Test
-    public void testGetApplicationContext() throws TemplateModelException {
+    void testGetApplicationContext() throws TemplateModelException {
         GenericServlet servlet = createMock(GenericServlet.class);
         ServletContext servletContext = createMock(ServletContext.class);
         ObjectWrapper objectWrapper = createMock(ObjectWrapper.class);

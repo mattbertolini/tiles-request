@@ -20,25 +20,28 @@
  */
 package org.apache.tiles.request.jsp.autotag;
 
-import static org.easymock.EasyMock.*;
-
-import java.io.IOException;
-import java.io.Writer;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.JspFragment;
+import java.io.IOException;
+import java.io.Writer;
 
-import org.apache.tiles.request.jsp.autotag.JspModelBody;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link JspModelBody}.
  *
  * @version $Rev$ $Date$
  */
-public class JspModelBodyTest {
+class JspModelBodyTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.jsp.autotag.freemarker.runtime.JspModelBody#evaluate(java.io.Writer)}.
@@ -46,7 +49,7 @@ public class JspModelBodyTest {
      * @throws JspException If something goes wrong.
      */
     @Test
-    public void testEvaluateWriter() throws JspException, IOException {
+    void testEvaluateWriter() throws JspException, IOException {
         JspFragment body = createMock(JspFragment.class);
         PageContext pageContext = createMock(PageContext.class);
         JspWriter writer = createMock(JspWriter.class);
@@ -63,10 +66,9 @@ public class JspModelBodyTest {
     /**
      * Test method for {@link org.apache.tiles.request.jsp.autotag.freemarker.runtime.JspModelBody#evaluate(java.io.Writer)}.
      * @throws IOException If something goes wrong.
-     * @throws JspException If something goes wrong.
      */
     @Test
-    public void testEvaluateWriterNull() throws JspException, IOException {
+    void testEvaluateWriterNull() throws IOException {
         PageContext pageContext = createMock(PageContext.class);
         Writer writer = createMock(Writer.class);
 
@@ -83,8 +85,8 @@ public class JspModelBodyTest {
      * @throws IOException If something goes wrong.
      * @throws JspException If something goes wrong.
      */
-    @Test(expected = IOException.class)
-    public void testEvaluateWriterException() throws JspException, IOException {
+    @Test
+    void testEvaluateWriterException() throws JspException, IOException {
         PageContext pageContext = createMock(PageContext.class);
         JspFragment body = createMock(JspFragment.class);
         JspWriter writer = createMock(JspWriter.class);
@@ -96,7 +98,7 @@ public class JspModelBodyTest {
         replay(body, pageContext, writer);
         try {
             JspModelBody modelBody = new JspModelBody(body, pageContext);
-            modelBody.evaluate(writer);
+            assertThrows(IOException.class, () -> modelBody.evaluate(writer));
         } finally {
             verify(body, pageContext, writer);
         }

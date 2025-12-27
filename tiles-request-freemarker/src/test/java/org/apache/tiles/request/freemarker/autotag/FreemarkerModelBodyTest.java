@@ -20,23 +20,25 @@
  */
 package org.apache.tiles.request.freemarker.autotag;
 
-import static org.easymock.EasyMock.*;
+import freemarker.template.TemplateDirectiveBody;
+import freemarker.template.TemplateException;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.Writer;
 
-import org.apache.tiles.request.freemarker.autotag.FreemarkerModelBody;
-import org.junit.Test;
-
-import freemarker.template.TemplateDirectiveBody;
-import freemarker.template.TemplateException;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link FreemarkerModelBody}.
  *
  * @version $Rev$ $Date$
  */
-public class FreemarkerModelBodyTest {
+class FreemarkerModelBodyTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.freemarker.autotag.FreemarkerModelBody#evaluate(java.io.Writer)}.
@@ -44,7 +46,7 @@ public class FreemarkerModelBodyTest {
      * @throws TemplateException If something goes wrong.
      */
     @Test
-    public void testEvaluateWriter() throws TemplateException, IOException {
+    void testEvaluateWriter() throws TemplateException, IOException {
         TemplateDirectiveBody body = createMock(TemplateDirectiveBody.class);
         Writer writer = createMock(Writer.class);
 
@@ -59,10 +61,9 @@ public class FreemarkerModelBodyTest {
     /**
      * Test method for {@link org.apache.tiles.request.freemarker.autotag.FreemarkerModelBody#evaluate(java.io.Writer)}.
      * @throws IOException If something goes wrong.
-     * @throws TemplateException If something goes wrong.
      */
     @Test
-    public void testEvaluateWriterNull() throws TemplateException, IOException {
+    void testEvaluateWriterNull() throws IOException {
         Writer writer = createMock(Writer.class);
 
         replay(writer);
@@ -76,8 +77,8 @@ public class FreemarkerModelBodyTest {
      * @throws IOException If something goes wrong.
      * @throws TemplateException If something goes wrong.
      */
-    @Test(expected = IOException.class)
-    public void testEvaluateWriterException() throws TemplateException, IOException {
+    @Test
+    void testEvaluateWriterException() throws TemplateException, IOException {
         TemplateDirectiveBody body = createMock(TemplateDirectiveBody.class);
         Writer writer = createMock(Writer.class);
 
@@ -87,7 +88,7 @@ public class FreemarkerModelBodyTest {
         replay(body, writer);
         try {
             FreemarkerModelBody modelBody = new FreemarkerModelBody(null, body);
-            modelBody.evaluate(writer);
+            assertThrows(IOException.class, () -> modelBody.evaluate(writer));
         } finally {
             verify(body, writer);
         }

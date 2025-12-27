@@ -20,13 +20,16 @@
  */
 package org.apache.tiles.request.freemarker.render;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.URL;
+import freemarker.ext.servlet.HttpRequestHashModel;
+import freemarker.ext.servlet.HttpRequestParametersHashModel;
+import freemarker.ext.servlet.ServletContextHashModel;
+import freemarker.template.ObjectWrapper;
+import org.apache.tiles.request.ApplicationContext;
+import org.apache.tiles.request.render.CannotRenderException;
+import org.apache.tiles.request.servlet.ServletApplicationContext;
+import org.apache.tiles.request.servlet.ServletRequest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
@@ -34,25 +37,28 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.URL;
 
-import org.apache.tiles.request.ApplicationContext;
-import org.apache.tiles.request.render.CannotRenderException;
-import org.apache.tiles.request.servlet.ServletApplicationContext;
-import org.apache.tiles.request.servlet.ServletRequest;
-import org.junit.Before;
-import org.junit.Test;
-
-import freemarker.ext.servlet.HttpRequestHashModel;
-import freemarker.ext.servlet.HttpRequestParametersHashModel;
-import freemarker.ext.servlet.ServletContextHashModel;
-import freemarker.template.ObjectWrapper;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createMockBuilder;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link FreemarkerRenderer}.
  *
  * @version $Rev$ $Date$
  */
-public class FreemarkerRendererTest {
+class FreemarkerRendererTest {
 
     /**
      * The attribute name of the application model.
@@ -95,8 +101,8 @@ public class FreemarkerRendererTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         applicationContext = createMock(ServletApplicationContext.class);
         servletContext = createMock(ServletContext.class);
 
@@ -119,7 +125,7 @@ public class FreemarkerRendererTest {
      * @throws ServletException If something goes wrong.
      */
     @Test
-    public void testWrite() throws IOException, ServletException {
+    void testWrite() throws IOException, ServletException {
         ApplicationContext applicationContext = createMock(ServletApplicationContext.class);
         ServletContext servletContext = createMock(ServletContext.class);
         GenericServlet servlet = createMockBuilder(GenericServlet.class).createMock();
@@ -182,8 +188,8 @@ public class FreemarkerRendererTest {
      * @throws IOException If something goes wrong.
      * @throws ServletException If something goes wrong.
      */
-    @Test(expected = CannotRenderException.class)
-    public void testRenderException1() throws IOException, ServletException {
+    @Test
+    void testRenderException1() throws IOException, ServletException {
         ApplicationContext applicationContext = createMock(ServletApplicationContext.class);
         ServletContext servletContext = createMock(ServletContext.class);
         GenericServlet servlet = createMockBuilder(GenericServlet.class).createMock();
@@ -213,7 +219,7 @@ public class FreemarkerRendererTest {
 
         replay(request);
         try {
-            renderer.render(null, request);
+            assertThrows(CannotRenderException.class, () -> renderer.render(null, request));
         } finally {
             verify(applicationContext, servletContext, request, servlet,
                     servletConfig, objectWrapper);
@@ -227,7 +233,7 @@ public class FreemarkerRendererTest {
      * .
      */
     @Test
-    public void testIsRenderable() {
+    void testIsRenderable() {
         assertTrue(renderer.isRenderable("/my/template.ftl", null));
         assertFalse(renderer.isRenderable("my/template.ftl", null));
         assertFalse(renderer.isRenderable("/my/template.jsp", null));

@@ -20,8 +20,12 @@
  */
 package org.apache.tiles.request.jsp.autotag;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.autotag.core.runtime.ModelBody;
+import org.apache.tiles.request.ApplicationAccess;
+import org.apache.tiles.request.ApplicationContext;
+import org.apache.tiles.request.Request;
+import org.apache.tiles.request.jsp.JspRequest;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,18 +35,16 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.JspFragment;
 import javax.servlet.jsp.tagext.JspTag;
 
-import org.apache.tiles.autotag.core.runtime.ModelBody;
-import org.apache.tiles.request.ApplicationAccess;
-import org.apache.tiles.request.ApplicationContext;
-import org.apache.tiles.request.Request;
-import org.apache.tiles.request.jsp.JspRequest;
-import org.apache.tiles.request.jsp.autotag.JspAutotagRuntime;
-import org.apache.tiles.request.jsp.autotag.JspModelBody;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class JspAutotagRuntimeTest {
+class JspAutotagRuntimeTest {
     @Test
-    public void testCreateRequest() {
+    void testCreateRequest() {
         JspFragment jspBody = createMock(JspFragment.class);
         PageContext pageContext = createMock(PageContext.class);
         JspTag parent = createMock(JspTag.class);
@@ -61,12 +63,12 @@ public class JspAutotagRuntimeTest {
         runtime.setParent(parent);
         runtime.doTag();
         Request jspRequest = runtime.createRequest();
-        assertTrue(jspRequest instanceof JspRequest);
+        assertInstanceOf(JspRequest.class, jspRequest);
         verify(jspBody, pageContext, parent, applicationContext, httpServletRequest, httpServletResponse);
     }
 
     @Test
-    public void testCreateModelBody() {
+    void testCreateModelBody() {
         JspFragment jspBody = createMock(JspFragment.class);
         JspContext jspContext = createMock(JspContext.class);
         JspTag parent = createMock(JspTag.class);
@@ -79,12 +81,12 @@ public class JspAutotagRuntimeTest {
         runtime.setParent(parent);
         runtime.doTag();
         ModelBody jspModelBody = runtime.createModelBody();
-        assertTrue(jspModelBody instanceof JspModelBody);
+        assertInstanceOf(JspModelBody.class, jspModelBody);
         verify(jspBody, jspContext, parent, writer);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testGetParameter() {
+    @Test
+    void testGetParameter() {
         JspFragment jspBody = createMock(JspFragment.class);
         JspContext jspContext = createMock(JspContext.class);
         JspTag parent = createMock(JspTag.class);
@@ -94,7 +96,7 @@ public class JspAutotagRuntimeTest {
         runtime.setJspContext(jspContext);
         runtime.setParent(parent);
         runtime.doTag();
-        runtime.getParameter("test", Object.class, null);
+        assertThrows(UnsupportedOperationException.class, () -> runtime.getParameter("test", Object.class, null));
         verify(jspBody, jspContext, parent);
     }
 }
