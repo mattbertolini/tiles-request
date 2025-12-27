@@ -22,7 +22,6 @@
 package org.apache.tiles.request.osgi;
 
 import org.apache.tiles.request.locale.URLApplicationResource;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -45,11 +44,10 @@ import static org.ops4j.pax.exam.CoreOptions.junitBundles;
  */
 @RunWith(PaxExam.class)
 // TODO (mrb): Decide if I want to keep OSGi support (probably not)
-@Ignore("Fails on JDK 21 due to OSGi configuration issues (java.io package import)")
 public class URLBundleApplicationResourceTest {
 
     @Configuration
-    public Option[] configuration() throws IOException {
+    public Option[] configuration() {
         return new Option[]{
                 junitBundles(),
                 frameworkProperty("org.osgi.framework.bundle.parent").value("app"),
