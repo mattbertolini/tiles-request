@@ -21,61 +21,66 @@
 package org.apache.tiles.request.mustache;
 
 
+import com.github.mustachejava.DefaultMustacheFactory;
+import org.apache.tiles.request.ApplicationContext;
+import org.apache.tiles.request.ApplicationResource;
+import org.apache.tiles.request.Request;
+import org.apache.tiles.request.render.CannotRenderException;
+import org.apache.tiles.request.render.Renderer;
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.github.mustachejava.DefaultMustacheFactory;
-import org.apache.tiles.request.ApplicationContext;
-import org.apache.tiles.request.ApplicationResource;
-import org.apache.tiles.request.render.CannotRenderException;
-import org.apache.tiles.request.render.Renderer;
-import org.apache.tiles.request.Request;
-import org.junit.Test;
-
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link MustacheRenderer}.
  *
  * @version $Rev: 1066788 $ $Date: 2011-02-03 11:49:11 +0000 (Thu, 03 Feb 2011) $
  */
-public final class MustacheRendererTest {
+final class MustacheRendererTest {
 
     /**
      * Tests {@link MustacheRenderer#render(String, org.apache.tiles.request.Request)}.
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testRender() throws IOException {
+    void testRender() throws IOException {
         Request request = createMock(Request.class);
         StringWriter writer = new StringWriter();
         ApplicationContext applicationContext = createMock(ApplicationContext.class);
         ApplicationResource applicationResource = createMock(ApplicationResource.class);
 
-        Map<String,Object> context = Collections.singletonMap("testKey", (Object)"test value");
+        Map<String,Object> context = Collections.singletonMap("testKey", "test value");
 
         expect(applicationContext.getResource(isA(String.class))).andReturn(applicationResource).anyTimes();
         expect(request.getAvailableScopes()).andReturn(Arrays.asList(Request.REQUEST_SCOPE, "session", Request.APPLICATION_SCOPE));
         expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(context);
-        expect(request.getContext("session")).andReturn(Collections.<String,Object>emptyMap());
-        expect(request.getContext(Request.APPLICATION_SCOPE)).andReturn(Collections.<String,Object>emptyMap());
+        expect(request.getContext("session")).andReturn(Collections.emptyMap());
+        expect(request.getContext(Request.APPLICATION_SCOPE)).andReturn(Collections.emptyMap());
         expect(request.getWriter()).andReturn(writer).anyTimes();
 
         replay(request, applicationContext, applicationResource);
         Renderer renderer = new MustacheRenderer(new DefaultMustacheFactory() {
                 @Override
                 public Reader getReader(String path) {
-                    return new InputStreamReader(getClass().getResourceAsStream(path), Charset.forName("utf-8"));
+                    return new InputStreamReader(getClass().getResourceAsStream(path), StandardCharsets.UTF_8);
                 }
             });
         renderer.render("/test.html", request);
@@ -85,15 +90,14 @@ public final class MustacheRendererTest {
 
     /**
      * Tests {@link MustacheRenderer#render(String, org.apache.tiles.request.Request)}.
-     * @throws IOException If something goes wrong.
      */
-    @Test(expected = CannotRenderException.class)
-    public void testRenderException() throws IOException {
+    @Test
+    void testRenderException() {
         Request request = createMock(Request.class);
         replay(request);
         Renderer renderer = new MustacheRenderer();
         try {
-            renderer.render(null, request);
+            assertThrows(CannotRenderException.class, () -> renderer.render(null, request));
         } finally {
             verify(request);
         }
@@ -105,7 +109,7 @@ public final class MustacheRendererTest {
      * .
      */
     @Test
-    public void testIsRenderable() {
+    void testIsRenderable() {
         MustacheRenderer renderer = new MustacheRenderer();
         final Pattern pattern = Pattern.compile("/.*");
         renderer.setAcceptPattern(pattern);

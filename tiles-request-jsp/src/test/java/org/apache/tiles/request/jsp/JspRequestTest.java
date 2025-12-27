@@ -20,30 +20,35 @@
  */
 package org.apache.tiles.request.jsp;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.io.IOException;
+import org.apache.tiles.request.ApplicationContext;
+import org.apache.tiles.request.DispatchRequest;
+import org.apache.tiles.request.collection.ScopeMap;
+import org.apache.tiles.request.servlet.ServletRequest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
+import java.io.IOException;
 
-import org.apache.tiles.request.ApplicationContext;
-import org.apache.tiles.request.DispatchRequest;
-import org.apache.tiles.request.collection.ScopeMap;
-import org.apache.tiles.request.servlet.ServletRequest;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link JspRequest}.
  *
  * @version $Rev$ $Date$
  */
-public class JspRequestTest {
+class JspRequestTest {
 
     /**
      * The enclosed request.
@@ -63,8 +68,8 @@ public class JspRequestTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         enclosedRequest = createMock(DispatchRequest.class);
         context = createMock(PageContext.class);
         request = new JspRequest(enclosedRequest, context);
@@ -74,7 +79,7 @@ public class JspRequestTest {
      * Test method for {@link org.apache.tiles.request.jsp.JspRequest#getWriter()}.
      */
     @Test
-    public void testGetWriter() {
+    void testGetWriter() {
         JspWriter writer = createMock(JspWriter.class);
 
         expect(context.getOut()).andReturn(writer);
@@ -88,7 +93,7 @@ public class JspRequestTest {
      * Test method for {@link org.apache.tiles.request.jsp.JspRequest#getPrintWriter()}.
      */
     @Test
-    public void testGetPrintWriter() {
+    void testGetPrintWriter() {
         JspWriter writer = createMock(JspWriter.class);
 
         expect(context.getOut()).andReturn(writer);
@@ -105,7 +110,7 @@ public class JspRequestTest {
      * @throws ServletException If something goes wrong.
      */
     @Test
-    public void testDoInclude() throws ServletException, IOException {
+    void testDoInclude() throws ServletException, IOException {
         context.include("/my/path", false);
 
         replay(context, enclosedRequest);
@@ -118,13 +123,13 @@ public class JspRequestTest {
      * @throws IOException If something goes wrong.
      * @throws ServletException If something goes wrong.
      */
-    @Test(expected = IOException.class)
-    public void testDoIncludeException() throws ServletException, IOException {
+    @Test
+    void testDoIncludeException() throws ServletException, IOException {
         context.include("/my/path", false);
         expectLastCall().andThrow(new ServletException());
 
         replay(context, enclosedRequest);
-        request.doInclude("/my/path");
+        assertThrows(IOException.class, () -> request.doInclude("/my/path"));
         verify(context, enclosedRequest);
     }
 
@@ -132,7 +137,7 @@ public class JspRequestTest {
      * Test method for {@link JspRequest#createServletJspRequest(ApplicationContext, PageContext)}.
      */
     @Test
-    public void testCreateServletJspRequest() {
+    void testCreateServletJspRequest() {
         ApplicationContext applicationContext = createMock(ApplicationContext.class);
         HttpServletRequest servletRequest = createMock(HttpServletRequest.class);
         HttpServletResponse servletResponse = createMock(HttpServletResponse.class);
@@ -152,9 +157,9 @@ public class JspRequestTest {
      * Test method for {@link org.apache.tiles.request.jsp.JspRequest#getPageScope()}.
      */
     @Test
-    public void testGetPageScope() {
+    void testGetPageScope() {
         replay(context, enclosedRequest);
-        assertTrue(request.getPageScope() instanceof ScopeMap);
+        assertInstanceOf(ScopeMap.class, request.getPageScope());
         verify(context, enclosedRequest);
     }
 
@@ -162,9 +167,9 @@ public class JspRequestTest {
      * Test method for {@link org.apache.tiles.request.jsp.JspRequest#getRequestScope()}.
      */
     @Test
-    public void testGetRequestScope() {
+    void testGetRequestScope() {
         replay(context, enclosedRequest);
-        assertTrue(request.getRequestScope() instanceof ScopeMap);
+        assertInstanceOf(ScopeMap.class, request.getRequestScope());
         verify(context, enclosedRequest);
     }
 
@@ -172,9 +177,9 @@ public class JspRequestTest {
      * Test method for {@link org.apache.tiles.request.jsp.JspRequest#getSessionScope()}.
      */
     @Test
-    public void testGetSessionScope() {
+    void testGetSessionScope() {
         replay(context, enclosedRequest);
-        assertTrue(request.getSessionScope() instanceof ScopeMap);
+        assertInstanceOf(ScopeMap.class, request.getSessionScope());
         verify(context, enclosedRequest);
     }
 
@@ -182,9 +187,9 @@ public class JspRequestTest {
      * Test method for {@link org.apache.tiles.request.jsp.JspRequest#getApplicationScope()}.
      */
     @Test
-    public void testGetApplicationScope() {
+    void testGetApplicationScope() {
         replay(context, enclosedRequest);
-        assertTrue(request.getApplicationScope() instanceof ScopeMap);
+        assertInstanceOf(ScopeMap.class, request.getApplicationScope());
         verify(context, enclosedRequest);
     }
 
@@ -192,7 +197,7 @@ public class JspRequestTest {
      * Test method for {@link org.apache.tiles.request.jsp.JspRequest#getPageContext()}.
      */
     @Test
-    public void testGetPageContext() {
+    void testGetPageContext() {
         replay(context, enclosedRequest);
         assertEquals(context, request.getPageContext());
         verify(context, enclosedRequest);

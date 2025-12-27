@@ -20,43 +20,45 @@
  */
 package org.apache.tiles.request.freemarker;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Set;
-
-import org.junit.Test;
-
 import freemarker.core.Environment;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateHashModelEx;
 import freemarker.template.TemplateModelException;
+import org.junit.jupiter.api.Test;
+
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.HashMap;
+import java.util.Set;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests {@link EnvironmentScopeMap}.
  *
  * @version $Rev$ $Date$
  */
-public class EnvironmentScopeMapTest {
+class EnvironmentScopeMapTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.freemarker.EnvironmentScopeMap#keySet()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testKeySet() {
+    void testKeySet() {
         Template template = createMock(Template.class);
         TemplateHashModel model = createMock(TemplateHashModel.class);
         Configuration configuration = createMock(Configuration.class);
         Set<String> names = createMock(Set.class);
         Writer writer = new StringWriter();
 
-        expect(template.getMacros()).andReturn(new HashMap<Object, Object>());
+        expect(template.getMacros()).andReturn(new HashMap<>());
         expect(template.getConfiguration()).andReturn(configuration);
         expect(configuration.getSharedVariableNames()).andReturn(names);
 
@@ -72,16 +74,15 @@ public class EnvironmentScopeMapTest {
      * Test method for {@link org.apache.tiles.request.freemarker.EnvironmentScopeMap#keySet()}.
      * @throws TemplateModelException If something goes wrong.
      */
-    @SuppressWarnings("unchecked")
-    @Test(expected = FreemarkerRequestException.class)
-    public void testKeySetException() throws TemplateModelException {
+    @Test
+    void testKeySetException() throws TemplateModelException {
         Template template = createMock(Template.class);
         TemplateHashModelEx model = createMock(TemplateHashModelEx.class);
         Configuration configuration = createMock(Configuration.class);
         Set<String> names = createMock(Set.class);
         Writer writer = new StringWriter();
 
-        expect(template.getMacros()).andReturn(new HashMap<Object, Object>());
+        expect(template.getMacros()).andReturn(new HashMap<>());
         expect(model.keys()).andThrow(new TemplateModelException());
         expect(template.getConfiguration()).andReturn(configuration);
         expect(configuration.getSharedVariableNames()).andReturn(names);
@@ -90,7 +91,7 @@ public class EnvironmentScopeMapTest {
             replay(template, model, configuration, names);
             Environment env = new Environment(template, model, writer);
             EnvironmentScopeMap map = new EnvironmentScopeMap(env);
-            map.keySet();
+            assertThrows(FreemarkerRequestException.class, map::keySet);
         } finally {
             verify(template, model, configuration, names);
         }
