@@ -20,22 +20,24 @@
  */
 package org.apache.tiles.request.servlet.extractor;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.util.Enumeration;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link RequestScopeExtractor}.
  *
  * @version $Rev$ $Date$
  */
-public class RequestScopeExtractorTest {
+class RequestScopeExtractorTest {
 
     /**
      * The request.
@@ -50,8 +52,8 @@ public class RequestScopeExtractorTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         request = createMock(HttpServletRequest.class);
         extractor = new RequestScopeExtractor(request);
     }
@@ -60,7 +62,7 @@ public class RequestScopeExtractorTest {
      * Test method for {@link RequestScopeExtractor#setValue(String, Object)}.
      */
     @Test
-    public void testSetValue() {
+    void testSetValue() {
         request.setAttribute("name", "value");
 
         replay(request);
@@ -72,7 +74,7 @@ public class RequestScopeExtractorTest {
      * Test method for {@link RequestScopeExtractor#removeValue(String)}.
      */
     @Test
-    public void testRemoveValue() {
+    void testRemoveValue() {
         request.removeAttribute("name");
 
         replay(request);
@@ -83,9 +85,8 @@ public class RequestScopeExtractorTest {
     /**
      * Test method for {@link org.apache.tiles.request.servlet.extractor.RequestScopeExtractor#getKeys()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testGetKeys() {
+    void testGetKeys() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(request.getAttributeNames()).andReturn(keys);
@@ -99,7 +100,7 @@ public class RequestScopeExtractorTest {
      * Test method for {@link RequestScopeExtractor#getValue(String)}.
      */
     @Test
-    public void testGetValue() {
+    void testGetValue() {
         expect(request.getAttribute("name")).andReturn("value");
 
         replay(request);

@@ -20,29 +20,32 @@
  */
 package org.apache.tiles.request.velocity.autotag;
 
-import static org.easymock.EasyMock.*;
+import org.apache.velocity.context.InternalContextAdapter;
+import org.apache.velocity.runtime.parser.node.ASTBlock;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.Writer;
 
-import org.apache.tiles.request.velocity.autotag.VelocityModelBody;
-import org.apache.velocity.context.InternalContextAdapter;
-import org.apache.velocity.runtime.parser.node.ASTBlock;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createMockBuilder;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 /**
  * Tests {@link VelocityModelBody}.
  *
  * @version $Rev$ $Date$
  */
-public class VelocityModelBodyTest {
+class VelocityModelBodyTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.velocity.autotag.VelocityModelBody#evaluate(java.io.Writer)}.
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testEvaluateWriter() throws IOException {
+    void testEvaluateWriter() throws IOException {
         InternalContextAdapter internalContextAdapter = createMock(InternalContextAdapter.class);
         ASTBlock body = createMock(ASTBlock.class);
         Writer writer = createMock(Writer.class);

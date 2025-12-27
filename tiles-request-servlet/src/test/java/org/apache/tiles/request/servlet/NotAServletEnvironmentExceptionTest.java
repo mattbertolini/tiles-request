@@ -21,22 +21,23 @@
 
 package org.apache.tiles.request.servlet;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link NotAServletEnvironmentException}.
  *
  * @version $Rev$ $Date$
  */
-public class NotAServletEnvironmentExceptionTest {
+class NotAServletEnvironmentExceptionTest {
 
     /**
      * Test method for {@link NotAServletEnvironmentException#NotAServletEnvironmentException()}.
      */
     @Test
-    public void testNotAServletEnvironmentException() {
+    void testNotAServletEnvironmentException() {
         NotAServletEnvironmentException exception = new NotAServletEnvironmentException();
         assertNull(exception.getMessage());
         assertNull(exception.getCause());
@@ -46,7 +47,7 @@ public class NotAServletEnvironmentExceptionTest {
      * Test method for {@link NotAServletEnvironmentException#NotAServletEnvironmentException(java.lang.String)}.
      */
     @Test
-    public void testNotAServletEnvironmentExceptionString() {
+    void testNotAServletEnvironmentExceptionString() {
         NotAServletEnvironmentException exception = new NotAServletEnvironmentException("my message");
         assertEquals("my message", exception.getMessage());
         assertNull(exception.getCause());
@@ -56,7 +57,7 @@ public class NotAServletEnvironmentExceptionTest {
      * Test method for {@link NotAServletEnvironmentException#NotAServletEnvironmentException(java.lang.Throwable)}.
      */
     @Test
-    public void testNotAServletEnvironmentExceptionThrowable() {
+    void testNotAServletEnvironmentExceptionThrowable() {
         Throwable cause = new Throwable();
         NotAServletEnvironmentException exception = new NotAServletEnvironmentException(cause);
         assertEquals(cause.toString(), exception.getMessage());
@@ -67,7 +68,7 @@ public class NotAServletEnvironmentExceptionTest {
      * Test method for {@link NotAServletEnvironmentException#NotAServletEnvironmentException(String, Throwable)}.
      */
     @Test
-    public void testNotAServletEnvironmentExceptionStringThrowable() {
+    void testNotAServletEnvironmentExceptionStringThrowable() {
         Throwable cause = new Throwable();
         NotAServletEnvironmentException exception = new NotAServletEnvironmentException("my message", cause);
         assertEquals("my message", exception.getMessage());

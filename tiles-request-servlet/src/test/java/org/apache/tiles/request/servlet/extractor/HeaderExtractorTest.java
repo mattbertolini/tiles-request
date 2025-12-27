@@ -20,23 +20,25 @@
  */
 package org.apache.tiles.request.servlet.extractor;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.util.Enumeration;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link HeaderExtractor}.
  *
  * @version $Rev$ $Date$
  */
-public class HeaderExtractorTest {
+class HeaderExtractorTest {
 
     /**
      * The request.
@@ -56,8 +58,8 @@ public class HeaderExtractorTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         request = createMock(HttpServletRequest.class);
         response = createMock(HttpServletResponse.class);
         extractor = new HeaderExtractor(request, response);
@@ -66,9 +68,8 @@ public class HeaderExtractorTest {
     /**
      * Test method for {@link org.apache.tiles.request.servlet.extractor.HeaderExtractor#getKeys()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testGetKeys() {
+    void testGetKeys() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(request.getHeaderNames()).andReturn(keys);
@@ -82,7 +83,7 @@ public class HeaderExtractorTest {
      * Test method for {@link org.apache.tiles.request.servlet.extractor.HeaderExtractor#getValue(java.lang.String)}.
      */
     @Test
-    public void testGetValue() {
+    void testGetValue() {
         expect(request.getHeader("name")).andReturn("value");
 
         replay(request, response);
@@ -93,9 +94,8 @@ public class HeaderExtractorTest {
     /**
      * Test method for {@link org.apache.tiles.request.servlet.extractor.HeaderExtractor#getValues(java.lang.String)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testGetValues() {
+    void testGetValues() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(request.getHeaders("name")).andReturn(keys);
@@ -109,7 +109,7 @@ public class HeaderExtractorTest {
      * Test method for {@link HeaderExtractor#setValue(String, String)}.
      */
     @Test
-    public void testSetValue() {
+    void testSetValue() {
         response.setHeader("name", "value");
 
         replay(request, response);
