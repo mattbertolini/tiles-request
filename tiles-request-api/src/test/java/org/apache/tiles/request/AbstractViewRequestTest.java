@@ -20,22 +20,22 @@
  */
 package org.apache.tiles.request;
 
-import static org.junit.Assert.*;
-import static org.easymock.classextension.EasyMock.*;
+import static org.easymock.EasyMock.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link AbstractViewRequest}.
  *
  * @version $Rev$ $Date$
  */
-public class AbstractViewRequestTest {
+class AbstractViewRequestTest {
 
     /**
      * The request to test.
@@ -60,8 +60,8 @@ public class AbstractViewRequestTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         wrappedRequest = createMock(DispatchRequest.class);
         request = createMockBuilder(AbstractViewRequest.class).withConstructor(
                 wrappedRequest).createMock();
@@ -77,7 +77,7 @@ public class AbstractViewRequestTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testDispatch() throws IOException {
+    void testDispatch() throws IOException {
         Map<String, Object> requestScope = new HashMap<String, Object>();
 
         expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(requestScope);
@@ -94,7 +94,7 @@ public class AbstractViewRequestTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testInclude() throws IOException {
+    void testInclude() throws IOException {
         Map<String, Object> requestScope = new HashMap<String, Object>();
 
         expect(request.getContext(Request.REQUEST_SCOPE)).andReturn(requestScope);
@@ -111,7 +111,7 @@ public class AbstractViewRequestTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testDoInclude() throws IOException {
+    void testDoInclude() throws IOException {
         wrappedRequest.include("/my/path.html");
 
         replay(wrappedRequest, request, applicationContext);

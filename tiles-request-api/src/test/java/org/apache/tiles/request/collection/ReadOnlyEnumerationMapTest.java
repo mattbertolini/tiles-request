@@ -20,23 +20,29 @@
  */
 package org.apache.tiles.request.collection;
 
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.attribute.HasKeys;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Enumeration;
 import java.util.HashMap;
 
-import org.apache.tiles.request.attribute.HasKeys;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createMockBuilder;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link ReadOnlyEnumerationMap}.
  *
  * @version $Rev$ $Date$
  */
-public class ReadOnlyEnumerationMapTest {
+class ReadOnlyEnumerationMapTest {
 
     /**
      * The extractor to use.
@@ -51,9 +57,8 @@ public class ReadOnlyEnumerationMapTest {
     /**
      * Sets up the test.
      */
-    @SuppressWarnings("unchecked")
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         extractor = createMock(HasKeys.class);
         map = new ReadOnlyEnumerationMap<Integer>(extractor);
     }
@@ -61,16 +66,16 @@ public class ReadOnlyEnumerationMapTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.ReadOnlyEnumerationMap#clear()}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testClear() {
-        map.clear();
+    @Test
+    void testClear() {
+        assertThrows(UnsupportedOperationException.class, () -> map.clear());
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.ReadOnlyEnumerationMap#containsKey(java.lang.Object)}.
      */
     @Test
-    public void testContainsKey() {
+    void testContainsKey() {
         expect(extractor.getValue("one")).andReturn(1);
         expect(extractor.getValue("two")).andReturn(null);
 
@@ -83,9 +88,8 @@ public class ReadOnlyEnumerationMapTest {
     /**
      * Test method for {@link ReadOnlyEnumerationMap#containsValue(Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContainsValue() {
+    void testContainsValue() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -105,9 +109,8 @@ public class ReadOnlyEnumerationMapTest {
     /**
      * Test method for {@link ReadOnlyEnumerationMap#containsValue(Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testContainsValueFalse() {
+    void testContainsValueFalse() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -129,7 +132,7 @@ public class ReadOnlyEnumerationMapTest {
      * Test method for {@link org.apache.tiles.request.collection.ReadOnlyEnumerationMap#get(java.lang.Object)}.
      */
     @Test
-    public void testGet() {
+    void testGet() {
         expect(extractor.getValue("two")).andReturn(2);
 
         replay(extractor);
@@ -140,9 +143,8 @@ public class ReadOnlyEnumerationMapTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.ReadOnlyEnumerationMap#isEmpty()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testIsEmpty() {
+    void testIsEmpty() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -156,9 +158,8 @@ public class ReadOnlyEnumerationMapTest {
     /**
      * Test method for {@link org.apache.tiles.request.collection.ReadOnlyEnumerationMap#isEmpty()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testIsEmptyTrue() {
+    void testIsEmptyTrue() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -173,7 +174,7 @@ public class ReadOnlyEnumerationMapTest {
      * Test method for {@link org.apache.tiles.request.collection.ReadOnlyEnumerationMap#keySet()}.
      */
     @Test
-    public void testKeySet() {
+    void testKeySet() {
         replay(extractor);
         assertTrue(map.keySet() instanceof KeySet);
         verify(extractor);
@@ -182,33 +183,32 @@ public class ReadOnlyEnumerationMapTest {
     /**
      * Test method for {@link ReadOnlyEnumerationMap#put(String, String[])}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testPut() {
-        map.put("one", 1);
+    @Test
+    void testPut() {
+        assertThrows(UnsupportedOperationException.class, () -> map.put("one", 1));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.ReadOnlyEnumerationMap#putAll(java.util.Map)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testPutAll() {
-        map.putAll(new HashMap<String, Integer>());
+    @Test
+    void testPutAll() {
+        assertThrows(UnsupportedOperationException.class, () -> map.putAll(new HashMap<String, Integer>()));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.ReadOnlyEnumerationMap#remove(java.lang.Object)}.
      */
-    @Test(expected = UnsupportedOperationException.class)
-    public void testRemove() {
-        map.remove("one");
+    @Test
+    void testRemove() {
+        assertThrows(UnsupportedOperationException.class, () -> map.remove("one"));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.collection.ReadOnlyEnumerationMap#size()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testSize() {
+    void testSize() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -226,9 +226,8 @@ public class ReadOnlyEnumerationMapTest {
     /**
      * Test method for {@link org.apache.tiles.extractor.collection.AbstractEnumerationMap#hashCode()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(extractor.getKeys()).andReturn(keys);
@@ -253,9 +252,8 @@ public class ReadOnlyEnumerationMapTest {
     /**
      * Test method for {@link org.apache.tiles.extractor.collection.AbstractEnumerationMap#equals(java.lang.Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testEqualsObject() {
+    void testEqualsObject() {
         HasKeys<Integer> otherRequest = createMock(HasKeys.class);
         ReadOnlyEnumerationMap<Integer> otherMap = createMockBuilder(
                 ReadOnlyEnumerationMap.class).withConstructor(otherRequest)
@@ -292,9 +290,8 @@ public class ReadOnlyEnumerationMapTest {
     /**
      * Test method for {@link org.apache.tiles.extractor.collection.AbstractEnumerationMap#equals(java.lang.Object)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testEqualsObjectFalse() {
+    void testEqualsObjectFalse() {
         HasKeys<Integer> otherRequest = createMock(HasKeys.class);
         ReadOnlyEnumerationMap<Integer> otherMap = createMockBuilder(
                 ReadOnlyEnumerationMap.class).withConstructor(otherRequest)

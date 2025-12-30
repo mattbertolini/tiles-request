@@ -20,12 +20,14 @@
  */
 package org.apache.tiles.request.velocity;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.tiles.request.collection.ScopeMap;
 import org.apache.tiles.request.velocity.extractor.VelocityScopeExtractor;
 import org.apache.velocity.context.Context;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.apache.tiles.request.collection.CollectionUtil.key;
 
 /**
  * <p>Private implementation of <code>Map</code> for servlet request
@@ -53,7 +55,7 @@ final class VelocityScopeMap extends ScopeMap {
 
     @Override
     public Object remove(Object key) {
-        return request.remove(key);
+        return request.remove(key((key)));
     }
 
     @Override
@@ -63,7 +65,7 @@ final class VelocityScopeMap extends ScopeMap {
 
     /** {@inheritDoc} */
     public boolean containsKey(Object key) {
-        return request.containsKey(key);
+        return request.containsKey(key(key));
     }
 
 

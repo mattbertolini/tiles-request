@@ -20,24 +20,26 @@
  */
 package org.apache.tiles.request.jsp.extractor;
 
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.jsp.PageContext;
 import java.util.Enumeration;
 
-import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.PageContext;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link SessionScopeExtractor}.
  *
  * @version $Rev$ $Date$
  */
-public class SessionScopeExtractorTest {
+class SessionScopeExtractorTest {
 
     /**
      * The page context.
@@ -57,8 +59,8 @@ public class SessionScopeExtractorTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         context = createMock(PageContext.class);
         session = createMock(HttpSession.class);
         extractor = new SessionScopeExtractor(context);
@@ -68,7 +70,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link org.apache.tiles.request.jsp.extractor.ScopeExtractor#removeValue(java.lang.String)}.
      */
     @Test
-    public void testRemoveValue() {
+    void testRemoveValue() {
         expect(context.getSession()).andReturn(session);
         context.removeAttribute("key", PageContext.SESSION_SCOPE);
 
@@ -80,9 +82,8 @@ public class SessionScopeExtractorTest {
     /**
      * Test method for {@link org.apache.tiles.request.jsp.extractor.ScopeExtractor#getKeys()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testGetKeys() {
+    void testGetKeys() {
         expect(context.getSession()).andReturn(session);
         Enumeration<String> keys = createMock(Enumeration.class);
         expect(context.getAttributeNamesInScope(PageContext.SESSION_SCOPE)).andReturn(keys);
@@ -96,7 +97,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link org.apache.tiles.request.jsp.extractor.ScopeExtractor#getValue(java.lang.String)}.
      */
     @Test
-    public void testGetValue() {
+    void testGetValue() {
         expect(context.getSession()).andReturn(session);
         expect(context.getAttribute("key", PageContext.SESSION_SCOPE)).andReturn("value");
 
@@ -109,7 +110,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link ScopeExtractor#setValue(String, Object)}.
      */
     @Test
-    public void testSetValue() {
+    void testSetValue() {
         expect(context.getSession()).andReturn(session);
         context.setAttribute("key", "value", PageContext.SESSION_SCOPE);
 
@@ -123,7 +124,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link org.apache.tiles.request.jsp.extractor.ScopeExtractor#removeValue(java.lang.String)}.
      */
     @Test
-    public void testRemoveValueNoSession() {
+    void testRemoveValueNoSession() {
         expect(context.getSession()).andReturn(null);
 
         replay(context, session);
@@ -135,7 +136,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link org.apache.tiles.request.jsp.extractor.ScopeExtractor#getKeys()}.
      */
     @Test
-    public void testGetKeysNoSession() {
+    void testGetKeysNoSession() {
         expect(context.getSession()).andReturn(null);
 
         replay(context, session);
@@ -147,7 +148,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link org.apache.tiles.request.jsp.extractor.ScopeExtractor#getValue(java.lang.String)}.
      */
     @Test
-    public void testGetValueNoSession() {
+    void testGetValueNoSession() {
        expect(context.getSession()).andReturn(null);
 
        replay(context, session);
@@ -159,7 +160,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link ScopeExtractor#setValue(String, Object)}.
      */
     @Test
-    public void testSetValueNoSession() {
+    void testSetValueNoSession() {
         expect(context.getSession()).andReturn(null);
 
         replay(context, session);

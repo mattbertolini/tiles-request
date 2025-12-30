@@ -21,14 +21,13 @@
 
 package org.apache.tiles.request.freemarker.servlet;
 
-import java.io.IOException;
-import java.io.Reader;
-
-import javax.servlet.ServletContext;
-
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.TemplateLoader;
-import freemarker.cache.WebappTemplateLoader;
+import freemarker.ext.jakarta.servlet.WebappTemplateLoader;
+import jakarta.servlet.ServletContext;
+
+import java.io.IOException;
+import java.io.Reader;
 
 /**
  * Delegates loading templates using a {@link WebappTemplateLoader} and, if not

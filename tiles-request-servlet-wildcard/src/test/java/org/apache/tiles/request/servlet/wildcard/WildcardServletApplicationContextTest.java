@@ -20,21 +20,23 @@
  */
 package org.apache.tiles.request.servlet.wildcard;
 
-import junit.framework.TestCase;
-
 import org.apache.tiles.request.locale.URLApplicationResource;
 import org.easymock.EasyMock;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import jakarta.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
-import java.util.HashSet;
 
-import javax.servlet.ServletContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -42,7 +44,7 @@ import javax.servlet.ServletContext;
  *
  * @version $Rev$ $Date$
  */
-public class WildcardServletApplicationContextTest extends TestCase {
+class WildcardServletApplicationContextTest {
 
     /**
      * Number of properties container inside the test.properties file.
@@ -65,8 +67,8 @@ public class WildcardServletApplicationContextTest extends TestCase {
     private ClassLoader original;
 
     /** {@inheritDoc} */
-    @Override
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         servletContext = EasyMock.createMock(ServletContext.class);
         original = Thread.currentThread().getContextClassLoader();
         try {
@@ -78,8 +80,8 @@ public class WildcardServletApplicationContextTest extends TestCase {
     }
 
     /** {@inheritDoc} */
-    @Override
-    protected void tearDown() {
+    @AfterEach
+    void tearDown() {
         Thread.currentThread().setContextClassLoader(original);
     }
 
@@ -88,7 +90,8 @@ public class WildcardServletApplicationContextTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testGetResources() throws IOException {
+    @Test
+    void testGetResources() throws IOException {
         String url = "/test.properties";
         HashSet<URL> set = new HashSet<URL>();
         URL u = new URL("file://tiles/test.properties");

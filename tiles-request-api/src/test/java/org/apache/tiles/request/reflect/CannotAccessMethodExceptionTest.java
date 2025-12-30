@@ -21,22 +21,23 @@
 
 package org.apache.tiles.request.reflect;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link CannotAccessMethodException}.
  *
  * @version $Rev$ $Date$
  */
-public class CannotAccessMethodExceptionTest {
+class CannotAccessMethodExceptionTest {
 
     /**
      * Test method for {@link org.apache.tiles.CannotAccessMethodException#CannotAccessMethodException()}.
      */
     @Test
-    public void testCannotAccessMethodException() {
+    void testCannotAccessMethodException() {
         CannotAccessMethodException exception = new CannotAccessMethodException();
         assertNull(exception.getMessage());
         assertNull(exception.getCause());
@@ -46,7 +47,7 @@ public class CannotAccessMethodExceptionTest {
      * Test method for {@link CannotAccessMethodException#CannotAccessMethodException(String)}.
      */
     @Test
-    public void testCannotAccessMethodExceptionString() {
+    void testCannotAccessMethodExceptionString() {
         CannotAccessMethodException exception = new CannotAccessMethodException("my message");
         assertEquals("my message", exception.getMessage());
         assertNull(exception.getCause());
@@ -56,7 +57,7 @@ public class CannotAccessMethodExceptionTest {
      * Test method for {@link CannotAccessMethodException#CannotAccessMethodException(Throwable)}.
      */
     @Test
-    public void testCannotAccessMethodExceptionThrowable() {
+    void testCannotAccessMethodExceptionThrowable() {
         Throwable cause = new Throwable();
         CannotAccessMethodException exception = new CannotAccessMethodException(cause);
         assertEquals(cause.toString(), exception.getMessage());
@@ -67,7 +68,7 @@ public class CannotAccessMethodExceptionTest {
      * Test method for {@link CannotAccessMethodException#CannotAccessMethodException(String, Throwable)}.
      */
     @Test
-    public void testCannotAccessMethodExceptionStringThrowable() {
+    void testCannotAccessMethodExceptionStringThrowable() {
         Throwable cause = new Throwable();
         CannotAccessMethodException exception = new CannotAccessMethodException("my message", cause);
         assertEquals("my message", exception.getMessage());

@@ -21,27 +21,28 @@
 
 package org.apache.tiles.request.servlet;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link ExternalWriterHttpServletResponse}.
  */
-public class ExternalWriterHttpServletResponseTest {
+class ExternalWriterHttpServletResponseTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.servlet.ExternalWriterHttpServletResponse#getWriter()}.
      */
     @Test
-    public void testGetWriter() {
+    void testGetWriter() {
         HttpServletResponse wrappedResponse = createMock(HttpServletResponse.class);
         Writer writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);

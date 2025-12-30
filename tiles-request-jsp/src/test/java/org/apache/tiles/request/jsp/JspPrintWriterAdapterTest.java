@@ -20,20 +20,27 @@
  */
 package org.apache.tiles.request.jsp;
 
-import static org.easymock.classextension.EasyMock.*;
+import org.junit.jupiter.api.Test;
 
+import jakarta.servlet.jsp.JspWriter;
 import java.io.IOException;
 
-import javax.servlet.jsp.JspWriter;
-
-import junit.framework.TestCase;
+import static org.easymock.EasyMock.aryEq;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link JspPrintWriterAdapter}.
  *
  * @version $Rev$ $Date$
  */
-public class JspPrintWriterAdapterTest extends TestCase {
+class JspPrintWriterAdapterTest {
 
     /**
      * The string length.
@@ -45,7 +52,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testWriteInt() throws IOException {
+    @Test
+    void testWriteInt() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.write(1);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -59,7 +67,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testWriteCharArray() throws IOException {
+    @Test
+    void testWriteCharArray() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.write(aryEq(result.toCharArray()));
@@ -74,7 +83,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testWriteCharArrayIntInt() throws IOException {
+    @Test
+    void testWriteCharArrayIntInt() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.write(aryEq(result.toCharArray()), eq(0),
@@ -90,7 +100,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testFlush() throws IOException {
+    @Test
+    void testFlush() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.flush();
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -104,7 +115,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testClose() throws IOException {
+    @Test
+    void testClose() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.close();
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -118,7 +130,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintBoolean() throws IOException {
+    @Test
+    void testPrintBoolean() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print(true);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -132,7 +145,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintChar() throws IOException {
+    @Test
+    void testPrintChar() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print('c');
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -146,7 +160,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintInt() throws IOException {
+    @Test
+    void testPrintInt() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print(1);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -160,7 +175,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintLong() throws IOException {
+    @Test
+    void testPrintLong() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print(1L);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -174,7 +190,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintFloat() throws IOException {
+    @Test
+    void testPrintFloat() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print(1f);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -188,7 +205,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintDouble() throws IOException {
+    @Test
+    void testPrintDouble() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print(1d);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -202,7 +220,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintCharArray() throws IOException {
+    @Test
+    void testPrintCharArray() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.print(aryEq(result.toCharArray()));
@@ -217,7 +236,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintln() throws IOException {
+    @Test
+    void testPrintln() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println();
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -231,7 +251,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnBoolean() throws IOException {
+    @Test
+    void testPrintlnBoolean() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println(true);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -245,7 +266,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnChar() throws IOException {
+    @Test
+    void testPrintlnChar() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println('c');
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -259,7 +281,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnInt() throws IOException {
+    @Test
+    void testPrintlnInt() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println(1);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -273,7 +296,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnLong() throws IOException {
+    @Test
+    void testPrintlnLong() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println(1L);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -287,7 +311,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnFloat() throws IOException {
+    @Test
+    void testPrintlnFloat() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println(1f);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -301,7 +326,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnDouble() throws IOException {
+    @Test
+    void testPrintlnDouble() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println(1d);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -315,7 +341,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnCharArray() throws IOException {
+    @Test
+    void testPrintlnCharArray() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.println(aryEq(result.toCharArray()));
@@ -328,7 +355,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
     /**
      * Test method for {@link org.apache.tiles.request.jsp.JspPrintWriterAdapter#getJspWriter()}.
      */
-    public void testGetJspWriter() {
+    @Test
+    void testGetJspWriter() {
         JspWriter writer = createMock(JspWriter.class);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
         assertEquals(writer, adapter.getJspWriter());
@@ -339,7 +367,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testAppendChar() throws IOException {
+    @Test
+    void testAppendChar() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         expect(writer.append('c')).andReturn(writer);
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -354,7 +383,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testAppendCharSequenceIntInt() throws IOException {
+    @Test
+    void testAppendCharSequenceIntInt() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         CharSequence sequence = createMock(CharSequence.class);
         expect(writer.append(sequence, 0, STRING_LENGTH)).andReturn(writer);
@@ -369,7 +399,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testAppendCharSequence() throws IOException {
+    @Test
+    void testAppendCharSequence() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         CharSequence sequence = createMock(CharSequence.class);
         expect(writer.append(sequence)).andReturn(writer);
@@ -384,7 +415,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintObject() throws IOException {
+    @Test
+    void testPrintObject() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         Object obj = createMock(Object.class);
         writer.print(obj);
@@ -399,7 +431,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintString() throws IOException {
+    @Test
+    void testPrintString() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print("this is a string");
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -413,7 +446,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnObject() throws IOException {
+    @Test
+    void testPrintlnObject() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         Object obj = createMock(Object.class);
         writer.println(obj);
@@ -428,7 +462,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnString() throws IOException {
+    @Test
+    void testPrintlnString() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println("this is a string");
         JspPrintWriterAdapter adapter = new JspPrintWriterAdapter(writer);
@@ -442,7 +477,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testWriteStringIntInt() throws IOException {
+    @Test
+    void testWriteStringIntInt() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.write(result, 0, STRING_LENGTH);
@@ -457,7 +493,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testWriteString() throws IOException {
+    @Test
+    void testWriteString() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.write(result);
@@ -472,7 +509,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testWriteIntEx() throws IOException {
+    @Test
+    void testWriteIntEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.write(1);
         expectLastCall().andThrow(new IOException());
@@ -489,7 +527,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testWriteCharArrayEx() throws IOException {
+    @Test
+    void testWriteCharArrayEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.write(aryEq(result.toCharArray()));
@@ -507,7 +546,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testWriteCharArrayIntIntEx() throws IOException {
+    @Test
+    void testWriteCharArrayIntIntEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.write(aryEq(result.toCharArray()), eq(0),
@@ -526,7 +566,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testFlushEx() throws IOException {
+    @Test
+    void testFlushEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.flush();
         expectLastCall().andThrow(new IOException());
@@ -543,7 +584,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testCloseEx() throws IOException {
+    @Test
+    void testCloseEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.close();
         expectLastCall().andThrow(new IOException());
@@ -560,7 +602,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintBooleanEx() throws IOException {
+    @Test
+    void testPrintBooleanEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print(true);
         expectLastCall().andThrow(new IOException());
@@ -577,7 +620,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintCharEx() throws IOException {
+    @Test
+    void testPrintCharEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print('c');
         expectLastCall().andThrow(new IOException());
@@ -594,7 +638,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintIntEx() throws IOException {
+    @Test
+    void testPrintIntEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print(1);
         expectLastCall().andThrow(new IOException());
@@ -611,7 +656,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintLongEx() throws IOException {
+    @Test
+    void testPrintLongEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print(1L);
         expectLastCall().andThrow(new IOException());
@@ -628,7 +674,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintFloatEx() throws IOException {
+    @Test
+    void testPrintFloatEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print(1f);
         expectLastCall().andThrow(new IOException());
@@ -645,7 +692,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintDoubleEx() throws IOException {
+    @Test
+    void testPrintDoubleEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print(1d);
         expectLastCall().andThrow(new IOException());
@@ -662,7 +710,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintCharArrayEx() throws IOException {
+    @Test
+    void testPrintCharArrayEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.print(aryEq(result.toCharArray()));
@@ -680,7 +729,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnEx() throws IOException {
+    @Test
+    void testPrintlnEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println();
         expectLastCall().andThrow(new IOException());
@@ -697,7 +747,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnBooleanEx() throws IOException {
+    @Test
+    void testPrintlnBooleanEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println(true);
         expectLastCall().andThrow(new IOException());
@@ -714,7 +765,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnCharEx() throws IOException {
+    @Test
+    void testPrintlnCharEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println('c');
         expectLastCall().andThrow(new IOException());
@@ -731,7 +783,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnIntEx() throws IOException {
+    @Test
+    void testPrintlnIntEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println(1);
         expectLastCall().andThrow(new IOException());
@@ -748,7 +801,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnLongEx() throws IOException {
+    @Test
+    void testPrintlnLongEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println(1L);
         expectLastCall().andThrow(new IOException());
@@ -765,7 +819,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnFloatEx() throws IOException {
+    @Test
+    void testPrintlnFloatEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println(1f);
         expectLastCall().andThrow(new IOException());
@@ -782,7 +837,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnDoubleEx() throws IOException {
+    @Test
+    void testPrintlnDoubleEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println(1d);
         expectLastCall().andThrow(new IOException());
@@ -799,7 +855,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnCharArrayEx() throws IOException {
+    @Test
+    void testPrintlnCharArrayEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.println(aryEq(result.toCharArray()));
@@ -817,7 +874,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testAppendCharEx() throws IOException {
+    @Test
+    void testAppendCharEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         expect(writer.append('c')).andThrow(new IOException());
         writer.flush();
@@ -834,7 +892,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testAppendCharSequenceIntIntEx() throws IOException {
+    @Test
+    void testAppendCharSequenceIntIntEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         CharSequence sequence = createMock(CharSequence.class);
         expect(writer.append(sequence, 0, STRING_LENGTH)).andThrow(new IOException());
@@ -851,7 +910,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testAppendCharSequenceEx() throws IOException {
+    @Test
+    void testAppendCharSequenceEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         CharSequence sequence = createMock(CharSequence.class);
         expect(writer.append(sequence)).andThrow(new IOException());
@@ -868,7 +928,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintObjectEx() throws IOException {
+    @Test
+    void testPrintObjectEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         Object obj = createMock(Object.class);
         writer.print(obj);
@@ -886,7 +947,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintStringEx() throws IOException {
+    @Test
+    void testPrintStringEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.print("this is a string");
         expectLastCall().andThrow(new IOException());
@@ -903,7 +965,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnObjectEx() throws IOException {
+    @Test
+    void testPrintlnObjectEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         Object obj = createMock(Object.class);
         writer.println(obj);
@@ -921,7 +984,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testPrintlnStringEx() throws IOException {
+    @Test
+    void testPrintlnStringEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         writer.println("this is a string");
         expectLastCall().andThrow(new IOException());
@@ -938,7 +1002,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testWriteStringIntIntEx() throws IOException {
+    @Test
+    void testWriteStringIntIntEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.write(result, 0, STRING_LENGTH);
@@ -956,7 +1021,8 @@ public class JspPrintWriterAdapterTest extends TestCase {
      *
      * @throws IOException If something goes wrong.
      */
-    public void testWriteStringEx() throws IOException {
+    @Test
+    void testWriteStringEx() throws IOException {
         JspWriter writer = createMock(JspWriter.class);
         String result = "this is a test";
         writer.write(result);

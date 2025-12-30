@@ -20,26 +20,24 @@
  */
 package org.apache.tiles.request;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
 import static org.easymock.EasyMock.*;
 
 import java.util.Map;
-
-import org.junit.Test;
 
 /**
  * Tests {@link ApplicationAccess}.
  *
  * @version $Rev: 1066446 $ $Date: 2011-02-02 13:38:04 +0100 (Wed, 02 Feb 2011) $
  */
-public class ApplicationAccessTest {
+class ApplicationAccessTest {
 
     /**
      * Test method for {@link ApplicationAccess#register(ApplicationContext)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testRegister() {
+    void testRegister() {
         ApplicationContext applicationContext = createMock(ApplicationContext.class);
         Map<String, Object> applicationScope = createMock(Map.class);
 

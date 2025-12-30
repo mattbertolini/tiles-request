@@ -20,24 +20,28 @@
  */
 package org.apache.tiles.request.servlet.extractor;
 
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.util.Enumeration;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link SessionScopeExtractor}.
  *
  * @version $Rev$ $Date$
  */
-public class SessionScopeExtractorTest {
+class SessionScopeExtractorTest {
 
     /**
      * The request.
@@ -57,8 +61,8 @@ public class SessionScopeExtractorTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         request = createMock(HttpServletRequest.class);
         session = createMock(HttpSession.class);
         extractor = new SessionScopeExtractor(request);
@@ -68,7 +72,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link SessionScopeExtractor#setValue(java.lang.String, java.lang.Object)}.
      */
     @Test
-    public void testSetValue() {
+    void testSetValue() {
         expect(request.getSession()).andReturn(session);
         session.setAttribute("name", "value");
 
@@ -81,7 +85,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link SessionScopeExtractor#removeValue(java.lang.String)}.
      */
     @Test
-    public void testRemoveValue() {
+    void testRemoveValue() {
         expect(request.getSession(false)).andReturn(session);
         session.removeAttribute("name");
 
@@ -93,9 +97,8 @@ public class SessionScopeExtractorTest {
     /**
      * Test method for {@link SessionScopeExtractor#getKeys()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testGetKeys() {
+    void testGetKeys() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(request.getSession(false)).andReturn(session);
@@ -110,7 +113,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link SessionScopeExtractor#getKeys()}.
      */
     @Test
-    public void testGetKeysNoSession() {
+    void testGetKeysNoSession() {
         expect(request.getSession(false)).andReturn(null);
 
         replay(request, session);
@@ -124,7 +127,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link SessionScopeExtractor#getValue(java.lang.String)}.
      */
     @Test
-    public void testGetValue() {
+    void testGetValue() {
         expect(request.getSession(false)).andReturn(session);
         expect(session.getAttribute("name")).andReturn("value");
 
@@ -137,7 +140,7 @@ public class SessionScopeExtractorTest {
      * Test method for {@link SessionScopeExtractor#getValue(java.lang.String)}.
      */
     @Test
-    public void testGetValueNoSession() {
+    void testGetValueNoSession() {
         expect(request.getSession(false)).andReturn(null);
 
         replay(request, session);

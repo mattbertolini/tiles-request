@@ -20,22 +20,26 @@
  */
 package org.apache.tiles.request.render;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.DispatchRequest;
+import org.apache.tiles.request.Request;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import org.apache.tiles.request.Request;
-import org.apache.tiles.request.DispatchRequest;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link DispatchRenderer}.
  *
  * @version $Rev$ $Date$
  */
-public class DispatchRendererTest {
+class DispatchRendererTest {
 
     /**
      * The renderer.
@@ -43,8 +47,8 @@ public class DispatchRendererTest {
     private DispatchRenderer renderer;
 
     /** {@inheritDoc} */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         renderer = new DispatchRenderer();
     }
 
@@ -55,7 +59,7 @@ public class DispatchRendererTest {
      * @throws IOException If something goes wrong during rendition.
      */
     @Test
-    public void testWrite() throws IOException {
+    void testWrite() throws IOException {
         DispatchRequest requestContext = createMock(DispatchRequest.class);
         requestContext.dispatch("/myTemplate.jsp");
         replay(requestContext);
@@ -69,11 +73,11 @@ public class DispatchRendererTest {
      *
      * @throws IOException If something goes wrong during rendition.
      */
-    @Test(expected = CannotRenderException.class)
+    @Test
     public void testWriteNull() throws IOException {
         DispatchRequest requestContext = createMock(DispatchRequest.class);
         replay(requestContext);
-        renderer.render(null, requestContext);
+        assertThrows(CannotRenderException.class, () -> renderer.render(null, requestContext));
         verify(requestContext);
     }
 
@@ -82,7 +86,7 @@ public class DispatchRendererTest {
      * {@link DispatchRenderer#isRenderable(String, DispatchRequest)}.
      */
     @Test
-    public void testIsRenderable() {
+    void testIsRenderable() {
         Request requestContext = createMock(DispatchRequest.class);
         replay(requestContext);
         assertTrue(renderer.isRenderable("/myTemplate.jsp", requestContext));

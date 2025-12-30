@@ -20,37 +20,40 @@
  */
 package org.apache.tiles.request.velocity.render;
 
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.io.Writer;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.tiles.request.render.CannotRenderException;
 import org.apache.tiles.request.render.Renderer;
 import org.apache.tiles.request.servlet.ServletRequest;
 import org.apache.velocity.Template;
 import org.apache.velocity.tools.view.VelocityView;
 import org.apache.velocity.tools.view.ViewToolContext;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Writer;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link VelocityRenderer}.
  *
  * @version $Rev$ $Date$
  */
-public class VelocityRendererTest {
+class VelocityRendererTest {
 
     /**
      * Tests {@link VelocityRenderer#render(String, org.apache.tiles.request.Request)}.
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testRender() throws IOException {
+    void testRender() throws IOException {
         VelocityView view = createMock(VelocityView.class);
         ServletRequest request = createMock(ServletRequest.class);
         HttpServletRequest httpRequest = createMock(HttpServletRequest.class);
@@ -74,17 +77,16 @@ public class VelocityRendererTest {
 
     /**
      * Tests {@link VelocityRenderer#render(String, org.apache.tiles.request.Request)}.
-     * @throws IOException If something goes wrong.
      */
-    @Test(expected = CannotRenderException.class)
-    public void testRenderException() throws IOException {
+    @Test
+    void testRenderException() {
         VelocityView view = createMock(VelocityView.class);
         ServletRequest request = createMock(ServletRequest.class);
 
         replay(view, request);
         Renderer renderer = new VelocityRenderer(view);
         try {
-            renderer.render(null, request);
+            assertThrows(CannotRenderException.class, () -> renderer.render(null, request));
         } finally {
             verify(view, request);
         }
@@ -96,7 +98,7 @@ public class VelocityRendererTest {
      * .
      */
     @Test
-    public void testIsRenderable() {
+    void testIsRenderable() {
         VelocityView view = createMock(VelocityView.class);
         replay(view);
         Renderer renderer = new VelocityRenderer(view);

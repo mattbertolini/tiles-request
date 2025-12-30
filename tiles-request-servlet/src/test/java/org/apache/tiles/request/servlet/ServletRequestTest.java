@@ -20,35 +20,40 @@
  */
 package org.apache.tiles.request.servlet;
 
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.tiles.request.ApplicationContext;
 import org.apache.tiles.request.collection.HeaderValuesMap;
 import org.apache.tiles.request.collection.ReadOnlyEnumerationMap;
 import org.apache.tiles.request.collection.ScopeMap;
 import org.apache.tiles.request.servlet.extractor.HeaderExtractor;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Locale;
+import java.util.Map;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link ServletRequest}.
  *
  * @version $Rev$ $Date$
  */
-public class ServletRequestTest {
+class ServletRequestTest {
 
     /**
      * The application context.
@@ -73,8 +78,8 @@ public class ServletRequestTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         applicationContext = createMock(ApplicationContext.class);
         request = createMock(HttpServletRequest.class);
         response = createMock(HttpServletResponse.class);
@@ -87,7 +92,7 @@ public class ServletRequestTest {
      * @throws ServletException If something goes wrong.
      */
     @Test
-    public void testDoForward() throws ServletException, IOException {
+    void testDoForward() throws ServletException, IOException {
         RequestDispatcher rd = createMock(RequestDispatcher.class);
 
         expect(response.isCommitted()).andReturn(false);
@@ -101,16 +106,15 @@ public class ServletRequestTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#doForward(java.lang.String)}.
-     * @throws IOException If something goes wrong.
      */
-    @Test(expected = IOException.class)
-    public void testDoForwardNoDispatcher() throws IOException {
+    @Test
+    void testDoForwardNoDispatcher() {
         expect(response.isCommitted()).andReturn(false);
         expect(request.getRequestDispatcher("/my/path")).andReturn(null);
 
         replay(applicationContext, request, response);
         try {
-            req.doForward("/my/path");
+            assertThrows(IOException.class, () -> req.doForward("/my/path"));
         } finally {
             verify(applicationContext, request, response);
         }
@@ -121,8 +125,8 @@ public class ServletRequestTest {
      * @throws IOException If something goes wrong.
      * @throws ServletException If something goes wrong.
      */
-    @Test(expected = IOException.class)
-    public void testDoForwardServletException() throws ServletException, IOException {
+    @Test
+    void testDoForwardServletException() throws ServletException, IOException {
         RequestDispatcher rd = createMock(RequestDispatcher.class);
 
         expect(response.isCommitted()).andReturn(false);
@@ -132,7 +136,7 @@ public class ServletRequestTest {
 
         replay(applicationContext, request, response, rd);
         try {
-            req.doForward("/my/path");
+            assertThrows(IOException.class, () -> req.doForward("/my/path"));
         } finally {
             verify(applicationContext, request, response, rd);
         }
@@ -144,7 +148,7 @@ public class ServletRequestTest {
      * @throws ServletException If something goes wrong.
      */
     @Test
-    public void testDoForwardInclude() throws ServletException, IOException {
+    void testDoForwardInclude() throws ServletException, IOException {
         RequestDispatcher rd = createMock(RequestDispatcher.class);
 
         expect(response.isCommitted()).andReturn(true);
@@ -162,7 +166,7 @@ public class ServletRequestTest {
      * @throws ServletException If something goes wrong.
      */
     @Test
-    public void testDoInclude() throws IOException, ServletException {
+    void testDoInclude() throws IOException, ServletException {
         RequestDispatcher rd = createMock(RequestDispatcher.class);
 
         expect(request.getRequestDispatcher("/my/path")).andReturn(rd);
@@ -175,15 +179,14 @@ public class ServletRequestTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#doInclude(java.lang.String)}.
-     * @throws IOException If something goes wrong.
      */
-    @Test(expected = IOException.class)
-    public void testDoIncludeNoDispatcher() throws IOException {
+    @Test
+    void testDoIncludeNoDispatcher() {
         expect(request.getRequestDispatcher("/my/path")).andReturn(null);
 
         replay(applicationContext, request, response);
         try {
-            req.doInclude("/my/path");
+            assertThrows(IOException.class, () -> req.doInclude("/my/path"));
         } finally {
             verify(applicationContext, request, response);
         }
@@ -194,8 +197,8 @@ public class ServletRequestTest {
      * @throws IOException If something goes wrong.
      * @throws ServletException If something goes wrong.
      */
-    @Test(expected = IOException.class)
-    public void testDoIncludeServletException() throws IOException, ServletException {
+    @Test
+    void testDoIncludeServletException() throws IOException, ServletException {
         RequestDispatcher rd = createMock(RequestDispatcher.class);
 
         expect(request.getRequestDispatcher("/my/path")).andReturn(rd);
@@ -204,7 +207,7 @@ public class ServletRequestTest {
 
         replay(applicationContext, request, response, rd);
         try {
-            req.doInclude("/my/path");
+            assertThrows(IOException.class, () -> req.doInclude("/my/path"));
         } finally {
             verify(applicationContext, request, response, rd);
         }
@@ -214,40 +217,39 @@ public class ServletRequestTest {
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#getHeader()}.
      */
     @Test
-    public void testGetHeader() {
-        assertTrue(req.getHeader() instanceof ReadOnlyEnumerationMap);
+    void testGetHeader() {
+        assertInstanceOf(ReadOnlyEnumerationMap.class, req.getHeader());
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#getHeader()}.
      */
     @Test
-    public void testGetResponseHeaders() {
-        assertTrue(req.getResponseHeaders() instanceof HeaderExtractor);
+    void testGetResponseHeaders() {
+        assertInstanceOf(HeaderExtractor.class, req.getResponseHeaders());
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#getHeaderValues()}.
      */
     @Test
-    public void testGetHeaderValues() {
-        assertTrue(req.getHeaderValues() instanceof HeaderValuesMap);
+    void testGetHeaderValues() {
+        assertInstanceOf(HeaderValuesMap.class, req.getHeaderValues());
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#getParam()}.
      */
     @Test
-    public void testGetParam() {
-        assertTrue(req.getParam() instanceof ReadOnlyEnumerationMap);
+    void testGetParam() {
+        assertInstanceOf(ReadOnlyEnumerationMap.class, req.getParam());
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#getParamValues()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testGetParamValues() {
+    void testGetParamValues() {
         Map<String, String[]> paramMap = createMock(Map.class);
 
         expect(request.getParameterMap()).andReturn(paramMap);
@@ -261,16 +263,16 @@ public class ServletRequestTest {
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#getRequestScope()}.
      */
     @Test
-    public void testGetRequestScope() {
-        assertTrue(req.getRequestScope() instanceof ScopeMap);
+    void testGetRequestScope() {
+        assertInstanceOf(ScopeMap.class, req.getRequestScope());
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#getSessionScope()}.
      */
     @Test
-    public void testGetSessionScope() {
-        assertTrue(req.getSessionScope() instanceof ScopeMap);
+    void testGetSessionScope() {
+        assertInstanceOf(ScopeMap.class, req.getSessionScope());
     }
 
     /**
@@ -278,7 +280,7 @@ public class ServletRequestTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testGetOutputStream() throws IOException {
+    void testGetOutputStream() throws IOException {
         ServletOutputStream os = createMock(ServletOutputStream.class);
 
         expect(response.getOutputStream()).andReturn(os);
@@ -293,7 +295,7 @@ public class ServletRequestTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testGetWriter() throws IOException {
+    void testGetWriter() throws IOException {
         PrintWriter os = createMock(PrintWriter.class);
 
         expect(response.getWriter()).andReturn(os);
@@ -308,7 +310,7 @@ public class ServletRequestTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testGetPrintWriter() throws IOException {
+    void testGetPrintWriter() throws IOException {
         PrintWriter os = createMock(PrintWriter.class);
 
         expect(response.getWriter()).andReturn(os);
@@ -322,7 +324,7 @@ public class ServletRequestTest {
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#isResponseCommitted()}.
      */
     @Test
-    public void testIsResponseCommitted() {
+    void testIsResponseCommitted() {
         expect(response.isCommitted()).andReturn(true);
 
         replay(applicationContext, request, response);
@@ -334,7 +336,7 @@ public class ServletRequestTest {
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#setContentType(java.lang.String)}.
      */
     @Test
-    public void testSetContentType() {
+    void testSetContentType() {
         response.setContentType("text/html");
 
         replay(applicationContext, request, response);
@@ -346,7 +348,7 @@ public class ServletRequestTest {
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#getRequestLocale()}.
      */
     @Test
-    public void testGetRequestLocale() {
+    void testGetRequestLocale() {
         Locale locale = Locale.ITALY;
 
         expect(request.getLocale()).andReturn(locale);
@@ -360,7 +362,7 @@ public class ServletRequestTest {
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#getRequest()}.
      */
     @Test
-    public void testGetRequest() {
+    void testGetRequest() {
         replay(applicationContext, request, response);
         assertEquals(request, req.getRequest());
         verify(applicationContext, request, response);
@@ -370,7 +372,7 @@ public class ServletRequestTest {
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#getResponse()}.
      */
     @Test
-    public void testGetResponse() {
+    void testGetResponse() {
         replay(applicationContext, request, response);
         assertEquals(response, req.getResponse());
         verify(applicationContext, request, response);
@@ -380,7 +382,7 @@ public class ServletRequestTest {
      * Test method for {@link org.apache.tiles.request.servlet.ServletRequest#isUserInRole(java.lang.String)}.
      */
     @Test
-    public void testIsUserInRole() {
+    void testIsUserInRole() {
         expect(request.isUserInRole("myrole")).andReturn(true);
 
         replay(applicationContext, request, response);

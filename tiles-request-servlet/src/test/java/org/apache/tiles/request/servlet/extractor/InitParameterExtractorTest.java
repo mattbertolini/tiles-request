@@ -20,23 +20,24 @@
  */
 package org.apache.tiles.request.servlet.extractor;
 
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import jakarta.servlet.ServletContext;
 import java.util.Enumeration;
 
-import javax.servlet.ServletContext;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link InitParameterExtractor}.
  *
  * @version $Rev$ $Date$
  */
-public class InitParameterExtractorTest {
+class InitParameterExtractorTest {
 
     /**
      * The servlet context.
@@ -51,8 +52,8 @@ public class InitParameterExtractorTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         context = createMock(ServletContext.class);
         extractor = new InitParameterExtractor(context);
     }
@@ -60,9 +61,8 @@ public class InitParameterExtractorTest {
     /**
      * Test method for {@link org.apache.tiles.request.servlet.extractor.InitParameterExtractor#getKeys()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testGetKeys() {
+    void testGetKeys() {
         Enumeration<String> keys = createMock(Enumeration.class);
 
         expect(context.getInitParameterNames()).andReturn(keys);
@@ -76,7 +76,7 @@ public class InitParameterExtractorTest {
      * Test method for {@link InitParameterExtractor#getValue(String)}.
      */
     @Test
-    public void testGetValue() {
+    void testGetValue() {
         expect(context.getInitParameter("name")).andReturn("value");
 
         replay(context);

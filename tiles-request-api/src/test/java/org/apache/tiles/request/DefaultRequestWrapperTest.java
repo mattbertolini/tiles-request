@@ -21,13 +21,12 @@
 package org.apache.tiles.request;
 
 import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,14 +37,14 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.tiles.request.attribute.Addable;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link DefaultRequestWrapper}.
  *
  * @version $Rev: 1215009 $ $Date: 2011-12-16 01:32:31 +0100 (Fri, 16 Dec 2011) $
  */
-public class DefaultRequestWrapperTest {
+class DefaultRequestWrapperTest {
 
     /**
      * Creates the RequestWrapper to be tested.
@@ -72,7 +71,7 @@ public class DefaultRequestWrapperTest {
      * Test method for {@link org.apache.tiles.request.DefaultRequestWrapper#getWrappedRequest()}.
      */
     @Test
-    public void testGetWrappedRequest() {
+    void testGetWrappedRequest() {
         Request wrappedRequest = createMockRequest();
 
         replay(wrappedRequest);
@@ -86,7 +85,7 @@ public class DefaultRequestWrapperTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetHeader() {
+    void testGetHeader() {
         Request wrappedRequest = createMockRequest();
         Map<String, String> header = createMock(Map.class);
 
@@ -103,7 +102,7 @@ public class DefaultRequestWrapperTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetResponseHeaders() {
+    void testGetResponseHeaders() {
         Request wrappedRequest = createMockRequest();
         Addable<String> header = createMock(Addable.class);
 
@@ -120,7 +119,7 @@ public class DefaultRequestWrapperTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetHeaderValues() {
+    void testGetHeaderValues() {
         Request wrappedRequest = createMockRequest();
         Map<String, String[]> header = createMock(Map.class);
 
@@ -137,7 +136,7 @@ public class DefaultRequestWrapperTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetContext() {
+    void testGetContext() {
         Request wrappedRequest = createMockRequest();
         Map<String, Object> context = createMock(Map.class);
 
@@ -155,7 +154,7 @@ public class DefaultRequestWrapperTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetAvailableScopes() {
+    void testGetAvailableScopes() {
         Request wrappedRequest = createMockRequest();
         Map<String, Object> context = createMock(Map.class);
 
@@ -173,7 +172,7 @@ public class DefaultRequestWrapperTest {
      * Test method for {@link org.apache.tiles.request.DefaultRequestWrapper#getApplicationContext()}.
      */
     @Test
-    public void testGetApplicationContext() {
+    void testGetApplicationContext() {
         Request wrappedRequest = createMockRequest();
         ApplicationContext applicationContext = createMock(ApplicationContext.class);
 
@@ -190,7 +189,7 @@ public class DefaultRequestWrapperTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testGetOutputStream() throws IOException {
+    void testGetOutputStream() throws IOException {
         Request wrappedRequest = createMockRequest();
         OutputStream stream = createMock(OutputStream.class);
 
@@ -207,7 +206,7 @@ public class DefaultRequestWrapperTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testGetWriter() throws IOException {
+    void testGetWriter() throws IOException {
         Request wrappedRequest = createMockRequest();
         Writer writer = createMock(Writer.class);
 
@@ -224,7 +223,7 @@ public class DefaultRequestWrapperTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testGetPrintWriter() throws IOException {
+    void testGetPrintWriter() throws IOException {
         Request wrappedRequest = createMockRequest();
         PrintWriter writer = createMock(PrintWriter.class);
 
@@ -240,7 +239,7 @@ public class DefaultRequestWrapperTest {
      * Test method for {@link org.apache.tiles.request.DefaultRequestWrapper#isResponseCommitted()}.
      */
     @Test
-    public void testIsResponseCommitted() {
+    void testIsResponseCommitted() {
         Request wrappedRequest = createMockRequest();
 
         expect(wrappedRequest.isResponseCommitted()).andReturn(Boolean.TRUE);
@@ -256,7 +255,7 @@ public class DefaultRequestWrapperTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetParam() {
+    void testGetParam() {
         Request wrappedRequest = createMockRequest();
         Map<String, String> param = createMock(Map.class);
 
@@ -273,7 +272,7 @@ public class DefaultRequestWrapperTest {
      */
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetParamValues() {
+    void testGetParamValues() {
         Request wrappedRequest = createMockRequest();
         Map<String, String[]> param = createMock(Map.class);
 
@@ -289,7 +288,7 @@ public class DefaultRequestWrapperTest {
      * Test method for {@link org.apache.tiles.request.DefaultRequestWrapper#getRequestLocale()}.
      */
     @Test
-    public void testGetRequestLocale() {
+    void testGetRequestLocale() {
         Request wrappedRequest = createMockRequest();
         Locale param = Locale.ITALY;
 
@@ -305,7 +304,7 @@ public class DefaultRequestWrapperTest {
      * Test method for {@link org.apache.tiles.request.DefaultRequestWrapper#isUserInRole(java.lang.String)}.
      */
     @Test
-    public void testIsUserInRole() {
+    void testIsUserInRole() {
         Request wrappedRequest = createMockRequest();
 
         expect(wrappedRequest.isUserInRole("myrole")).andReturn(Boolean.TRUE);

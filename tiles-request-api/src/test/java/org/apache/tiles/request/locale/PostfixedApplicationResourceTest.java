@@ -20,22 +20,23 @@
  */
 
 package org.apache.tiles.request.locale;
-import static org.junit.Assert.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests PostfixedApplicationResource.
  *
  * @version $Rev$ $Date$
  */
-public class PostfixedApplicationResourceTest {
+class PostfixedApplicationResourceTest {
 
-    private class TestApplicationResource extends PostfixedApplicationResource {
+    private static class TestApplicationResource extends PostfixedApplicationResource {
         public TestApplicationResource(String path, Locale locale) {
             super(path, locale);
         }
@@ -60,7 +61,7 @@ public class PostfixedApplicationResourceTest {
      * Test getLocalePath(String path, Locale locale).
      */
     @Test
-    public void testGetLocalePath() {
+    void testGetLocalePath() {
         TestApplicationResource resource = new TestApplicationResource("/my test/path_fr.html");
         assertEquals("/my test/path.html", resource.getLocalePath(null));
         assertEquals("/my test/path.html", resource.getLocalePath(Locale.ROOT));
@@ -70,7 +71,7 @@ public class PostfixedApplicationResourceTest {
     }
 
     @Test
-    public void testBuildFromString() {
+    void testBuildFromString() {
         TestApplicationResource resource = new TestApplicationResource("/my test/path_en_GB_scotland.html");
         assertEquals("/my test/path_en_GB_scotland.html", resource.getLocalePath());
         assertEquals("/my test/path.html", resource.getPath());
@@ -114,7 +115,7 @@ public class PostfixedApplicationResourceTest {
     }
 
     @Test
-    public void testBuildFromStringAndLocale() {
+    void testBuildFromStringAndLocale() {
         TestApplicationResource resource = new TestApplicationResource("/my test/path.html", new Locale("en", "GB", "scotland"));
         assertEquals("/my test/path_en_GB_scotland.html", resource.getLocalePath());
         assertEquals("/my test/path.html", resource.getPath());

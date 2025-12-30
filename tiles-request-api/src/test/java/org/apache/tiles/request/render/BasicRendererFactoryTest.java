@@ -20,19 +20,22 @@
  */
 package org.apache.tiles.request.render;
 
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
-
 import org.apache.tiles.request.ApplicationContext;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Basic renderer factory implementation.
  *
  * @version $Rev$ $Date$
  */
-public class BasicRendererFactoryTest {
+class BasicRendererFactoryTest {
 
     /**
      * The renderer factory.
@@ -42,8 +45,8 @@ public class BasicRendererFactoryTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         rendererFactory = new BasicRendererFactory();
         ApplicationContext applicationContext = createMock(ApplicationContext.class);
         replay(applicationContext);
@@ -54,7 +57,7 @@ public class BasicRendererFactoryTest {
      * {@link BasicRendererFactory#getRenderer(String)}.
      */
     @Test
-    public void testInitAndGetRenderer() {
+    void testInitAndGetRenderer() {
         Renderer renderer1 = createMock(Renderer.class);
         Renderer renderer2 = createMock(Renderer.class);
         Renderer renderer3 = createMock(Renderer.class);
@@ -81,8 +84,8 @@ public class BasicRendererFactoryTest {
      * Tests execution and
      * {@link BasicRendererFactory#getRenderer(String)}.
      */
-    @Test(expected = NoSuchRendererException.class)
-    public void testGetRendererException() {
+    @Test
+    void testGetRendererException() {
         Renderer renderer1 = createMock(Renderer.class);
         Renderer renderer2 = createMock(Renderer.class);
         Renderer renderer3 = createMock(Renderer.class);
@@ -95,7 +98,7 @@ public class BasicRendererFactoryTest {
         rendererFactory.registerRenderer("test2", renderer3);
         rendererFactory.setDefaultRenderer(renderer4);
         try {
-            rendererFactory.getRenderer("nothing");
+            assertThrows(NoSuchRendererException.class, () -> rendererFactory.getRenderer("nothing"));
         } finally {
             verify(renderer1, renderer2, renderer3, renderer4, applicationContext);
         }
@@ -105,7 +108,7 @@ public class BasicRendererFactoryTest {
      * Tests {@link BasicRendererFactory#initializeRenderer(AttributeRenderer)}.
      */
     @Test
-    public void testInitializeRenderer() {
+    void testInitializeRenderer() {
         // TODO This will be removed in future, only named renderers should be available.
     }
 }

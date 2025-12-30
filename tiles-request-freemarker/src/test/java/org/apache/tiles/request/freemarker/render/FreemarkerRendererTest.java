@@ -20,40 +20,47 @@
  */
 package org.apache.tiles.request.freemarker.render;
 
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
+import freemarker.ext.jakarta.servlet.HttpRequestHashModel;
+import freemarker.ext.jakarta.servlet.HttpRequestParametersHashModel;
+import freemarker.ext.jakarta.servlet.ServletContextHashModel;
+import freemarker.template.ObjectWrapper;
+import freemarker.template.TemplateHashModel;
+import jakarta.servlet.GenericServlet;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.tiles.request.ApplicationContext;
+import org.apache.tiles.request.render.CannotRenderException;
+import org.apache.tiles.request.servlet.ServletApplicationContext;
+import org.apache.tiles.request.servlet.ServletRequest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.Locale;
 
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.tiles.request.ApplicationContext;
-import org.apache.tiles.request.render.CannotRenderException;
-import org.apache.tiles.request.servlet.ServletApplicationContext;
-import org.apache.tiles.request.servlet.ServletRequest;
-import org.junit.Before;
-import org.junit.Test;
-
-import freemarker.ext.servlet.HttpRequestHashModel;
-import freemarker.ext.servlet.HttpRequestParametersHashModel;
-import freemarker.ext.servlet.ServletContextHashModel;
-import freemarker.template.ObjectWrapper;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.createMockBuilder;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link FreemarkerRenderer}.
  *
  * @version $Rev$ $Date$
  */
-public class FreemarkerRendererTest {
+class FreemarkerRendererTest {
 
     /**
      * The attribute name of the application model.
@@ -96,12 +103,14 @@ public class FreemarkerRendererTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() throws IOException {
         applicationContext = createMock(ServletApplicationContext.class);
         servletContext = createMock(ServletContext.class);
 
-        expect(applicationContext.getContext()).andReturn(servletContext);
+        expect(applicationContext.getContext()).andReturn(servletContext).anyTimes();
+        expect(servletContext.getRealPath(isA(String.class))).andReturn(null).anyTimes();
+        expect(servletContext.getResource(isA(String.class))).andReturn(null).anyTimes();
 
         replay(applicationContext, servletContext);
         renderer = FreemarkerRendererBuilder.createInstance()
@@ -120,7 +129,7 @@ public class FreemarkerRendererTest {
      * @throws ServletException If something goes wrong.
      */
     @Test
-    public void testWrite() throws IOException, ServletException {
+    void testWrite() throws IOException, ServletException {
         ApplicationContext applicationContext = createMock(ServletApplicationContext.class);
         ServletContext servletContext = createMock(ServletContext.class);
         GenericServlet servlet = createMockBuilder(GenericServlet.class).createMock();
@@ -137,8 +146,12 @@ public class FreemarkerRendererTest {
         expect(servletContext.getRealPath(isA(String.class))).andReturn(null).anyTimes();
         URL resource = getClass().getResource("/test.ftl");
         expect(servletContext.getResource(isA(String.class))).andReturn(resource).anyTimes();
-        expect(servletContext.getAttribute(ATTR_APPLICATION_MODEL)).andReturn(servletContextHashModel);
-        expect(servletContext.getAttribute(ATTR_JSP_TAGLIBS_MODEL)).andReturn(null);
+        expect(servletContext.getAttribute(ATTR_APPLICATION_MODEL)).andReturn(servletContextHashModel).anyTimes();
+        expect(servletContext.getAttribute(ATTR_JSP_TAGLIBS_MODEL)).andReturn(null).anyTimes();
+        servletContext.setAttribute(eq(ATTR_APPLICATION_MODEL), isA(ServletContextHashModel.class));
+        servletContext.setAttribute(eq(ATTR_JSP_TAGLIBS_MODEL), isA(TemplateHashModel.class));
+        expect(servletContext.getAttribute("org.eclipse.jakarta.servlet.jsp.jstl.fmt.localizationContext")).andReturn(null).anyTimes();
+        expect(servletContext.getAttribute("org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern")).andReturn(null).anyTimes();
 
         replay(applicationContext, servletContext, objectWrapper);
 
@@ -162,9 +175,12 @@ public class FreemarkerRendererTest {
         expect(request.getRequest()).andReturn(httpRequest);
         expect(request.getResponse()).andReturn(response);
         expect(request.getPrintWriter()).andReturn(printWriter);
+        expect(httpRequest.getLocale()).andReturn(Locale.ENGLISH).anyTimes();
         expect(httpRequest.getSession(false)).andReturn(null);
         expect(httpRequest.getAttribute(ATTR_REQUEST_MODEL)).andReturn(requestModel);
         expect(httpRequest.getAttribute(ATTR_REQUEST_PARAMETERS_MODEL)).andReturn(parametersModel);
+        expect(httpRequest.getAttribute("org.eclipse.jakarta.servlet.jsp.jstl.fmt.localizationContext")).andReturn(null).anyTimes();
+        expect(response.getContentType()).andReturn(null).anyTimes();
         response.setContentType("text/html; charset=ISO-8859-1");
         response.setHeader(eq("Cache-Control"), isA(String.class));
         response.setHeader("Pragma", "no-cache");
@@ -183,8 +199,8 @@ public class FreemarkerRendererTest {
      * @throws IOException If something goes wrong.
      * @throws ServletException If something goes wrong.
      */
-    @Test(expected = CannotRenderException.class)
-    public void testRenderException1() throws IOException, ServletException {
+    @Test
+    void testRenderException1() throws IOException, ServletException {
         ApplicationContext applicationContext = createMock(ServletApplicationContext.class);
         ServletContext servletContext = createMock(ServletContext.class);
         GenericServlet servlet = createMockBuilder(GenericServlet.class).createMock();
@@ -214,7 +230,7 @@ public class FreemarkerRendererTest {
 
         replay(request);
         try {
-            renderer.render(null, request);
+            assertThrows(CannotRenderException.class, () -> renderer.render(null, request));
         } finally {
             verify(applicationContext, servletContext, request, servlet,
                     servletConfig, objectWrapper);
@@ -228,7 +244,7 @@ public class FreemarkerRendererTest {
      * .
      */
     @Test
-    public void testIsRenderable() {
+    void testIsRenderable() {
         assertTrue(renderer.isRenderable("/my/template.ftl", null));
         assertFalse(renderer.isRenderable("my/template.ftl", null));
         assertFalse(renderer.isRenderable("/my/template.jsp", null));

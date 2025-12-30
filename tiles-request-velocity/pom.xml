@@ -26,38 +26,35 @@ under the License.
     <groupId>org.apache.tiles</groupId>
     <version>1.1-SNAPSHOT</version>
   </parent>
-  <groupId>org.apache.tiles</groupId>
-  <artifactId>tiles-request-velocity</artifactId>
-  <version>1.1-SNAPSHOT</version>
-  <name>Tiles Request - Velocity support</name>
+    <artifactId>tiles-request-velocity</artifactId>
+    <name>Tiles Request - Velocity support</name>
   <description>Velocity implementation of the Tiles request framework</description>
   <properties>
       <!-- decrease this whenever possible -->
       <checkstyle.maxAllowedViolations>6</checkstyle.maxAllowedViolations>
   </properties>
   <dependencies>
+      <dependency>
+          <groupId>org.apache.velocity</groupId>
+          <artifactId>velocity-engine-core</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.velocity.tools</groupId>
+          <artifactId>velocity-tools-view</artifactId>
+      </dependency>
   	<dependency>
-  		<groupId>org.apache.velocity</groupId>
-  		<artifactId>velocity-tools</artifactId>
-  	</dependency>
-  	<dependency>
-  		<groupId>javax.servlet</groupId>
-  		<artifactId>servlet-api</artifactId>
+  		<groupId>jakarta.servlet</groupId>
+  		<artifactId>jakarta.servlet-api</artifactId>
   		<scope>provided</scope>
   	</dependency>
   	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
+  		<groupId>org.junit.jupiter</groupId>
+  		<artifactId>junit-jupiter-api</artifactId>
   		<scope>test</scope>
   	</dependency>
   	<dependency>
   		<groupId>org.easymock</groupId>
   		<artifactId>easymock</artifactId>
-  		<scope>test</scope>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.easymock</groupId>
-  		<artifactId>easymockclassextension</artifactId>
   		<scope>test</scope>
   	</dependency>
   	<dependency>

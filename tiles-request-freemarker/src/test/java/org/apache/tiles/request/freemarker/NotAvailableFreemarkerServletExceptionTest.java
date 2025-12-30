@@ -21,22 +21,23 @@
 
 package org.apache.tiles.request.freemarker;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link NotAvailableFreemarkerServletException}.
  *
  * @version $Rev$ $Date$
  */
-public class NotAvailableFreemarkerServletExceptionTest {
+class NotAvailableFreemarkerServletExceptionTest {
 
     /**
      * Test method for {@link NotAvailableFreemarkerServletException#NotAvailableFreemarkerServletException()}.
      */
     @Test
-    public void testNotAvailableFreemarkerServletException() {
+    void testNotAvailableFreemarkerServletException() {
         NotAvailableFreemarkerServletException exception = new NotAvailableFreemarkerServletException();
         assertNull(exception.getMessage());
         assertNull(exception.getCause());
@@ -46,7 +47,7 @@ public class NotAvailableFreemarkerServletExceptionTest {
      * Test method for {@link NotAvailableFreemarkerServletException#NotAvailableFreemarkerServletException(String)}.
      */
     @Test
-    public void testNotAvailableFreemarkerServletExceptionString() {
+    void testNotAvailableFreemarkerServletExceptionString() {
         NotAvailableFreemarkerServletException exception = new NotAvailableFreemarkerServletException("my message");
         assertEquals("my message", exception.getMessage());
         assertNull(exception.getCause());
@@ -56,7 +57,7 @@ public class NotAvailableFreemarkerServletExceptionTest {
      * Test method for {@link NotAvailableFreemarkerServletException#NotAvailableFreemarkerServletException(Throwable)}.
      */
     @Test
-    public void testNotAvailableFreemarkerServletExceptionThrowable() {
+    void testNotAvailableFreemarkerServletExceptionThrowable() {
         Throwable cause = new Throwable();
         NotAvailableFreemarkerServletException exception = new NotAvailableFreemarkerServletException(cause);
         assertEquals(cause.toString(), exception.getMessage());
@@ -68,7 +69,7 @@ public class NotAvailableFreemarkerServletExceptionTest {
      * {@link NotAvailableFreemarkerServletException#NotAvailableFreemarkerServletException(String, Throwable)}.
      */
     @Test
-    public void testNotAvailableFreemarkerServletExceptionStringThrowable() {
+    void testNotAvailableFreemarkerServletExceptionStringThrowable() {
         Throwable cause = new Throwable();
         NotAvailableFreemarkerServletException exception =
             new NotAvailableFreemarkerServletException("my message", cause);

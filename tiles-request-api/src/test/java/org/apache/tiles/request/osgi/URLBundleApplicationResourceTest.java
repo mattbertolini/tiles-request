@@ -21,16 +21,16 @@
 
 package org.apache.tiles.request.osgi;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-
 import org.apache.tiles.request.locale.URLApplicationResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
 
 import static org.ops4j.pax.exam.CoreOptions.bootDelegationPackage;
 import static org.ops4j.pax.exam.CoreOptions.frameworkProperty;
@@ -46,7 +46,7 @@ import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 public class URLBundleApplicationResourceTest {
 
     @Configuration
-    public Option[] configuration() throws IOException {
+    public Option[] configuration() {
         return new Option[]{
                 junitBundles(),
                 frameworkProperty("org.osgi.framework.bundle.parent").value("app"),

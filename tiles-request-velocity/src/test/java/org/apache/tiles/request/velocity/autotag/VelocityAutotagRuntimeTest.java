@@ -20,30 +20,36 @@
  */
 package org.apache.tiles.request.velocity.autotag;
 
-import static org.easymock.EasyMock.*;
-import static org.junit.Assert.*;
-import java.io.Writer;
-import java.util.Map;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.tiles.autotag.core.runtime.ModelBody;
 import org.apache.tiles.request.ApplicationAccess;
 import org.apache.tiles.request.ApplicationContext;
 import org.apache.tiles.request.Request;
 import org.apache.tiles.request.velocity.VelocityRequest;
-import org.apache.tiles.request.velocity.autotag.VelocityAutotagRuntime;
-import org.apache.tiles.request.velocity.autotag.VelocityModelBody;
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.runtime.parser.node.ASTBlock;
 import org.apache.velocity.runtime.parser.node.ASTMap;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.apache.velocity.tools.view.ViewToolContext;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class VelocityAutotagRuntimeTest {
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.Writer;
+import java.util.Map;
+
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+class VelocityAutotagRuntimeTest {
     @Test
-    public void testCreateRequest() {
+    void testCreateRequest() {
         InternalContextAdapter context = createMock(InternalContextAdapter.class);
         Writer writer = createMock(Writer.class);
         Node node = createMock(Node.class);
@@ -63,12 +69,12 @@ public class VelocityAutotagRuntimeTest {
         VelocityAutotagRuntime runtime = new VelocityAutotagRuntime();
         runtime.render(context, writer, node);
         Request velocityRequest = runtime.createRequest();
-        assertTrue(velocityRequest instanceof VelocityRequest);
+        assertInstanceOf(VelocityRequest.class, velocityRequest);
         verify(context, writer, node, viewContext, request, response, servletContext, applicationContext);
     }
 
     @Test
-    public void testCreateModelBody() {
+    void testCreateModelBody() {
         InternalContextAdapter context = createMock(InternalContextAdapter.class);
         Writer writer = createMock(Writer.class);
         Node node = createMock(Node.class);
@@ -78,17 +84,16 @@ public class VelocityAutotagRuntimeTest {
         VelocityAutotagRuntime runtime = new VelocityAutotagRuntime();
         runtime.render(context, writer, node);
         ModelBody modelBody = runtime.createModelBody();
-        assertTrue(modelBody instanceof VelocityModelBody);
+        assertInstanceOf(VelocityModelBody.class, modelBody);
         verify(context, writer, node, block);
     }
 
     @Test
-    public void testGetParameter() {
+    void testGetParameter() {
         InternalContextAdapter context = createMock(InternalContextAdapter.class);
         Writer writer = createMock(Writer.class);
         Node node = createMock(Node.class);
         ASTMap astMap = createMock(ASTMap.class);
-        @SuppressWarnings("unchecked")
         Map<String, Object> params = createMock(Map.class);
         expect(node.jjtGetChild(0)).andReturn(astMap);
         expect(astMap.value(context)).andReturn(params);
@@ -102,7 +107,7 @@ public class VelocityAutotagRuntimeTest {
         int notnullParamDefault = runtime.getParameter("notnullParam", Integer.class, new Integer(24));
         int nullParamDefault = runtime.getParameter("nullParam", Integer.class, new Integer(24));
         assertEquals(42, notnullParam);
-        assertEquals(null, nullParam);
+        assertNull(nullParam);
         assertEquals(42, notnullParamDefault);
         assertEquals(24, nullParamDefault);
         verify(context, writer, node, astMap, params);

@@ -20,13 +20,14 @@
  */
 package org.apache.tiles.request.collection;
 
-import org.apache.tiles.request.collection.CollectionUtil;
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+
+import static org.easymock.EasyMock.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Enumeration;
 
-import org.junit.Test;
 
 /**
  * Test {@link RequestUtil}.
@@ -47,15 +48,14 @@ public class CollectionUtilTest {
     /**
      * Test method for {@link org.apache.tiles.request.RequestUtil#key(java.lang.Object)}.
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testKeyException() {
-        CollectionUtil.key(null);
+        assertThrows(IllegalArgumentException.class, () -> CollectionUtil.key(null));
     }
 
     /**
      * Test method for {@link org.apache.tiles.request.RequestUtil#enumerationSize(java.util.Enumeration)}.
      */
-    @SuppressWarnings("unchecked")
     @Test
     public void testEnumerationSize() {
         Enumeration<Object> enumeration = createMock(Enumeration.class);

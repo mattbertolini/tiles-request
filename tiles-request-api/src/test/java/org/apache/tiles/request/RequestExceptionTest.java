@@ -21,22 +21,24 @@
 
 package org.apache.tiles.request;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link RequestException}.
  *
  * @version $Rev$ $Date$
  */
-public class RequestExceptionTest {
+class RequestExceptionTest {
 
     /**
      * Test method for {@link org.apache.tiles.request.RequestException#RequestException()}.
      */
     @Test
-    public void testRequestException() {
+    void testRequestException() {
         RequestException exception = new RequestException();
         assertNull(exception.getMessage());
         assertNull(exception.getCause());
@@ -46,7 +48,7 @@ public class RequestExceptionTest {
      * Test method for {@link org.apache.tiles.request.RequestException#RequestException(java.lang.String)}.
      */
     @Test
-    public void testRequestExceptionString() {
+    void testRequestExceptionString() {
         RequestException exception = new RequestException("my message");
         assertEquals("my message", exception.getMessage());
         assertNull(exception.getCause());
@@ -56,7 +58,7 @@ public class RequestExceptionTest {
      * Test method for {@link org.apache.tiles.request.RequestException#RequestException(java.lang.Throwable)}.
      */
     @Test
-    public void testRequestExceptionThrowable() {
+    void testRequestExceptionThrowable() {
         Throwable cause = new Throwable();
         RequestException exception = new RequestException(cause);
         assertEquals(cause.toString(), exception.getMessage());
@@ -67,7 +69,7 @@ public class RequestExceptionTest {
      * Test method for {@link RequestException#RequestException(String, Throwable)}.
      */
     @Test
-    public void testRequestExceptionStringThrowable() {
+    void testRequestExceptionStringThrowable() {
         Throwable cause = new Throwable();
         RequestException exception = new RequestException("my message", cause);
         assertEquals("my message", exception.getMessage());

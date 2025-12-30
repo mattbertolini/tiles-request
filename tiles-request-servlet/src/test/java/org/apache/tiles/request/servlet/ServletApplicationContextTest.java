@@ -20,29 +20,33 @@
  */
 package org.apache.tiles.request.servlet;
 
-import static org.easymock.EasyMock.*;
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
+import org.apache.tiles.request.ApplicationResource;
+import org.apache.tiles.request.collection.ReadOnlyEnumerationMap;
+import org.apache.tiles.request.collection.ScopeMap;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import jakarta.servlet.ServletContext;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
-
-import org.apache.tiles.request.ApplicationResource;
-import org.apache.tiles.request.collection.ReadOnlyEnumerationMap;
-import org.apache.tiles.request.collection.ScopeMap;
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests {@link ServletApplicationContext}.
  *
  * @version $Rev$ $Date$
  */
-public class ServletApplicationContextTest {
+class ServletApplicationContextTest {
 
     /**
      * The servlet context.
@@ -57,8 +61,8 @@ public class ServletApplicationContextTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         servletContext = createMock(ServletContext.class);
         context = new ServletApplicationContext(servletContext);
     }
@@ -67,7 +71,7 @@ public class ServletApplicationContextTest {
      * Test method for {@link org.apache.tiles.request.servlet.ServletApplicationContext#getContext()}.
      */
     @Test
-    public void testGetContext() {
+    void testGetContext() {
         replay(servletContext);
         assertEquals(servletContext, context.getContext());
         verify(servletContext);
@@ -77,9 +81,9 @@ public class ServletApplicationContextTest {
      * Test method for {@link org.apache.tiles.request.servlet.ServletApplicationContext#getApplicationScope()}.
      */
     @Test
-    public void testGetApplicationScope() {
+    void testGetApplicationScope() {
         replay(servletContext);
-        assertTrue(context.getApplicationScope() instanceof ScopeMap);
+        assertInstanceOf(ScopeMap.class, context.getApplicationScope());
         verify(servletContext);
     }
 
@@ -87,9 +91,9 @@ public class ServletApplicationContextTest {
      * Test method for {@link org.apache.tiles.request.servlet.ServletApplicationContext#getInitParams()}.
      */
     @Test
-    public void testGetInitParams() {
+    void testGetInitParams() {
         replay(servletContext);
-        assertTrue(context.getInitParams() instanceof ReadOnlyEnumerationMap);
+        assertInstanceOf(ReadOnlyEnumerationMap.class, context.getInitParams());
         verify(servletContext);
     }
 
@@ -98,7 +102,7 @@ public class ServletApplicationContextTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testGetResource() throws IOException {
+    void testGetResource() throws IOException {
         URL url = new URL("file:///servletContext/my/path.html");
         URL urlFr = new URL("file:///servletContext/my/path_fr.html");
         expect(servletContext.getResource("/my/path.html")).andReturn(url);
@@ -108,8 +112,8 @@ public class ServletApplicationContextTest {
         replay(servletContext);
         ApplicationResource resource = context.getResource("/my/path.html");
         assertNotNull(resource);
-        assertEquals(resource.getLocalePath(), "/my/path.html");
-        assertEquals(resource.getPath(), "/my/path.html");
+        assertEquals("/my/path.html", resource.getLocalePath());
+        assertEquals("/my/path.html", resource.getPath());
         assertEquals(Locale.ROOT, resource.getLocale());
         ApplicationResource resourceFr = context.getResource(resource, Locale.FRENCH);
         assertNotNull(resourceFr);
@@ -126,14 +130,14 @@ public class ServletApplicationContextTest {
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void testGetResources() throws IOException {
+    void testGetResources() throws IOException {
         URL url = new URL("file:///servletContext/my/path");
         expect(servletContext.getResource("/my/path")).andReturn(url);
 
         replay(servletContext);
         Collection<ApplicationResource> resources = context.getResources("/my/path");
         assertEquals(1, resources.size());
-        assertEquals(resources.iterator().next().getLocalePath(), "/my/path");
+        assertEquals("/my/path", resources.iterator().next().getLocalePath());
         verify(servletContext);
     }
 }

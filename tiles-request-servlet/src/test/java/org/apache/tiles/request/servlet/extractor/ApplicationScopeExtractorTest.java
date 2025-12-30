@@ -20,22 +20,24 @@
  */
 package org.apache.tiles.request.servlet.extractor;
 
-import static org.easymock.classextension.EasyMock.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import jakarta.servlet.ServletContext;
 import java.util.Enumeration;
 
-import javax.servlet.ServletContext;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests {@link ApplicationScopeExtractor}.
  *
  * @version $Rev$ $Date$
  */
-public class ApplicationScopeExtractorTest {
+class ApplicationScopeExtractorTest {
 
     /**
      * The servlet context.
@@ -50,8 +52,8 @@ public class ApplicationScopeExtractorTest {
     /**
      * Sets up the test.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         context = createMock(ServletContext.class);
         extractor = new ApplicationScopeExtractor(context);
     }
@@ -60,7 +62,7 @@ public class ApplicationScopeExtractorTest {
      * Test method for {@link ApplicationScopeExtractor#setValue(String, Object)}.
      */
     @Test
-    public void testSetValue() {
+    void testSetValue() {
         context.setAttribute("attribute", "value");
 
         replay(context);
@@ -72,7 +74,7 @@ public class ApplicationScopeExtractorTest {
      * Test method for {@link ApplicationScopeExtractor#removeValue(String)}.
      */
     @Test
-    public void testRemoveValue() {
+    void testRemoveValue() {
         context.removeAttribute("attribute");
 
         replay(context);
@@ -83,9 +85,8 @@ public class ApplicationScopeExtractorTest {
     /**
      * Test method for {@link org.apache.tiles.request.servlet.extractor.ApplicationScopeExtractor#getKeys()}.
      */
-    @SuppressWarnings("unchecked")
     @Test
-    public void testGetKeys() {
+    void testGetKeys() {
         Enumeration<String> keys = createMock(Enumeration.class);
         expect(context.getAttributeNames()).andReturn(keys);
 
@@ -98,7 +99,7 @@ public class ApplicationScopeExtractorTest {
      * Test method for {@link ApplicationScopeExtractor#getValue(String)}.
      */
     @Test
-    public void testGetValue() {
+    void testGetValue() {
         expect(context.getAttribute("attribute")).andReturn("value");
 
         replay(context);
